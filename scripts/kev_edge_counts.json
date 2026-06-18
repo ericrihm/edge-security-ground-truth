@@ -102,7 +102,9 @@
     "CVE-2023-6549",
     "CVE-2023-6548",
     "CVE-2025-6543",
-    "CVE-2025-5777"
+    "CVE-2025-5777",
+    "CVE-2025-7775",
+    "CVE-2026-3055"
   ],
   "F5": [
     "CVE-2020-5902",
@@ -128,13 +130,23 @@
     "CVE-2020-15069",
     "CVE-2020-29574"
   ],
+  "WatchGuard": [
+    "CVE-2022-26318",
+    "CVE-2022-23176",
+    "CVE-2025-9242",
+    "CVE-2025-14733"
+  ],
+  "Array Networks": [
+    "CVE-2023-28461",
+    "CVE-2025-66644"
+  ],
   "_metadata": {
     "catalog_version": "2026.06.18",
     "window": [
       "2020-01-01",
       "2026-12-31"
     ],
-    "generated_at": "2026-06-18T21:39:51Z",
+    "generated_at": "2026-06-18T21:53:31Z",
     "scope_rules": {
       "SonicWall": {
         "include": "SonicOS|SMA|SSLVPN|SSL[- ]?VPN|Secure Remote Access|SRA",
@@ -165,7 +177,7 @@
         "exclude": "Endpoint|Harmony|SmartConsole|ZoneAlarm"
       },
       "Citrix": {
-        "include": "NetScaler ADC|NetScaler Gateway|Citrix ADC|Citrix Gateway|Application Delivery Controller",
+        "include": "NetScaler ADC|NetScaler Gateway|Citrix ADC|Citrix Gateway|Application Delivery Controller|^NetScaler$",
         "exclude": "Workspace|XenApp|XenDesktop|ShareFile|Endpoint Management"
       },
       "F5": {
@@ -179,6 +191,14 @@
       "Sophos": {
         "include": "Firewall|XG Firewall|SG UTM|SFOS|CyberoamOS",
         "exclude": "Web Appliance|Intercept X|Central|Endpoint|Email"
+      },
+      "WatchGuard": {
+        "include": "Firebox|XTM|Fireware",
+        "exclude": "AuthPoint"
+      },
+      "Array Networks": {
+        "include": "ArrayOS|vxAG",
+        "exclude": ""
       }
     },
     "counts": {
@@ -189,10 +209,12 @@
       "Palo Alto Networks": 12,
       "Fortinet": 18,
       "Check Point": 2,
-      "Citrix": 11,
+      "Citrix": 13,
       "F5": 6,
       "Zyxel": 6,
-      "Sophos": 6
+      "Sophos": 6,
+      "WatchGuard": 4,
+      "Array Networks": 2
     }
   }
 }

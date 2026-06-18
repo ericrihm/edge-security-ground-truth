@@ -38,7 +38,7 @@ SCOPE = {
                                  exclude=r"FortiClient|FortiManager|FortiWeb|FortiMail|FortiVoice|FortiNDR"),
     "Check Point":          dict(include=r"Quantum|CloudGuard|Security Gateway|Gaia",
                                  exclude=r"Endpoint|Harmony|SmartConsole|ZoneAlarm"),
-    "Citrix":               dict(include=r"NetScaler ADC|NetScaler Gateway|Citrix ADC|Citrix Gateway|Application Delivery Controller",
+    "Citrix":               dict(include=r"NetScaler ADC|NetScaler Gateway|Citrix ADC|Citrix Gateway|Application Delivery Controller|^NetScaler$",
                                  exclude=r"Workspace|XenApp|XenDesktop|ShareFile|Endpoint Management"),
     "F5":                   dict(include=r"BIG-IP",
                                  exclude=r"BIG-IQ|NGINX"),
@@ -46,6 +46,13 @@ SCOPE = {
                                  exclude=r"NAS|Network-Attached Storage|Router|CPE|DSL|Access Point"),
     "Sophos":               dict(include=r"Firewall|XG Firewall|SG UTM|SFOS|CyberoamOS",
                                  exclude=r"Web Appliance|Intercept X|Central|Endpoint|Email"),
+    # SSL-VPN / firewall appliances added 2026-06-18 (audit GAP-01/02): both have
+    # qualifying in-window edge KEV entries; their prior absence falsified the
+    # "no qualifying vendor excluded" invariant in METHODOLOGY.md.
+    "WatchGuard":           dict(include=r"Firebox|XTM|Fireware",
+                                 exclude=r"AuthPoint"),
+    "Array Networks":       dict(include=r"ArrayOS|vxAG",
+                                 exclude=r""),
 }
 
 def in_window(d, window):
@@ -70,7 +77,7 @@ def run(kev_data, window, vendor_filter=None):
         exc = re.compile(rule["exclude"], re.I) if rule["exclude"] else None
         rows = []
         for v in vulns:
-            if v.get("vendorProject", "").lower() != vendor.lower():
+            if v.get("vendorProject", "").strip().lower() != vendor.lower():
                 continue
             prod = v.get("product", "")
             desc = v.get("shortDescription", "")
