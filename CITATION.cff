@@ -2,14 +2,14 @@ cff-version: 1.2.0
 title: "Edge Security Ground Truth"
 message: "If you use this dataset, please cite it as below."
 type: dataset
+version: "1.0.0"
 authors:
   - family-names: Rihm
     given-names: Eric
-    orcid: ""
     email: "ericrihm@gmail.com"
 repository-code: "https://github.com/ericrihm/edge-security-ground-truth"
 url: "https://github.com/ericrihm/edge-security-ground-truth"
-license: MIT
+license: CC-BY-4.0
 keywords:
   - CISA KEV
   - vulnerability management

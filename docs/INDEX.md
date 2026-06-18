@@ -48,7 +48,7 @@ A navigational guide to all research, analysis, and reference material in this r
 
 ---
 
-## Psychology and Decision-Making
+## Decision-Making & Vendor Selection
 
 | Document | Description |
 |----------|-------------|

@@ -118,7 +118,7 @@ Beyond counts and per-vendor narratives, this repository includes structured ana
 | [Market-Share Elasticity](docs/STATISTICS.md#market-share-elasticity-poisson-regression) | Poisson regression: count scales **sub-linearly** with install base (elasticity β₁≈0.42) — the popularity tax, quantified |
 | [MITRE ATT&CK Mapping](docs/MITRE-ATTACK.md) | Heuristic CWE/product → ATT&CK technique mapping (T1190 on all; +T1133/T1078/T1552/T1212/T1068) — fills the edge-device ATT&CK gap |
 
-### Psychology, education & decision-making
+### Decision-making & vendor selection
 
 | Document | Key finding |
 |----------|-------------|

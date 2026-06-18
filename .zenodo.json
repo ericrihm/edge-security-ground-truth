@@ -1,0 +1,31 @@
+{
+  "upload_type": "dataset",
+  "title": "Edge Security Ground Truth: Reproducible CISA KEV Counts for Edge Appliance Vendors",
+  "description": "Uniform, reproducible, cited exploitation data for perimeter and edge security vendors (firewalls, SSL-VPN gateways, and remote-access appliances). 115 CISA KEV-listed exploited CVEs across 13 vendors (2020-2026), counted from the live CISA KEV feed under one transparent scope rule and enriched with EPSS scores, NVD CVSS/CWE, time-to-exploit, threat-actor attribution, and MITRE ATT&CK technique mappings. Ships reproducible standard-library-only Python analysis (Kaplan-Meier survival of time-to-exploitation, market-share-normalized rate ratios and a Poisson regression of count on installed base, exact significance testing) plus machine-readable CSV/JSON and Croissant metadata. This is data, not a ranking: it publishes a reproducible count and individually sourced facts, with named confounds, rather than a vendor score.",
+  "creators": [
+    { "name": "Rihm, Eric" }
+  ],
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "keywords": [
+    "CISA KEV",
+    "known exploited vulnerabilities",
+    "edge security",
+    "firewall",
+    "SSL VPN",
+    "perimeter security",
+    "vulnerability management",
+    "EPSS",
+    "exploitation",
+    "threat intelligence",
+    "MITRE ATT&CK",
+    "time-to-exploit"
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/ericrihm/edge-security-ground-truth",
+      "scheme": "url"
+    }
+  ]
+}
