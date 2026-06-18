@@ -13,11 +13,19 @@
 - ✅ **Numbers propagated** through ~25 docs: χ²(12)=33.65 p=0.0008, 38 zero-days, 47 ransomware (41%), median TTE 36d.
 - ✅ **P1 statistical hardening** — exact conditional-binomial pairwise tests (only 2/78 survive Bonferroni), quasi-Poisson overdispersion-adjusted trend SE (z 6.13→3.47, still significant), per-(vendor,CWE) Fisher exact + Bonferroni.
 
-**Still open** (details in P2 / North Star below):
-- ⏳ Regenerate `assets/edge-kev-chart.png` — still renders 11 bars (alt text + data updated; PNG needs a re-render).
-- ⏳ README tail dedupe — the second "Analysis tools"/"Deep-dive documents" sections (P2-3).
-- ⏳ `daily-kev-sync.yml` runs only the counter, not enrichment (P2-2). Pipeline-order bug: `enrich_nvd.py --skip-existing` strips the KEV-metadata fields, so `enrich_kev.py` must run **last** (or `enrich_nvd` be made field-preserving).
-- ⏳ CI correctness gates (P2-1), Zenodo DOI + Croissant (P2-6), and the North-Star research program.
+**Shipped — build cycles 1-2** (commits `9d4231a` →):
+- ✅ **P2-1 CI correctness gates** — `validate.yml` now asserts 13 vendors/115 CVEs, `analyze_tte --no-fetch`==13 (guards the reproducibility regression), per-vendor ransomware-map parity, a dependency-free markdown link-checker (catches the "ortinet"-class typo), and CVE-coverage.
+- ✅ **P2-2 daily-sync** — re-enriches (epss→nvd→kev, kev last) not just re-counts; commits both JSONs. **`enrich_nvd` field-preservation bug fixed** (it was stripping KEV fields on re-run); canonical pipeline order documented in METHODOLOGY §6.
+- ✅ **P2-3** README tail dedupe; **reproducible SVG chart** (`make_chart.py` → `edge-kev-chart.svg`, stale PNG removed); badges added.
+- ✅ **P2-4 machine-readable API** — `export_dataset.py` → flat CSV, `DATA-DICTIONARY.md`, **`croissant.json`** (P2-6 Croissant); all wired into README + INDEX.
+- ✅ **HTML explorers** refreshed to 13 vendors / 115 CVEs.
+- ✅ **North Star (first two novel analyses):** `analyze_survival.py` + `SURVIVAL-ANALYSIS.md` (Kaplan-Meier TTE, KM median 36d); `analyze_epss_eval.py` + `EPSS-EDGE-EVAL.md` (first edge-domain EPSS calibration; surfaces exploited-but-low-EPSS misses).
+
+**Still open** (needs you, or larger North-Star effort):
+- ⏳ **`git push`** — 8+ commits ahead of origin, intentionally not pushed (your call).
+- ⏳ **Zenodo DOI** — needs minting under your account; `croissant.json` + `CITATION.cff` are ready to wire to it.
+- ⏳ **Per-install-normalized model** (NB-GLM / Bayesian hierarchical rates) and the survival/exposure studies — the deeper North-Star research (gated on external denominators: Censys/Shodan, installed-base estimates).
+- ⏳ Living-dataset refinement: daily-sync currently auto-commits to master; a PR-with-diff flow would be safer.
 
 ---
 

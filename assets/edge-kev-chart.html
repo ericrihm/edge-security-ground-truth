@@ -253,7 +253,7 @@
 
 <header>
   <h1><span>Edge Security Ground Truth</span> — Exploited CVEs by Vendor</h1>
-  <p>CISA KEV catalog: 107 exploited edge-device CVEs across 11 vendors · stacked by ransomware association · zero-day count marked as ◆</p>
+  <p>CISA KEV catalog: 115 exploited edge-device CVEs across 13 vendors · stacked by ransomware association · zero-day count marked as ◆</p>
 </header>
 
 <div class="container">
@@ -263,23 +263,23 @@
       <div class="panel-title">Dataset Context</div>
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-value blue">107</div>
+          <div class="stat-value blue">115</div>
           <div class="stat-label">Total KEV CVEs</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value blue">11</div>
+          <div class="stat-value blue">13</div>
           <div class="stat-label">Vendors</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value red">46</div>
+          <div class="stat-value red">47</div>
           <div class="stat-label">Ransomware Known</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value orange">26</div>
+          <div class="stat-value orange">28</div>
           <div class="stat-label">Zero-Days (TTE≤0)</div>
         </div>
         <div class="stat-card" style="grid-column: 1 / -1;">
-          <div class="stat-value green" style="font-size:18px;">2020–2026 · Gini 0.246</div>
+          <div class="stat-value green" style="font-size:18px;">2020–2026 · Gini 0.302</div>
           <div class="stat-label">Date Range · Distribution</div>
         </div>
       </div>
@@ -335,17 +335,19 @@
 <script>
 // ── Per-vendor data from scripts/kev_edge_enriched.json ──────────────────────
 const VENDOR_DATA = [
-  { vendor: 'Fortinet',           total: 18, ransomware: 12, unknown: 6,  zerodays: 7,  product: 'FortiOS / FortiProxy',          dominant_cwe: 'Auth / Access'    },
-  { vendor: 'Ivanti',             total: 13, ransomware: 8,  unknown: 5,  zerodays: 4,  product: 'Connect Secure / Pulse',        dominant_cwe: 'Injection'         },
-  { vendor: 'Cisco',              total: 13, ransomware: 3,  unknown: 10, zerodays: 4,  product: 'ASA / FTD only',                dominant_cwe: 'Memory Safety'     },
-  { vendor: 'SonicWall',          total: 12, ransomware: 7,  unknown: 5,  zerodays: 1,  product: 'SonicOS + SMA',                 dominant_cwe: 'Injection'         },
-  { vendor: 'Palo Alto Networks', total: 12, ransomware: 5,  unknown: 7,  zerodays: 4,  product: 'PAN-OS',                        dominant_cwe: 'Auth / Access'     },
-  { vendor: 'Citrix',             total: 11, ransomware: 4,  unknown: 7,  zerodays: 4,  product: 'NetScaler ADC / Gateway',       dominant_cwe: 'Auth / Access'     },
-  { vendor: 'Juniper',            total: 8,  ransomware: 0,  unknown: 8,  zerodays: 0,  product: 'Junos / ScreenOS',              dominant_cwe: 'Auth / Access'     },
-  { vendor: 'F5',                 total: 6,  ransomware: 3,  unknown: 3,  zerodays: 0,  product: 'BIG-IP',                        dominant_cwe: 'Memory Safety'     },
-  { vendor: 'Zyxel',              total: 6,  ransomware: 1,  unknown: 5,  zerodays: 0,  product: 'ATP / USG FLEX / VPN',          dominant_cwe: 'Injection'         },
-  { vendor: 'Sophos',             total: 6,  ransomware: 1,  unknown: 5,  zerodays: 1,  product: 'SFOS / XG / SG UTM',            dominant_cwe: 'Injection'         },
-  { vendor: 'Check Point',        total: 2,  ransomware: 2,  unknown: 0,  zerodays: 1,  product: 'Quantum Gateway',               dominant_cwe: 'Auth / Access'     },
+  { vendor: 'Fortinet', total: 18, ransomware: 12, unknown: 6, zerodays: 7, product: 'FortiOS / FortiProxy', dominant_cwe: 'Auth / Access' },
+  { vendor: 'Cisco', total: 13, ransomware: 3, unknown: 10, zerodays: 4, product: 'ASA / FTD only', dominant_cwe: 'Memory Safety' },
+  { vendor: 'Citrix', total: 13, ransomware: 4, unknown: 9, zerodays: 5, product: 'NetScaler ADC / Gateway', dominant_cwe: 'Memory Safety' },
+  { vendor: 'Ivanti', total: 13, ransomware: 8, unknown: 5, zerodays: 4, product: 'Connect Secure / Pulse', dominant_cwe: 'Injection' },
+  { vendor: 'Palo Alto Networks', total: 12, ransomware: 5, unknown: 7, zerodays: 4, product: 'PAN-OS', dominant_cwe: 'Auth / Access' },
+  { vendor: 'SonicWall', total: 12, ransomware: 7, unknown: 5, zerodays: 1, product: 'SonicOS + SMA', dominant_cwe: 'Injection' },
+  { vendor: 'Juniper', total: 8, ransomware: 0, unknown: 8, zerodays: 0, product: 'Junos / ScreenOS', dominant_cwe: 'Auth / Access' },
+  { vendor: 'F5', total: 6, ransomware: 3, unknown: 3, zerodays: 0, product: 'BIG-IP', dominant_cwe: 'Auth / Access' },
+  { vendor: 'Sophos', total: 6, ransomware: 1, unknown: 5, zerodays: 1, product: 'SFOS / XG / SG UTM', dominant_cwe: 'Injection' },
+  { vendor: 'Zyxel', total: 6, ransomware: 1, unknown: 5, zerodays: 0, product: 'ATP / USG FLEX / VPN', dominant_cwe: 'Injection' },
+  { vendor: 'WatchGuard', total: 4, ransomware: 0, unknown: 4, zerodays: 1, product: 'Firebox / XTM', dominant_cwe: 'Memory Safety' },
+  { vendor: 'Array Networks', total: 2, ransomware: 1, unknown: 1, zerodays: 0, product: 'AG / vxAG SSL VPN', dominant_cwe: 'Auth / Access' },
+  { vendor: 'Check Point', total: 2, ransomware: 2, unknown: 0, zerodays: 1, product: 'Quantum Gateway', dominant_cwe: 'Auth / Access' },
 ];
 
 const labels    = VENDOR_DATA.map(d => d.vendor);

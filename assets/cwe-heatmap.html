@@ -332,18 +332,18 @@
 <div class="header">
   <h1>Edge Security Ground Truth — <span>CWE Weakness Heatmap</span></h1>
   <div class="sub">
-    107 CISA KEV CVEs across 11 edge-device vendors · 105/107 (98%) NVD CWE assignments · Recurring weakness threshold: 3+ CVEs in same category
+    115 CISA KEV CVEs across 13 edge-device vendors · 113/115 (98%) NVD CWE assignments · Recurring weakness threshold: 3+ CVEs in same category
   </div>
 </div>
 
 <!-- Stats row -->
 <div class="stats-row">
-  <div class="stat-box"><div class="stat-val blue">107</div><div class="stat-lbl">Total CVEs</div></div>
-  <div class="stat-box"><div class="stat-val red">30</div><div class="stat-lbl">Auth / Access (28%)</div></div>
-  <div class="stat-box"><div class="stat-val red">24</div><div class="stat-lbl">Injection (22%)</div></div>
-  <div class="stat-box"><div class="stat-val red">22</div><div class="stat-lbl">Memory Safety (21%)</div></div>
-  <div class="stat-box"><div class="stat-val gold">71%</div><div class="stat-lbl">Top 3 categories</div></div>
-  <div class="stat-box"><div class="stat-val green">10</div><div class="stat-lbl">Recurring weakness signals</div></div>
+  <div class="stat-box"><div class="stat-val blue">115</div><div class="stat-lbl">Total CVEs</div></div>
+  <div class="stat-box"><div class="stat-val red">31</div><div class="stat-lbl">Auth / Access (27%)</div></div>
+  <div class="stat-box"><div class="stat-val red">25</div><div class="stat-lbl">Injection (22%)</div></div>
+  <div class="stat-box"><div class="stat-val red">27</div><div class="stat-lbl">Memory Safety (23%)</div></div>
+  <div class="stat-box"><div class="stat-val gold">72%</div><div class="stat-lbl">Top 3 categories</div></div>
+  <div class="stat-box"><div class="stat-val green">13</div><div class="stat-lbl">Recurring weakness signals</div></div>
 </div>
 
 <div class="section-title">Vendor × CWE Category Heatmap</div>
@@ -419,17 +419,19 @@ const CAT_COLORS = [
 // since none of the vendor rows call out Info Exposure specifically.
 // Total n comes from the rightmost column in the MD.
 const VENDORS = [
-  { name: 'Check Point',        data: [1, 0, 0, 0, 0, 0, 1],  total: 2  },
-  { name: 'Cisco',              data: [2, 2, 4, 0, 2, 0, 3],  total: 13 },
-  { name: 'Citrix',             data: [2, 2, 4, 1, 1, 0, 1],  total: 11 },
-  { name: 'F5',                 data: [2, 1, 2, 1, 0, 0, 0],  total: 6  },
-  { name: 'Fortinet',           data: [8, 0, 4, 2, 1, 0, 3],  total: 18 },
-  { name: 'Ivanti',             data: [1, 6, 2, 2, 0, 0, 2],  total: 13 },
-  { name: 'Juniper',            data: [7, 0, 0, 1, 0, 0, 0],  total: 8  },
-  { name: 'Palo Alto Networks', data: [4, 2, 1, 1, 2, 0, 2],  total: 12 },
-  { name: 'SonicWall',          data: [3, 5, 2, 1, 0, 0, 1],  total: 12 },
-  { name: 'Sophos',             data: [0, 4, 1, 0, 0, 0, 1],  total: 6  },
-  { name: 'Zyxel',              data: [0, 2, 2, 1, 0, 0, 1],  total: 6  },
+  { name: 'Array Networks', data: [1, 1, 0, 0, 0, 0, 0], total: 2 },
+  { name: 'Check Point', data: [1, 0, 0, 0, 0, 0, 1], total: 2 },
+  { name: 'Cisco', data: [2, 2, 4, 0, 2, 0, 3], total: 13 },
+  { name: 'Citrix', data: [2, 2, 6, 1, 1, 0, 1], total: 13 },
+  { name: 'F5', data: [2, 1, 2, 1, 0, 0, 0], total: 6 },
+  { name: 'Fortinet', data: [8, 0, 4, 2, 1, 0, 3], total: 18 },
+  { name: 'Ivanti', data: [1, 6, 2, 2, 0, 0, 2], total: 13 },
+  { name: 'Juniper', data: [7, 0, 0, 1, 0, 0, 0], total: 8 },
+  { name: 'Palo Alto Networks', data: [4, 2, 1, 1, 2, 0, 2], total: 12 },
+  { name: 'SonicWall', data: [3, 5, 2, 1, 0, 0, 1], total: 12 },
+  { name: 'Sophos', data: [0, 4, 1, 0, 0, 0, 1], total: 6 },
+  { name: 'WatchGuard', data: [0, 0, 3, 0, 0, 0, 1], total: 4 },
+  { name: 'Zyxel', data: [0, 2, 2, 1, 0, 0, 1], total: 6 },
 ];
 
 // Notable signal annotations (vendor, catIndex, note)

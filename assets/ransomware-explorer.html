@@ -469,7 +469,7 @@
 
 <header>
   <h1><span>Ransomware Explorer</span> -- Edge Security Ground Truth</h1>
-  <p>43% of edge/perimeter CVEs in CISA KEV are ransomware-associated. This is the weaponization pipeline.</p>
+  <p>41% of edge/perimeter CVEs in CISA KEV are ransomware-associated. This is the weaponization pipeline.</p>
 </header>
 
 <div class="container">
@@ -477,19 +477,19 @@
   <!-- STAT CARDS -->
   <div class="stats-row">
     <div class="stat-card highlight">
-      <div class="stat-value danger">46</div>
+      <div class="stat-value danger">47</div>
       <div class="stat-label">Ransomware CVEs</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value info">107</div>
+      <div class="stat-value info">115</div>
       <div class="stat-label">Total Edge CVEs</div>
     </div>
     <div class="stat-card highlight">
-      <div class="stat-value danger">43%</div>
+      <div class="stat-value danger">41%</div>
       <div class="stat-label">Ransomware Rate</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value warn">9</div>
+      <div class="stat-value warn">11</div>
       <div class="stat-label">Vendors Affected</div>
     </div>
     <div class="stat-card">
@@ -497,7 +497,7 @@
       <div class="stat-label">Median CVSS (Ransomware)</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value ok">0 days</div>
+      <div class="stat-value ok">23 days</div>
       <div class="stat-label">Median TTE (Ransomware)</div>
     </div>
   </div>
@@ -507,7 +507,7 @@
     <div class="section-header">
       <div class="section-number">1</div>
       <div class="section-title">Ransomware Overview</div>
-      <div class="section-subtitle">46 of 107 edge CVEs weaponized by ransomware groups</div>
+      <div class="section-subtitle">47 of 115 edge CVEs weaponized by ransomware groups</div>
     </div>
     <div class="overview-grid">
       <div class="panel">
@@ -516,7 +516,7 @@
           <div class="donut-wrap">
             <canvas id="donutChart"></canvas>
             <div class="donut-center">
-              <div class="big">43%</div>
+              <div class="big">41%</div>
               <div class="small">Ransomware</div>
             </div>
           </div>
@@ -761,37 +761,41 @@
 </div>
 
 <footer>
-  Data: CISA KEV + NVD + FIRST EPSS | Source: <a href="https://github.com/ericrihm/edge-security-ground-truth" target="_blank">edge-security-ground-truth</a> | 107 CVEs across 9 edge vendors | 46 ransomware-associated
+  Data: CISA KEV + NVD + FIRST EPSS | Source: <a href="https://github.com/ericrihm/edge-security-ground-truth" target="_blank">edge-security-ground-truth</a> | 115 CVEs across 13 edge vendors | 47 ransomware-associated
 </footer>
 
 <script>
 // ========== DATA ==========
 const VENDOR_COLORS = {
-  'Check Point':        '#ffd33d',
-  'Fortinet':           '#3fb950',
-  'Ivanti':             '#bc8cff',
-  'SonicWall':          '#79c0ff',
-  'F5':                 '#ff7b72',
-  'Palo Alto Networks': '#58a6ff',
-  'Citrix':             '#f778ba',
-  'Cisco':              '#f0883e',
-  'Zyxel':              '#d2a8ff',
-  'Sophos':             '#7ee787',
-  'Juniper':            '#56d4dd'
+  'Check Point'         : '#ffd33d',
+  'Fortinet'            : '#3fb950',
+  'Ivanti'              : '#bc8cff',
+  'SonicWall'           : '#79c0ff',
+  'F5'                  : '#ff7b72',
+  'Palo Alto Networks'  : '#58a6ff',
+  'Citrix'              : '#f778ba',
+  'Cisco'               : '#f0883e',
+  'Zyxel'               : '#d2a8ff',
+  'Sophos'              : '#7ee787',
+  'Juniper'             : '#56d4dd',
+  'WatchGuard'          : '#e3b341',
+  'Array Networks'      : '#ff9bce',
 };
 
 const VENDOR_STATS = [
-  { vendor: 'Check Point',        ransomware: 2,  total: 2,  rate: 100 },
-  { vendor: 'Fortinet',           ransomware: 12, total: 18, rate: 67  },
-  { vendor: 'Ivanti',             ransomware: 8,  total: 13, rate: 62  },
-  { vendor: 'SonicWall',          ransomware: 7,  total: 12, rate: 58  },
-  { vendor: 'F5',                 ransomware: 3,  total: 6,  rate: 50  },
-  { vendor: 'Palo Alto Networks', ransomware: 5,  total: 12, rate: 42  },
-  { vendor: 'Citrix',             ransomware: 4,  total: 11, rate: 36  },
-  { vendor: 'Cisco',              ransomware: 3,  total: 13, rate: 23  },
-  { vendor: 'Zyxel',              ransomware: 1,  total: 6,  rate: 17  },
-  { vendor: 'Sophos',             ransomware: 1,  total: 6,  rate: 17  },
-  { vendor: 'Juniper',            ransomware: 0,  total: 8,  rate: 0   }
+  { vendor: 'Check Point'         , ransomware: 2 , total: 2 , rate: 100 },
+  { vendor: 'Fortinet'            , ransomware: 12, total: 18, rate: 67  },
+  { vendor: 'Ivanti'              , ransomware: 8 , total: 13, rate: 62  },
+  { vendor: 'SonicWall'           , ransomware: 7 , total: 12, rate: 58  },
+  { vendor: 'F5'                  , ransomware: 3 , total: 6 , rate: 50  },
+  { vendor: 'Array Networks'      , ransomware: 1 , total: 2 , rate: 50  },
+  { vendor: 'Palo Alto Networks'  , ransomware: 5 , total: 12, rate: 42  },
+  { vendor: 'Citrix'              , ransomware: 4 , total: 13, rate: 31  },
+  { vendor: 'Cisco'               , ransomware: 3 , total: 13, rate: 23  },
+  { vendor: 'Sophos'              , ransomware: 1 , total: 6 , rate: 17  },
+  { vendor: 'Zyxel'               , ransomware: 1 , total: 6 , rate: 17  },
+  { vendor: 'Juniper'             , ransomware: 0 , total: 8 , rate: 0   },
+  { vendor: 'WatchGuard'          , ransomware: 0 , total: 4 , rate: 0   },
 ];
 
 // All CVEs for the timeline
@@ -854,8 +858,6 @@ const ALL_CVES = [
   {cve:"CVE-2025-0111",vendor:"Palo Alto Networks",published:"2025-02-12",ransomware:"Unknown",cvss:7.1,kev:"2025-02-20"},
   {cve:"CVE-2026-0300",vendor:"Palo Alto Networks",published:"2026-05-06",ransomware:"Unknown",cvss:null,kev:"2026-05-06"},
   {cve:"CVE-2026-0257",vendor:"Palo Alto Networks",published:"2026-05-13",ransomware:"Unknown",cvss:null,kev:"2026-05-29"},
-  {cve:"CVE-2024-24919",vendor:"Check Point",published:"2024-05-28",ransomware:"Known",cvss:8.6,kev:"2024-05-30"},
-  {cve:"CVE-2026-50751",vendor:"Check Point",published:"2026-06-08",ransomware:"Known",cvss:9.3,kev:"2026-06-08"},
   {cve:"CVE-2019-5591",vendor:"Fortinet",published:"2020-08-14",ransomware:"Unknown",cvss:6.5,kev:"2021-11-03"},
   {cve:"CVE-2020-12812",vendor:"Fortinet",published:"2020-07-24",ransomware:"Known",cvss:9.8,kev:"2021-11-03"},
   {cve:"CVE-2018-13379",vendor:"Fortinet",published:"2019-06-04",ransomware:"Known",cvss:9.1,kev:"2021-11-03"},
@@ -874,6 +876,8 @@ const ALL_CVES = [
   {cve:"CVE-2019-6693",vendor:"Fortinet",published:"2019-11-21",ransomware:"Known",cvss:6.5,kev:"2025-06-25"},
   {cve:"CVE-2025-59718",vendor:"Fortinet",published:"2025-12-09",ransomware:"Unknown",cvss:9.1,kev:"2025-12-16"},
   {cve:"CVE-2026-24858",vendor:"Fortinet",published:"2026-01-27",ransomware:"Unknown",cvss:9.4,kev:"2026-01-27"},
+  {cve:"CVE-2024-24919",vendor:"Check Point",published:"2024-05-28",ransomware:"Known",cvss:8.6,kev:"2024-05-30"},
+  {cve:"CVE-2026-50751",vendor:"Check Point",published:"2026-06-08",ransomware:"Known",cvss:9.3,kev:"2026-06-08"},
   {cve:"CVE-2020-8193",vendor:"Citrix",published:"2020-07-10",ransomware:"Unknown",cvss:6.5,kev:"2021-11-03"},
   {cve:"CVE-2020-8195",vendor:"Citrix",published:"2020-07-10",ransomware:"Unknown",cvss:6.5,kev:"2021-11-03"},
   {cve:"CVE-2020-8196",vendor:"Citrix",published:"2020-07-10",ransomware:"Unknown",cvss:4.3,kev:"2021-11-03"},
@@ -885,6 +889,8 @@ const ALL_CVES = [
   {cve:"CVE-2023-6548",vendor:"Citrix",published:"2024-01-17",ransomware:"Unknown",cvss:5.5,kev:"2024-01-17"},
   {cve:"CVE-2025-6543",vendor:"Citrix",published:"2025-06-25",ransomware:"Unknown",cvss:null,kev:"2025-06-30"},
   {cve:"CVE-2025-5777",vendor:"Citrix",published:"2025-06-17",ransomware:"Known",cvss:null,kev:"2025-07-10"},
+  {cve:"CVE-2025-7775",vendor:"Citrix",published:"2025-08-26",ransomware:"Unknown",cvss:9.8,kev:"2025-08-26"},
+  {cve:"CVE-2026-3055",vendor:"Citrix",published:"2026-03-23",ransomware:"Unknown",cvss:9.8,kev:"2026-03-30"},
   {cve:"CVE-2020-5902",vendor:"F5",published:"2020-07-01",ransomware:"Known",cvss:9.8,kev:"2021-11-03"},
   {cve:"CVE-2021-22991",vendor:"F5",published:"2021-03-31",ransomware:"Unknown",cvss:9.8,kev:"2022-01-18"},
   {cve:"CVE-2022-1388",vendor:"F5",published:"2022-05-05",ransomware:"Known",cvss:9.8,kev:"2022-05-10"},
@@ -902,13 +908,18 @@ const ALL_CVES = [
   {cve:"CVE-2022-1040",vendor:"Sophos",published:"2022-03-25",ransomware:"Unknown",cvss:9.8,kev:"2022-03-31"},
   {cve:"CVE-2022-3236",vendor:"Sophos",published:"2022-09-23",ransomware:"Unknown",cvss:9.8,kev:"2022-09-23"},
   {cve:"CVE-2020-15069",vendor:"Sophos",published:"2020-06-29",ransomware:"Unknown",cvss:9.8,kev:"2025-02-06"},
-  {cve:"CVE-2020-29574",vendor:"Sophos",published:"2020-12-11",ransomware:"Unknown",cvss:9.8,kev:"2025-02-06"}
+  {cve:"CVE-2020-29574",vendor:"Sophos",published:"2020-12-11",ransomware:"Unknown",cvss:9.8,kev:"2025-02-06"},
+  {cve:"CVE-2022-26318",vendor:"WatchGuard",published:"2022-03-04",ransomware:"Unknown",cvss:9.8,kev:"2022-03-25"},
+  {cve:"CVE-2022-23176",vendor:"WatchGuard",published:"2022-02-24",ransomware:"Unknown",cvss:8.8,kev:"2022-04-11"},
+  {cve:"CVE-2025-9242",vendor:"WatchGuard",published:"2025-09-17",ransomware:"Unknown",cvss:9.3,kev:"2025-11-12"},
+  {cve:"CVE-2025-14733",vendor:"WatchGuard",published:"2025-12-19",ransomware:"Unknown",cvss:9.8,kev:"2025-12-19"},
+  {cve:"CVE-2023-28461",vendor:"Array Networks",published:"2023-03-15",ransomware:"Known",cvss:9.8,kev:"2024-11-25"},
+  {cve:"CVE-2025-66644",vendor:"Array Networks",published:"2025-12-05",ransomware:"Unknown",cvss:7.2,kev:"2025-12-08"}
 ];
 
 // Vendor index for y-axis
 const VENDORS_ORDERED = [
-  'Check Point', 'Fortinet', 'Ivanti', 'SonicWall', 'F5',
-  'Palo Alto Networks', 'Citrix', 'Cisco', 'Zyxel', 'Sophos', 'Juniper'
+  'Check Point', 'Fortinet', 'Ivanti', 'SonicWall', 'F5', 'Palo Alto Networks', 'Citrix', 'Cisco', 'Zyxel', 'Sophos', 'Juniper', 'WatchGuard', 'Array Networks'
 ];
 
 // ========== DONUT CHART ==========
@@ -918,7 +929,7 @@ new Chart(donutCtx, {
   data: {
     labels: ['Ransomware-Associated', 'Not Ransomware-Associated'],
     datasets: [{
-      data: [46, 61],
+      data: [47, 68],
       backgroundColor: ['#f85149', '#21262d'],
       borderColor: ['#f85149', '#30363d'],
       borderWidth: 2,
@@ -939,7 +950,7 @@ new Chart(donutCtx, {
         bodyColor: '#8b949e',
         callbacks: {
           label: function(ctx) {
-            return ctx.label + ': ' + ctx.raw + ' CVEs (' + Math.round(ctx.raw/107*100) + '%)';
+            return ctx.label + ': ' + ctx.raw + ' CVEs (' + Math.round(ctx.raw/115*100) + '%)';
           }
         }
       }
