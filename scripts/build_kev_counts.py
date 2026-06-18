@@ -48,7 +48,14 @@ def main(path):
             if v.get("vendorProject", "").lower() != vendor.lower():
                 continue
             prod = v.get("product", "")
-            if not inc.search(prod):
+            desc = v.get("shortDescription", "")
+            # CISA labels some in-scope CVEs with a generic "Multiple Products" product field
+            # (e.g. FortiOS bugs CVE-2022-40684, CVE-2024-23113, CVE-2026-24858). For those, also
+            # match the shortDescription so the edge product isn't silently dropped. Exclude rules
+            # still test the product field only, so a generic-labeled entry isn't dropped merely
+            # because its description lists an out-of-scope sibling product.
+            hay = prod if "multiple" not in prod.lower() else prod + " " + desc
+            if not inc.search(hay):
                 continue
             if exc and exc.search(prod):
                 continue

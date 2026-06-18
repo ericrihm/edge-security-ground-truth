@@ -1,6 +1,6 @@
 # Fortinet (FortiGate)
 
-**Scope: FortiOS / FortiProxy SSL-VPN.** The largest firewall vendor by unit count; the SSL-VPN disclosure record is documented below. *(14 edge KEV entries, 2020–2026.)*
+**Scope: FortiOS / FortiProxy SSL-VPN.** The largest firewall vendor by unit count; the SSL-VPN disclosure record is documented below. *(18 edge KEV entries, 2020–2026 — including FortiOS bugs CISA lists under a generic "Multiple Products" label.)*
 
 ## Market Position
 
@@ -33,8 +33,12 @@ In April 2025, CISA [issued an alert](https://www.bleepingcomputer.com/news/secu
 
 ## What the Metrics Actually Show
 
-- **KEV density:** Four SSL-VPN KEV entries from a single daemon over five years is not explained by market share alone — it indicates a recurring architectural or SDL failure in a specific product area.
+- **KEV density:** Four pre-auth RCE KEV entries in the SSL-VPN daemon alone — out of 18 edge KEV entries total — is not explained by market share alone; it indicates a recurring architectural or SDL failure in a specific product area.
 - **Exploitation speed:** CVE-2024-21762's advisory (February 8, 2024) was followed by a CISA KEV listing the [next day, February 9](https://nvd.nist.gov/vuln/detail/CVE-2024-21762) — a near-simultaneous signal that exploitation was already active.
 - **Transparency:** Silent patching plus firmware-only distribution is a disclosure anti-pattern — the documented opposite of the "most transparent" claim.
 
 Fortinet's unit-count leadership is real. Its security disclosure posture and SSL-VPN vulnerability recurrence are not defensible on the same grounds.
+
+## Latest development — FortiBleed (June 2026)
+
+In mid-June 2026, a dataset reportedly exposing login credentials for **~74,000 internet-facing FortiGate devices** surfaced in cybercriminal communities ([CyberScoop](https://cyberscoop.com/ortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)). Researchers attribute it not to a single new zero-day but to a **convergence of already-known issues**: unpatched FortiOS flaws (chiefly [CVE-2026-24858](https://www.cisa.gov/news-events/alerts/2026/01/28/fortinet-releases-guidance-address-ongoing-exploitation-authentication-bypass-vulnerability-cve-2026), the FortiCloud SSO authentication bypass actively exploited since January 2026), legacy SHA-256 password hashing on older FortiOS versions, and recycled credentials already circulating from infostealer campaigns and prior breaches. Included here as context — it is not a new KEV entry.

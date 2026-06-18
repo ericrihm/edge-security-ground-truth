@@ -38,23 +38,23 @@
 <body>
 <div class="wrap">
   <div class="eyebrow">Exploited edge CVEs · CISA KEV · 2020–2026</div>
-  <h1>No vendor is dramatically cleaner.</h1>
+  <h1>Every major edge vendor is heavily exploited.</h1>
   <p class="sub">CVEs in CISA's <b>Known Exploited Vulnerabilities</b> catalog affecting each vendor's edge appliance (firewall / SSL‑VPN / remote‑access), counted under <b>one uniform scope rule</b>. Reproducible directly from the CISA feed.</p>
 
   <div class="chart">
-    <div class="row"><div class="name">Fortinet<span>FortiOS / FortiProxy</span></div><div class="track"><div class="bar" style="width:100%"></div></div><div class="val">14</div></div>
-    <div class="row"><div class="name">Ivanti<span>Connect / Pulse Secure</span></div><div class="track"><div class="bar" style="width:92.9%"></div></div><div class="val">13</div></div>
-    <div class="row"><div class="name">Cisco<span>ASA / FTD only</span></div><div class="track"><div class="bar" style="width:92.9%"></div></div><div class="val">13</div></div>
-    <div class="row"><div class="name">Palo Alto<span>PAN‑OS</span></div><div class="track"><div class="bar" style="width:85.7%"></div></div><div class="val">12</div></div>
-    <div class="row"><div class="name">SonicWall<span>SonicOS + SMA</span></div><div class="track"><div class="bar" style="width:85.7%"></div></div><div class="val">12</div></div>
-    <div class="row"><div class="name">Juniper<span>Junos / ScreenOS</span></div><div class="track"><div class="bar" style="width:57.1%"></div></div><div class="val">8</div></div>
+    <div class="row"><div class="name">Fortinet<span>FortiOS / FortiProxy</span></div><div class="track"><div class="bar" style="width:100%"></div></div><div class="val">18</div></div>
+    <div class="row"><div class="name">Ivanti<span>Connect / Pulse Secure</span></div><div class="track"><div class="bar" style="width:72.2%"></div></div><div class="val">13</div></div>
+    <div class="row"><div class="name">Cisco<span>ASA / FTD only</span></div><div class="track"><div class="bar" style="width:72.2%"></div></div><div class="val">13</div></div>
+    <div class="row"><div class="name">Palo Alto<span>PAN‑OS</span></div><div class="track"><div class="bar" style="width:66.7%"></div></div><div class="val">12</div></div>
+    <div class="row"><div class="name">SonicWall<span>SonicOS + SMA</span></div><div class="track"><div class="bar" style="width:66.7%"></div></div><div class="val">12</div></div>
+    <div class="row"><div class="name">Juniper<span>Junos / ScreenOS</span></div><div class="track"><div class="bar" style="width:44.4%"></div></div><div class="val">8</div></div>
   </div>
 
-  <div class="band">Apply one consistent scope and every major edge vendor lands at <b>8–14 exploited edge CVEs over six years</b>. The count is the start of the question, not the answer — <b>what</b> happened (zero‑days, pre‑auth RCE, silent patches, a vendor‑side breach) is in the repo, cited per vendor.</div>
+  <div class="band">Apply one consistent scope and every major edge vendor lands at <b>8–18 exploited edge CVEs over six years</b> — all actively exploited. Fortinet's higher count partly tracks its <b>~50% unit market share</b> (the popularity tax this repo can't normalize), not demonstrably weaker code. The count is the start of the question, not the answer — <b>what</b> happened is in the repo, cited per vendor.</div>
 
   <div class="foot">
-    <div class="m"><b>Sorted by count — a sort, not a verdict.</b> Counts still partly reflect installed base, which is not reliably normalizable. Cisco = ASA/FTD only (not its ~80 portfolio‑wide KEVs); Palo Alto excludes Expedition.</div>
-    <div class="src"><b>Source:</b> CISA KEV catalog<br>computed by scripts/build_kev_counts.py<br>github.com/ericrihm/edge-security-ground-truth</div>
+    <div class="m"><b>Sorted by count — a sort, not a verdict.</b> Counts still partly reflect installed base, which is not reliably normalizable. Cisco = ASA/FTD only (not its ~90 portfolio‑wide KEVs); Palo Alto excludes Expedition.</div>
+    <div class="src"><b>Source:</b> CISA KEV catalog 2026.06.16<br>computed by scripts/build_kev_counts.py<br>github.com/ericrihm/edge-security-ground-truth</div>
   </div>
 </div>
 </body>
