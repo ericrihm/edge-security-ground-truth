@@ -109,7 +109,7 @@ Several academic works inform the methodology:
 - **Bilge and Dumitras 2012** -- Baseline empirical work on zero-day and n-day exploitation timelines.
 - **Suciu et al. 2022** -- Vulnerability lifecycle modeling incorporating attacker incentive structures; finds VPN gateways face adversarially compressed exploitation timelines.
 
-These works are discussed in detail in [docs/LITERATURE-REVIEW.md](./docs/LITERATURE-REVIEW.md).
+These works are discussed in detail in [docs/RELATED-WORK.md](./docs/RELATED-WORK.md).
 
 ---
 

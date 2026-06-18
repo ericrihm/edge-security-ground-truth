@@ -94,12 +94,14 @@ Beyond counts and per-vendor narratives, this repository includes structured ana
 
 | Document | Key finding |
 |----------|-------------|
-| [CWE Pattern Analysis](docs/CWE-ANALYSIS.md) | Auth/AuthZ and injection each account for 22% of exploited edge CVEs; Fortinet has 7x auth bypasses, Ivanti 6x injection |
-| [Time-to-Exploit](docs/TIME-TO-EXPLOIT.md) | Median TTE is 40 days; 40% exploited within 7 days; 15 confirmed zero-days across 8 vendors; 43% ransomware-associated |
-| [Statistical Framework](docs/STATISTICAL-FRAMEWORK.md) | χ²(10)=21.20, p≈0.02 — counts differ from uniform, but confounders (installed base, researcher attention) are uncontrolled |
-| [Threat Attribution](docs/THREAT-ATTRIBUTION.md) | 19-entry attribution matrix; China-nexus, Iran-nexus, and ransomware groups all target edge devices preferentially |
-| [Literature Review](docs/LITERATURE-REVIEW.md) | Academic and industry context — vulnerability metrics limitations, exploitation timing research, edge as attack surface |
+| [CWE Pattern Analysis](docs/CWE-ANALYSIS.md) | Auth/access-control (28%), injection (22%), memory safety (21%) account for 71% of exploited edge CVEs; Fortinet 8x auth, Ivanti 6x injection |
+| [Time-to-Exploit](docs/TIME-TO-EXPLOIT.md) | Median TTE 40 days; 40% exploited within 7 days; 36 confirmed zero-days across 10 of 11 vendors; 43% ransomware-associated |
+| [Statistical Framework](docs/STATISTICS.md) | χ²(10)=21.20, p≈0.02 — counts differ from uniform, but confounders (installed base, researcher attention) are uncontrolled |
+| [Threat Attribution](docs/THREAT-ATTRIBUTION.md) | 22-actor attribution matrix; China-nexus, Iran-nexus, and ransomware groups all target edge devices preferentially |
+| [Related Work / Literature Review](docs/RELATED-WORK.md) | Academic and industry context — vulnerability metrics limitations, exploitation timing research, edge as attack surface |
 | [Defender Playbook](docs/DEFENDER-PLAYBOOK.md) | Actionable response procedures keyed to KEV alerts |
+| [Vendor Comparison Matrix](docs/VENDOR-MATRIX.md) | Side-by-side 8-dimension comparison: KEV count, zero-days, ransomware, TTE, CWE profile, APT attribution, disclosure |
+| [Executive Summary](docs/EXECUTIVE-SUMMARY.md) | State of Edge Security 2026 — key findings and actionable recommendations for CISOs and threat intel analysts |
 | [Cross-Vendor Patterns](docs/ANALYSIS.md) | EPSS distributions, severity clustering, vendor comparison |
 
 ### Analysis tools (stdlib-only Python, no pip dependencies)

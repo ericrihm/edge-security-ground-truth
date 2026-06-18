@@ -227,6 +227,27 @@ def load_enriched(path):
             continue
         if isinstance(v, dict):
             vendors[k] = v
+
+    import urllib.request
+    kev_url = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+    try:
+        req = urllib.request.Request(kev_url, headers={"User-Agent": "edge-sec-gt/1.0"})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            kev = json.loads(resp.read())
+        kev_lookup = {v["cveID"]: v for v in kev["vulnerabilities"]}
+        for vendor, cves in vendors.items():
+            for cve_id, cve_data in cves.items():
+                kv = kev_lookup.get(cve_id, {})
+                if "kev_date_added" not in cve_data and "dateAdded" in kv:
+                    cve_data["kev_date_added"] = kv["dateAdded"]
+                if "kev_due_date" not in cve_data and "dueDate" in kv:
+                    cve_data["kev_due_date"] = kv["dueDate"]
+                if "ransomware" not in cve_data:
+                    cve_data["ransomware"] = kv.get("knownRansomwareCampaignUse", "Unknown")
+        print("# Merged KEV catalog data", file=sys.stderr)
+    except Exception as e:
+        print(f"# Warning: could not fetch KEV catalog: {e}", file=sys.stderr)
+
     return vendors, data.get("_metadata", {})
 
 
