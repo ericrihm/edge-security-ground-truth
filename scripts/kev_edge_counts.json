@@ -86,5 +86,87 @@
     "CVE-2019-6693",
     "CVE-2025-59718",
     "CVE-2026-24858"
-  ]
+  ],
+  "Check Point": [
+    "CVE-2024-24919",
+    "CVE-2026-50751"
+  ],
+  "Citrix": [
+    "CVE-2020-8193",
+    "CVE-2020-8195",
+    "CVE-2020-8196",
+    "CVE-2019-19781",
+    "CVE-2022-27518",
+    "CVE-2023-3519",
+    "CVE-2023-4966",
+    "CVE-2023-6549",
+    "CVE-2023-6548",
+    "CVE-2025-6543",
+    "CVE-2025-5777"
+  ],
+  "F5": [
+    "CVE-2020-5902",
+    "CVE-2021-22991",
+    "CVE-2022-1388",
+    "CVE-2023-46748",
+    "CVE-2023-46747",
+    "CVE-2025-53521"
+  ],
+  "_metadata": {
+    "catalog_version": "2026.06.18",
+    "window": [
+      "2020-01-01",
+      "2026-06-18"
+    ],
+    "generated_at": "2026-06-18T17:03:24Z",
+    "scope_rules": {
+      "SonicWall": {
+        "include": "SonicOS|SMA|SSLVPN|SSL[- ]?VPN|Secure Remote Access|SRA",
+        "exclude": "Email Security"
+      },
+      "Ivanti": {
+        "include": "Connect Secure|Pulse Connect Secure|Policy Secure",
+        "exclude": "MobileIron|Endpoint Manager|EPMM|EPM|Sentry|Cloud Services Appliance|Virtual Traffic Manager"
+      },
+      "Juniper": {
+        "include": "Junos OS|ScreenOS",
+        "exclude": ""
+      },
+      "Cisco": {
+        "include": "Adaptive Security Appliance|ASA|Firepower Threat Defense|FTD|Secure Firewall",
+        "exclude": "Management Center|FMC"
+      },
+      "Palo Alto Networks": {
+        "include": "PAN-OS",
+        "exclude": "Expedition"
+      },
+      "Fortinet": {
+        "include": "FortiOS|FortiProxy",
+        "exclude": "FortiClient|FortiManager|FortiWeb|FortiMail|FortiVoice|FortiNDR"
+      },
+      "Check Point": {
+        "include": "Quantum|CloudGuard|Security Gateway|Gaia",
+        "exclude": "Endpoint|Harmony|SmartConsole|ZoneAlarm"
+      },
+      "Citrix": {
+        "include": "NetScaler ADC|NetScaler Gateway|Citrix ADC|Citrix Gateway|Application Delivery Controller",
+        "exclude": "Workspace|XenApp|XenDesktop|ShareFile|Endpoint Management"
+      },
+      "F5": {
+        "include": "BIG-IP",
+        "exclude": "BIG-IQ|NGINX"
+      }
+    },
+    "counts": {
+      "SonicWall": 12,
+      "Ivanti": 13,
+      "Juniper": 8,
+      "Cisco": 13,
+      "Palo Alto Networks": 12,
+      "Fortinet": 18,
+      "Check Point": 2,
+      "Citrix": 11,
+      "F5": 6
+    }
+  }
 }
