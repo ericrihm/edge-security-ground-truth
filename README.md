@@ -102,6 +102,7 @@ Beyond counts and per-vendor narratives, this repository includes structured ana
 | [Defender Playbook](docs/DEFENDER-PLAYBOOK.md) | Actionable response procedures keyed to KEV alerts |
 | [Vendor Comparison Matrix](docs/VENDOR-MATRIX.md) | Side-by-side 8-dimension comparison: KEV count, zero-days, ransomware, TTE, CWE profile, APT attribution, disclosure |
 | [Executive Summary](docs/EXECUTIVE-SUMMARY.md) | State of Edge Security 2026 — key findings and actionable recommendations for CISOs and threat intel analysts |
+| [Market-Share Sensitivity](docs/MARKET-SHARE-SENSITIVITY.md) | Does installed base explain the KEV distribution? Bracketed scenarios under 3 market-share assumptions |
 | [Cross-Vendor Patterns](docs/ANALYSIS.md) | EPSS distributions, severity clustering, vendor comparison |
 
 ### Analysis tools (stdlib-only Python, no pip dependencies)

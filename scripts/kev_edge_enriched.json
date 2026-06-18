@@ -9,7 +9,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
       "cwe": "CWE-89",
       "cwe_name": "Improper Neutralization of Special Elements used in an SQL Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2021-20016": {
       "epss": 0.40038,
@@ -20,7 +23,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-89",
       "cwe_name": "Improper Neutralization of Special Elements used in an SQL Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2021-11-17",
+      "ransomware": "Known"
     },
     "CVE-2021-20038": {
       "epss": 0.99912,
@@ -31,7 +37,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-121",
       "cwe_name": "Stack-based Buffer Overflow",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-01-28",
+      "kev_due_date": "2022-02-11",
+      "ransomware": "Known"
     },
     "CVE-2020-5135": {
       "epss": 0.26869,
@@ -42,7 +51,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-120",
       "cwe_name": "Buffer Copy without Checking Size of Input",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-03-15",
+      "kev_due_date": "2022-04-05",
+      "ransomware": "Unknown"
     },
     "CVE-2021-20028": {
       "epss": 0.30084,
@@ -53,7 +65,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-89",
       "cwe_name": "Improper Neutralization of Special Elements used in an SQL Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-03-28",
+      "kev_due_date": "2022-04-18",
+      "ransomware": "Known"
     },
     "CVE-2019-7483": {
       "epss": 0.03977,
@@ -64,7 +79,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
       "cwe": "CWE-22",
       "cwe_name": "Path Traversal",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-03-28",
+      "kev_due_date": "2022-04-18",
+      "ransomware": "Unknown"
     },
     "CVE-2024-40766": {
       "epss": 0.15694,
@@ -75,7 +93,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:L",
       "cwe": "CWE-284",
       "cwe_name": "Improper Access Control",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-09-09",
+      "kev_due_date": "2024-09-30",
+      "ransomware": "Known"
     },
     "CVE-2025-23006": {
       "epss": 0.22252,
@@ -86,7 +107,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-502",
       "cwe_name": "Deserialization of Untrusted Data",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-01-24",
+      "kev_due_date": "2025-02-14",
+      "ransomware": "Known"
     },
     "CVE-2024-53704": {
       "epss": 0.95132,
@@ -97,7 +121,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:H",
       "cwe": "CWE-287",
       "cwe_name": "Improper Authentication",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-02-18",
+      "kev_due_date": "2025-03-11",
+      "ransomware": "Known"
     },
     "CVE-2021-20035": {
       "epss": 0.0389,
@@ -108,7 +135,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
       "cwe": "CWE-78",
       "cwe_name": "Improper Neutralization of Special Elements used in an OS Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-04-16",
+      "kev_due_date": "2025-05-07",
+      "ransomware": "Unknown"
     },
     "CVE-2023-44221": {
       "epss": 0.75103,
@@ -119,7 +149,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-78",
       "cwe_name": "Improper Neutralization of Special Elements used in an OS Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-05-01",
+      "kev_due_date": "2025-05-22",
+      "ransomware": "Unknown"
     },
     "CVE-2025-40602": {
       "epss": 0.0191,
@@ -133,7 +166,10 @@
       "cwe_secondary": [
         "CWE-250"
       ],
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-12-17",
+      "kev_due_date": "2025-12-24",
+      "ransomware": "Unknown"
     }
   },
   "Ivanti": {
@@ -146,7 +182,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
       "cwe": "CWE-287",
       "cwe_name": "Improper Authentication",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2020-8243": {
       "epss": 0.90759,
@@ -157,7 +196,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-94",
       "cwe_name": "Improper Control of Generation of Code",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2021-22900": {
       "epss": 0.14146,
@@ -168,7 +210,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-94",
       "cwe_name": "Improper Control of Generation of Code",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2021-22894": {
       "epss": 0.41284,
@@ -179,7 +224,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-94",
       "cwe_name": "Improper Control of Generation of Code",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2020-8260": {
       "epss": 0.9648,
@@ -190,7 +238,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-434",
       "cwe_name": "Unrestricted Upload of File with Dangerous Type",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2021-22899": {
       "epss": 0.22343,
@@ -201,7 +252,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-77",
       "cwe_name": "Improper Neutralization of Special Elements used in a Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2019-11510": {
       "epss": 0.99999,
@@ -212,7 +266,10 @@
       "cvss_vector": "CVSS:3.0/AC:L/AV:N/A:H/C:H/I:H/PR:L/S:C/UI:N",
       "cwe": "CWE-22",
       "cwe_name": "Path Traversal",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2019-11539": {
       "epss": 0.98617,
@@ -223,7 +280,10 @@
       "cvss_vector": "CVSS:3.0/AC:H/AV:N/A:H/C:H/I:H/PR:H/S:C/UI:N",
       "cwe": "CWE-78",
       "cwe_name": "Improper Neutralization of Special Elements used in an OS Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2023-46805": {
       "epss": 0.99986,
@@ -234,7 +294,10 @@
       "cvss_vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
       "cwe": null,
       "cwe_name": null,
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-01-10",
+      "kev_due_date": "2024-01-22",
+      "ransomware": "Known"
     },
     "CVE-2024-21887": {
       "epss": 0.99999,
@@ -245,7 +308,10 @@
       "cvss_vector": "CVSS:3.0/AV:N/AC:L/PR:H/UI:N/S:C/C:H/I:H/A:H",
       "cwe": "CWE-77",
       "cwe_name": "Improper Neutralization of Special Elements used in a Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-01-10",
+      "kev_due_date": "2024-01-22",
+      "ransomware": "Known"
     },
     "CVE-2024-21893": {
       "epss": 0.99999,
@@ -256,7 +322,10 @@
       "cvss_vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
       "cwe": "CWE-918",
       "cwe_name": "Server-Side Request Forgery (SSRF)",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-01-31",
+      "kev_due_date": "2024-02-02",
+      "ransomware": "Known"
     },
     "CVE-2025-0282": {
       "epss": 0.99971,
@@ -267,7 +336,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H",
       "cwe": "CWE-121",
       "cwe_name": "Stack-based Buffer Overflow",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-01-08",
+      "kev_due_date": "2025-01-15",
+      "ransomware": "Known"
     },
     "CVE-2025-22457": {
       "epss": 0.99961,
@@ -278,7 +350,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H",
       "cwe": "CWE-121",
       "cwe_name": "Stack-based Buffer Overflow",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-04-04",
+      "kev_due_date": "2025-04-11",
+      "ransomware": "Known"
     }
   },
   "Juniper": {
@@ -294,7 +369,10 @@
       "cwe_secondary": [
         "CWE-73"
       ],
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-03-25",
+      "kev_due_date": "2022-04-15",
+      "ransomware": "Unknown"
     },
     "CVE-2023-36844": {
       "epss": 0.89628,
@@ -304,8 +382,11 @@
       "cvss_severity": "MEDIUM",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "cwe": "CWE-473",
-      "cwe_name": "CWE-473",
-      "_source": "mitre"
+      "cwe_name": "PHP External Variable Modification",
+      "_source": "mitre",
+      "kev_date_added": "2023-11-13",
+      "kev_due_date": "2023-11-17",
+      "ransomware": "Unknown"
     },
     "CVE-2023-36845": {
       "epss": 0.93546,
@@ -315,8 +396,11 @@
       "cvss_severity": "CRITICAL",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-473",
-      "cwe_name": "CWE-473",
-      "_source": "mitre"
+      "cwe_name": "PHP External Variable Modification",
+      "_source": "mitre",
+      "kev_date_added": "2023-11-13",
+      "kev_due_date": "2023-11-17",
+      "ransomware": "Unknown"
     },
     "CVE-2023-36846": {
       "epss": 0.94205,
@@ -327,7 +411,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "cwe": "CWE-306",
       "cwe_name": "Missing Authentication for Critical Function",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-11-13",
+      "kev_due_date": "2023-11-17",
+      "ransomware": "Unknown"
     },
     "CVE-2023-36847": {
       "epss": 0.84692,
@@ -338,7 +425,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "cwe": "CWE-306",
       "cwe_name": "Missing Authentication for Critical Function",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-11-13",
+      "kev_due_date": "2023-11-17",
+      "ransomware": "Unknown"
     },
     "CVE-2023-36851": {
       "epss": 0.011,
@@ -349,7 +439,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "cwe": "CWE-306",
       "cwe_name": "Missing Authentication for Critical Function",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-11-13",
+      "kev_due_date": "2023-11-17",
+      "ransomware": "Unknown"
     },
     "CVE-2025-21590": {
       "epss": 0.01657,
@@ -359,8 +452,11 @@
       "cvss_severity": "MEDIUM",
       "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N",
       "cwe": "CWE-653",
-      "cwe_name": "CWE-653",
-      "_source": "mitre"
+      "cwe_name": "Insufficient Compartmentalization",
+      "_source": "mitre",
+      "kev_date_added": "2025-03-13",
+      "kev_due_date": "2025-04-03",
+      "ransomware": "Unknown"
     },
     "CVE-2015-7755": {
       "epss": 0.614,
@@ -371,7 +467,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-287",
       "cwe_name": "Improper Authentication",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-10-02",
+      "kev_due_date": "2025-10-23",
+      "ransomware": "Unknown"
     }
   },
   "Cisco": {
@@ -384,7 +483,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
       "cwe": "CWE-20",
       "cwe_name": "Improper Input Validation",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2020-3580": {
       "epss": 0.85439,
@@ -395,7 +497,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
       "cwe": "CWE-79",
       "cwe_name": "Improper Neutralization of Input During Web Page Generation",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2018-0296": {
       "epss": 0.99903,
@@ -406,7 +511,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "cwe": "CWE-20",
       "cwe_name": "Improper Input Validation",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2016-6366": {
       "epss": 0.87503,
@@ -417,7 +525,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-120",
       "cwe_name": "Buffer Copy without Checking Size of Input",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-05-24",
+      "kev_due_date": "2022-06-14",
+      "ransomware": "Unknown"
     },
     "CVE-2016-6367": {
       "epss": 0.22583,
@@ -428,7 +539,10 @@
       "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-77",
       "cwe_name": "Improper Neutralization of Special Elements used in a Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-05-24",
+      "kev_due_date": "2022-06-14",
+      "ransomware": "Unknown"
     },
     "CVE-2023-20269": {
       "epss": 0.21583,
@@ -439,7 +553,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:N/I:L/A:N",
       "cwe": "CWE-288",
       "cwe_name": "Authentication Bypass Using an Alternate Path or Channel",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-09-13",
+      "kev_due_date": "2023-10-04",
+      "ransomware": "Known"
     },
     "CVE-2020-3259": {
       "epss": 0.71789,
@@ -450,7 +567,10 @@
       "cvss_vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
       "cwe": "CWE-200",
       "cwe_name": "Exposure of Sensitive Information to an Unauthorized Actor",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-02-15",
+      "kev_due_date": "2024-03-07",
+      "ransomware": "Known"
     },
     "CVE-2024-20359": {
       "epss": 0.16863,
@@ -461,7 +581,10 @@
       "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:N",
       "cwe": "CWE-94",
       "cwe_name": "Improper Control of Generation of Code",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-04-24",
+      "kev_due_date": "2024-05-01",
+      "ransomware": "Unknown"
     },
     "CVE-2024-20353": {
       "epss": 0.63272,
@@ -471,8 +594,11 @@
       "cvss_severity": "HIGH",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H",
       "cwe": "CWE-835",
-      "cwe_name": "CWE-835",
-      "_source": "mitre"
+      "cwe_name": "Loop with Unreachable Exit Condition (Infinite Loop)",
+      "_source": "mitre",
+      "kev_date_added": "2024-04-24",
+      "kev_due_date": "2024-05-01",
+      "ransomware": "Unknown"
     },
     "CVE-2024-20481": {
       "epss": 0.15953,
@@ -482,8 +608,11 @@
       "cvss_severity": "MEDIUM",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:L",
       "cwe": "CWE-772",
-      "cwe_name": "CWE-772",
-      "_source": "mitre"
+      "cwe_name": "Missing Release of Resource after Effective Lifetime",
+      "_source": "mitre",
+      "kev_date_added": "2024-10-24",
+      "kev_due_date": "2024-11-14",
+      "ransomware": "Unknown"
     },
     "CVE-2014-2120": {
       "epss": 0.14029,
@@ -494,7 +623,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N",
       "cwe": "CWE-79",
       "cwe_name": "Improper Neutralization of Input During Web Page Generation",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-11-12",
+      "kev_due_date": "2024-12-03",
+      "ransomware": "Unknown"
     },
     "CVE-2025-20362": {
       "epss": 0.83681,
@@ -505,7 +637,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
       "cwe": "CWE-862",
       "cwe_name": "Missing Authorization",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-09-25",
+      "kev_due_date": "2025-09-26",
+      "ransomware": "Unknown"
     },
     "CVE-2025-20333": {
       "epss": 0.29197,
@@ -516,7 +651,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
       "cwe": "CWE-120",
       "cwe_name": "Buffer Copy without Checking Size of Input",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-09-25",
+      "kev_due_date": "2025-09-26",
+      "ransomware": "Unknown"
     }
   },
   "Palo Alto Networks": {
@@ -529,7 +667,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-134",
       "cwe_name": "Use of Externally-Controlled Format String",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-01-10",
+      "kev_due_date": "2022-07-10",
+      "ransomware": "Known"
     },
     "CVE-2020-2021": {
       "epss": 0.03994,
@@ -539,8 +680,11 @@
       "cvss_severity": "CRITICAL",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
       "cwe": "CWE-347",
-      "cwe_name": "CWE-347",
-      "_source": "mitre"
+      "cwe_name": "Improper Verification of Cryptographic Signature",
+      "_source": "mitre",
+      "kev_date_added": "2022-03-25",
+      "kev_due_date": "2022-04-15",
+      "ransomware": "Known"
     },
     "CVE-2017-15944": {
       "epss": 0.9834,
@@ -554,7 +698,10 @@
       "cwe_secondary": [
         "CWE-119"
       ],
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-08-18",
+      "kev_due_date": "2022-09-08",
+      "ransomware": "Unknown"
     },
     "CVE-2022-0028": {
       "epss": 0.02025,
@@ -564,8 +711,11 @@
       "cvss_severity": "HIGH",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H",
       "cwe": "CWE-406",
-      "cwe_name": "CWE-406",
-      "_source": "mitre"
+      "cwe_name": "Insufficient Control of Network Message Volume",
+      "_source": "mitre",
+      "kev_date_added": "2022-08-22",
+      "kev_due_date": "2022-09-12",
+      "ransomware": "Unknown"
     },
     "CVE-2024-3400": {
       "epss": 0.99999,
@@ -579,62 +729,85 @@
       "cwe_secondary": [
         "CWE-20"
       ],
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-04-12",
+      "kev_due_date": "2024-04-19",
+      "ransomware": "Known"
     },
     "CVE-2024-9474": {
       "epss": 0.94766,
       "percentile": 0.99848,
       "published": "2024-11-18",
-      "cvss": null,
-      "cvss_severity": null,
+      "cvss": 7.2,
+      "cvss_severity": "HIGH",
       "cvss_vector": null,
+      "cvss_source": "vendor",
       "cwe": "CWE-78",
       "cwe_name": "Improper Neutralization of Special Elements used in an OS Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-11-18",
+      "kev_due_date": "2024-12-09",
+      "ransomware": "Known"
     },
     "CVE-2024-0012": {
       "epss": 0.99698,
       "percentile": 0.99949,
       "published": "2024-11-18",
-      "cvss": null,
-      "cvss_severity": null,
+      "cvss": 9.3,
+      "cvss_severity": "CRITICAL",
       "cvss_vector": null,
+      "cvss_source": "vendor",
       "cwe": "CWE-306",
       "cwe_name": "Missing Authentication for Critical Function",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-11-18",
+      "kev_due_date": "2024-12-09",
+      "ransomware": "Known"
     },
     "CVE-2024-3393": {
       "epss": 0.26636,
       "percentile": 0.97766,
       "published": "2024-12-27",
-      "cvss": null,
-      "cvss_severity": null,
+      "cvss": 8.7,
+      "cvss_severity": "HIGH",
       "cvss_vector": null,
+      "cvss_source": "vendor",
       "cwe": "CWE-754",
       "cwe_name": "Improper Check for Unusual or Exceptional Conditions",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-12-30",
+      "kev_due_date": "2025-01-20",
+      "ransomware": "Unknown"
     },
     "CVE-2025-0108": {
       "epss": 0.98338,
       "percentile": 0.9991,
       "published": "2025-02-12",
-      "cvss": null,
-      "cvss_severity": null,
+      "cvss": 8.8,
+      "cvss_severity": "HIGH",
       "cvss_vector": null,
+      "cvss_source": "vendor",
       "cwe": "CWE-306",
       "cwe_name": "Missing Authentication for Critical Function",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-02-18",
+      "kev_due_date": "2025-03-11",
+      "ransomware": "Unknown"
     },
     "CVE-2025-0111": {
       "epss": 0.01862,
       "percentile": 0.76521,
       "published": "2025-02-12",
-      "cvss": null,
-      "cvss_severity": null,
+      "cvss": 7.1,
+      "cvss_severity": "HIGH",
       "cvss_vector": null,
+      "cvss_source": "vendor",
       "cwe": "CWE-73",
-      "cwe_name": "CWE-73",
-      "_source": "mitre"
+      "cwe_name": "External Control of File Name or Path",
+      "_source": "mitre",
+      "kev_date_added": "2025-02-20",
+      "kev_due_date": "2025-03-13",
+      "ransomware": "Unknown"
     },
     "CVE-2026-0300": {
       "epss": 0.3176,
@@ -643,9 +816,13 @@
       "cvss": null,
       "cvss_severity": null,
       "cvss_vector": null,
+      "cvss_source": "nvd_pending",
       "cwe": "CWE-787",
       "cwe_name": "Out-of-bounds Write",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2026-05-06",
+      "kev_due_date": "2026-05-09",
+      "ransomware": "Unknown"
     },
     "CVE-2026-0257": {
       "epss": 0.18583,
@@ -654,9 +831,13 @@
       "cvss": null,
       "cvss_severity": null,
       "cvss_vector": null,
+      "cvss_source": "nvd_pending",
       "cwe": "CWE-565",
-      "cwe_name": "CWE-565",
-      "_source": "mitre"
+      "cwe_name": "Reliance on Cookies without Validation and Integrity Checking",
+      "_source": "mitre",
+      "kev_date_added": "2026-05-29",
+      "kev_due_date": "2026-06-01",
+      "ransomware": "Unknown"
     }
   },
   "Fortinet": {
@@ -669,7 +850,10 @@
       "cvss_vector": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
       "cwe": "CWE-306",
       "cwe_name": "Missing Authentication for Critical Function",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2020-12812": {
       "epss": 0.49344,
@@ -680,7 +864,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-287",
       "cwe_name": "Improper Authentication",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2018-13379": {
       "epss": 0.99999,
@@ -691,7 +878,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
       "cwe": "CWE-22",
       "cwe_name": "Path Traversal",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2021-44168": {
       "epss": 0.00865,
@@ -701,8 +891,11 @@
       "cvss_severity": "LOW",
       "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N/E:P/RL:U/RC:C",
       "cwe": "CWE-494",
-      "cwe_name": "CWE-494",
-      "_source": "mitre"
+      "cwe_name": "Download of Code Without Integrity Check",
+      "_source": "mitre",
+      "kev_date_added": "2021-12-10",
+      "kev_due_date": "2021-12-24",
+      "ransomware": "Unknown"
     },
     "CVE-2018-13382": {
       "epss": 0.81691,
@@ -713,7 +906,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
       "cwe": "CWE-863",
       "cwe_name": "Incorrect Authorization",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-01-10",
+      "kev_due_date": "2022-07-10",
+      "ransomware": "Known"
     },
     "CVE-2018-13383": {
       "epss": 0.33647,
@@ -724,7 +920,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L",
       "cwe": "CWE-787",
       "cwe_name": "Out-of-bounds Write",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-01-10",
+      "kev_due_date": "2022-07-10",
+      "ransomware": "Known"
     },
     "CVE-2018-13374": {
       "epss": 0.38088,
@@ -735,7 +934,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N",
       "cwe": "CWE-732",
       "cwe_name": "Incorrect Permission Assignment for Critical Resource",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-09-08",
+      "kev_due_date": "2022-09-29",
+      "ransomware": "Known"
     },
     "CVE-2022-40684": {
       "epss": 0.99984,
@@ -746,7 +948,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:F/RL:U/RC:C",
       "cwe": "CWE-287",
       "cwe_name": "Improper Authentication",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-10-11",
+      "kev_due_date": "2022-11-01",
+      "ransomware": "Known"
     },
     "CVE-2022-42475": {
       "epss": 0.99474,
@@ -756,8 +961,11 @@
       "cvss_severity": "CRITICAL",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:P/RL:U/RC:C",
       "cwe": "CWE-197",
-      "cwe_name": "CWE-197",
-      "_source": "mitre"
+      "cwe_name": "Numeric Truncation Error",
+      "_source": "mitre",
+      "kev_date_added": "2022-12-13",
+      "kev_due_date": "2023-01-03",
+      "ransomware": "Known"
     },
     "CVE-2022-41328": {
       "epss": 0.12316,
@@ -768,7 +976,10 @@
       "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H/E:F/RL:X/RC:C",
       "cwe": "CWE-22",
       "cwe_name": "Path Traversal",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-03-14",
+      "kev_due_date": "2023-04-04",
+      "ransomware": "Unknown"
     },
     "CVE-2023-27997": {
       "epss": 0.85689,
@@ -779,7 +990,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:F/RL:X/RC:R",
       "cwe": "CWE-122",
       "cwe_name": "Heap-based Buffer Overflow",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-06-13",
+      "kev_due_date": "2023-07-04",
+      "ransomware": "Known"
     },
     "CVE-2024-21762": {
       "epss": 0.80835,
@@ -790,7 +1004,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:H/RL:W/RC:C",
       "cwe": "CWE-787",
       "cwe_name": "Out-of-bounds Write",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-02-09",
+      "kev_due_date": "2024-02-16",
+      "ransomware": "Known"
     },
     "CVE-2024-23113": {
       "epss": 0.61725,
@@ -801,7 +1018,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:H/RL:U/RC:C",
       "cwe": "CWE-134",
       "cwe_name": "Use of Externally-Controlled Format String",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-10-09",
+      "kev_due_date": "2024-10-30",
+      "ransomware": "Unknown"
     },
     "CVE-2024-55591": {
       "epss": 0.98239,
@@ -812,7 +1032,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:H/RL:W/RC:C",
       "cwe": "CWE-288",
       "cwe_name": "Authentication Bypass Using an Alternate Path or Channel",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-01-14",
+      "kev_due_date": "2025-01-21",
+      "ransomware": "Known"
     },
     "CVE-2025-24472": {
       "epss": 0.02988,
@@ -823,7 +1046,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H/E:H/RL:X/RC:C",
       "cwe": "CWE-288",
       "cwe_name": "Authentication Bypass Using an Alternate Path or Channel",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-03-18",
+      "kev_due_date": "2025-04-08",
+      "ransomware": "Known"
     },
     "CVE-2019-6693": {
       "epss": 0.05352,
@@ -834,7 +1060,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
       "cwe": "CWE-798",
       "cwe_name": "Use of Hard-coded Credentials",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-06-25",
+      "kev_due_date": "2025-07-16",
+      "ransomware": "Known"
     },
     "CVE-2025-59718": {
       "epss": 0.63476,
@@ -844,8 +1073,11 @@
       "cvss_severity": "CRITICAL",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:F/RL:O/RC:C",
       "cwe": "CWE-347",
-      "cwe_name": "CWE-347",
-      "_source": "mitre"
+      "cwe_name": "Improper Verification of Cryptographic Signature",
+      "_source": "mitre",
+      "kev_date_added": "2025-12-16",
+      "kev_due_date": "2025-12-23",
+      "ransomware": "Unknown"
     },
     "CVE-2026-24858": {
       "epss": 0.55125,
@@ -856,7 +1088,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:H/RL:O/RC:C",
       "cwe": "CWE-288",
       "cwe_name": "Authentication Bypass Using an Alternate Path or Channel",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2026-01-27",
+      "kev_due_date": "2026-01-30",
+      "ransomware": "Unknown"
     }
   },
   "Check Point": {
@@ -869,7 +1104,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N",
       "cwe": "CWE-200",
       "cwe_name": "Exposure of Sensitive Information to an Unauthorized Actor",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-05-30",
+      "kev_due_date": "2024-06-20",
+      "ransomware": "Known"
     },
     "CVE-2026-50751": {
       "epss": 0.41152,
@@ -880,7 +1118,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:L/A:N",
       "cwe": "CWE-287",
       "cwe_name": "Improper Authentication",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2026-06-08",
+      "kev_due_date": "2026-06-11",
+      "ransomware": "Known"
     }
   },
   "Citrix": {
@@ -893,7 +1134,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
       "cwe": "CWE-284",
       "cwe_name": "Improper Access Control",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2020-8195": {
       "epss": 0.33263,
@@ -904,7 +1148,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
       "cwe": "CWE-20",
       "cwe_name": "Improper Input Validation",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2020-8196": {
       "epss": 0.26333,
@@ -915,7 +1162,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N",
       "cwe": "CWE-284",
       "cwe_name": "Improper Access Control",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2019-19781": {
       "epss": 0.99999,
@@ -926,7 +1176,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-22",
       "cwe_name": "Path Traversal",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2022-27518": {
       "epss": 0.06931,
@@ -936,8 +1189,11 @@
       "cvss_severity": "CRITICAL",
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-664",
-      "cwe_name": "CWE-664",
-      "_source": "mitre"
+      "cwe_name": "Improper Control of a Resource Through its Lifetime",
+      "_source": "mitre",
+      "kev_date_added": "2022-12-13",
+      "kev_due_date": "2023-01-03",
+      "ransomware": "Unknown"
     },
     "CVE-2023-3519": {
       "epss": 0.99343,
@@ -948,7 +1204,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-94",
       "cwe_name": "Improper Control of Generation of Code",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-07-19",
+      "kev_due_date": "2023-08-09",
+      "ransomware": "Known"
     },
     "CVE-2023-4966": {
       "epss": 0.99999,
@@ -959,7 +1218,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L",
       "cwe": "CWE-119",
       "cwe_name": "Improper Restriction of Operations within the Bounds of a Memory Buffer",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-10-18",
+      "kev_due_date": "2023-11-08",
+      "ransomware": "Known"
     },
     "CVE-2023-6549": {
       "epss": 0.57633,
@@ -970,7 +1232,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H",
       "cwe": "CWE-119",
       "cwe_name": "Improper Restriction of Operations within the Bounds of a Memory Buffer",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-01-17",
+      "kev_due_date": "2024-02-07",
+      "ransomware": "Unknown"
     },
     "CVE-2023-6548": {
       "epss": 0.03191,
@@ -981,7 +1246,10 @@
       "cvss_vector": "CVSS:3.1/AV:A/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
       "cwe": "CWE-94",
       "cwe_name": "Improper Control of Generation of Code",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2024-01-17",
+      "kev_due_date": "2024-01-24",
+      "ransomware": "Unknown"
     },
     "CVE-2025-6543": {
       "epss": 0.09756,
@@ -990,9 +1258,13 @@
       "cvss": null,
       "cvss_severity": null,
       "cvss_vector": null,
+      "cvss_source": "nvd_pending",
       "cwe": "CWE-119",
       "cwe_name": "Improper Restriction of Operations within the Bounds of a Memory Buffer",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-06-30",
+      "kev_due_date": "2025-07-21",
+      "ransomware": "Unknown"
     },
     "CVE-2025-5777": {
       "epss": 0.99897,
@@ -1001,12 +1273,16 @@
       "cvss": null,
       "cvss_severity": null,
       "cvss_vector": null,
+      "cvss_source": "nvd_pending",
       "cwe": "CWE-125",
       "cwe_name": "Out-of-bounds Read",
       "cwe_secondary": [
         "CWE-457"
       ],
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2025-07-10",
+      "kev_due_date": "2025-07-11",
+      "ransomware": "Known"
     }
   },
   "F5": {
@@ -1019,7 +1295,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-22",
       "cwe_name": "Path Traversal",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2021-22991": {
       "epss": 0.61064,
@@ -1030,7 +1309,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-119",
       "cwe_name": "Improper Restriction of Operations within the Bounds of a Memory Buffer",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-01-18",
+      "kev_due_date": "2022-02-01",
+      "ransomware": "Unknown"
     },
     "CVE-2022-1388": {
       "epss": 0.99956,
@@ -1041,7 +1323,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-306",
       "cwe_name": "Missing Authentication for Critical Function",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2022-05-10",
+      "kev_due_date": "2022-05-31",
+      "ransomware": "Known"
     },
     "CVE-2023-46748": {
       "epss": 0.04468,
@@ -1052,7 +1337,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-89",
       "cwe_name": "Improper Neutralization of Special Elements used in an SQL Command",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-10-31",
+      "kev_due_date": "2023-11-21",
+      "ransomware": "Unknown"
     },
     "CVE-2023-46747": {
       "epss": 0.96515,
@@ -1063,7 +1351,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-288",
       "cwe_name": "Authentication Bypass Using an Alternate Path or Channel",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2023-10-31",
+      "kev_due_date": "2023-11-21",
+      "ransomware": "Known"
     },
     "CVE-2025-53521": {
       "epss": 0.02246,
@@ -1074,7 +1365,10 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-121",
       "cwe_name": "Stack-based Buffer Overflow",
-      "_source": "mitre"
+      "_source": "mitre",
+      "kev_date_added": "2026-03-27",
+      "kev_due_date": "2026-03-30",
+      "ransomware": "Unknown"
     }
   },
   "Zyxel": {
@@ -1085,7 +1379,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-522",
       "cwe_name": "Insufficiently Protected Credentials",
-      "_source": "mitre"
+      "epss": 0.90049,
+      "percentile": 0.9978,
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Unknown"
     },
     "CVE-2022-30525": {
       "published": "2022-05-12",
@@ -1094,7 +1393,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-78",
       "cwe_name": "Improper Neutralization of Special Elements used in an OS Command",
-      "_source": "mitre"
+      "epss": 0.9994,
+      "percentile": 0.99969,
+      "_source": "mitre",
+      "kev_date_added": "2022-05-16",
+      "kev_due_date": "2022-06-06",
+      "ransomware": "Unknown"
     },
     "CVE-2023-28771": {
       "published": "2023-04-25",
@@ -1103,7 +1407,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-78",
       "cwe_name": "Improper Neutralization of Special Elements used in an OS Command",
-      "_source": "mitre"
+      "epss": 0.99284,
+      "percentile": 0.99931,
+      "_source": "mitre",
+      "kev_date_added": "2023-05-31",
+      "kev_due_date": "2023-06-21",
+      "ransomware": "Unknown"
     },
     "CVE-2023-33009": {
       "published": "2023-05-24",
@@ -1112,7 +1421,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-120",
       "cwe_name": "Buffer Copy without Checking Size of Input",
-      "_source": "mitre"
+      "epss": 0.28144,
+      "percentile": 0.9786,
+      "_source": "mitre",
+      "kev_date_added": "2023-06-05",
+      "kev_due_date": "2023-06-26",
+      "ransomware": "Unknown"
     },
     "CVE-2023-33010": {
       "published": "2023-05-24",
@@ -1121,7 +1435,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-120",
       "cwe_name": "Buffer Copy without Checking Size of Input",
-      "_source": "mitre"
+      "epss": 0.28813,
+      "percentile": 0.97901,
+      "_source": "mitre",
+      "kev_date_added": "2023-06-05",
+      "kev_due_date": "2023-06-26",
+      "ransomware": "Unknown"
     },
     "CVE-2024-11667": {
       "published": "2024-11-27",
@@ -1130,7 +1449,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
       "cwe": "CWE-22",
       "cwe_name": "Path Traversal",
-      "_source": "mitre"
+      "epss": 0.02958,
+      "percentile": 0.85421,
+      "_source": "mitre",
+      "kev_date_added": "2024-12-03",
+      "kev_due_date": "2024-12-24",
+      "ransomware": "Known"
     }
   },
   "Sophos": {
@@ -1141,7 +1465,12 @@
       "cvss_vector": "CVSS:3.0/AC:L/AV:N/A:H/C:H/I:H/PR:N/S:C/UI:N",
       "cwe": "CWE-89",
       "cwe_name": "Improper Neutralization of Special Elements used in an SQL Command",
-      "_source": "mitre"
+      "epss": 0.43062,
+      "percentile": 0.98558,
+      "_source": "mitre",
+      "kev_date_added": "2021-11-03",
+      "kev_due_date": "2022-05-03",
+      "ransomware": "Known"
     },
     "CVE-2020-25223": {
       "published": "2020-09-25",
@@ -1150,7 +1479,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-78",
       "cwe_name": "Improper Neutralization of Special Elements used in an OS Command",
-      "_source": "mitre"
+      "epss": 0.96693,
+      "percentile": 0.99877,
+      "_source": "mitre",
+      "kev_date_added": "2022-03-25",
+      "kev_due_date": "2022-04-15",
+      "ransomware": "Unknown"
     },
     "CVE-2022-1040": {
       "published": "2022-03-25",
@@ -1159,7 +1493,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": null,
       "cwe_name": null,
-      "_source": "mitre"
+      "epss": 0.99796,
+      "percentile": 0.99956,
+      "_source": "mitre",
+      "kev_date_added": "2022-03-31",
+      "kev_due_date": "2022-04-21",
+      "ransomware": "Unknown"
     },
     "CVE-2022-3236": {
       "published": "2022-09-23",
@@ -1168,7 +1507,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-94",
       "cwe_name": "Improper Control of Generation of Code",
-      "_source": "mitre"
+      "epss": 0.98905,
+      "percentile": 0.99921,
+      "_source": "mitre",
+      "kev_date_added": "2022-09-23",
+      "kev_due_date": "2022-10-14",
+      "ransomware": "Unknown"
     },
     "CVE-2020-15069": {
       "published": "2020-06-29",
@@ -1177,7 +1521,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-120",
       "cwe_name": "Buffer Copy without Checking Size of Input",
-      "_source": "mitre"
+      "epss": 0.10674,
+      "percentile": 0.95239,
+      "_source": "mitre",
+      "kev_date_added": "2025-02-06",
+      "kev_due_date": "2025-02-27",
+      "ransomware": "Unknown"
     },
     "CVE-2020-29574": {
       "published": "2020-12-11",
@@ -1186,7 +1535,12 @@
       "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "cwe": "CWE-89",
       "cwe_name": "Improper Neutralization of Special Elements used in an SQL Command",
-      "_source": "mitre"
+      "epss": 0.04729,
+      "percentile": 0.90686,
+      "_source": "mitre",
+      "kev_date_added": "2025-02-06",
+      "kev_due_date": "2025-02-27",
+      "ransomware": "Unknown"
     }
   },
   "_metadata": {
@@ -1200,6 +1554,11 @@
     "nvd_errors": 0,
     "nvd_skipped": 0,
     "epss_found": 95,
-    "epss_missing": 0
+    "epss_missing": 0,
+    "kev_enriched_at": "2026-06-18T19:37:26Z",
+    "kev_source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+    "kev_total_cves": 107,
+    "kev_found": 107,
+    "kev_missing": 0
   }
 }

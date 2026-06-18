@@ -49,6 +49,10 @@ SCOPE = {
                                exclude=r"Workspace|XenApp|XenDesktop|ShareFile|Endpoint Management"),
     "F5":                 dict(include=r"BIG-IP",
                                exclude=r"BIG-IQ|NGINX"),
+    "Zyxel":              dict(include=r"Zyxel|ZyWALL|ATP|VPN Series|USG FLEX|NAS",
+                               exclude=r""),
+    "Sophos":             dict(include=r"Sophos Firewall|XG Firewall|SFOS|SG UTM|Cyberoam",
+                               exclude=r"Sophos Central|Endpoint|Intercept X"),
 }
 
 
@@ -207,27 +211,19 @@ def analyze_epss(enriched, counts):
     # Build vendor -> list of EPSS scores
     vendor_epss = collections.defaultdict(list)
 
-    # The enriched JSON may have different structures; try common patterns
-    for vendor, entries in enriched.items():
+    # Enriched structure: vendor -> CVE_ID -> {epss, cvss, ...}
+    for vendor, cve_map in enriched.items():
         if vendor.startswith("_"):
             continue
-        if isinstance(entries, list):
-            for entry in entries:
-                if isinstance(entry, dict):
-                    epss = entry.get("epss") or entry.get("epss_score")
-                    if epss is not None:
-                        try:
-                            vendor_epss[vendor].append(float(epss))
-                        except (ValueError, TypeError):
-                            pass
-                elif isinstance(entry, str):
-                    # Just a CVE ID string — no EPSS data inline
-                    pass
-        elif isinstance(entries, dict):
-            epss = entries.get("epss") or entries.get("epss_score")
-            if epss is not None:
+        if not isinstance(cve_map, dict):
+            continue
+        for cve_id, entry in cve_map.items():
+            if not isinstance(entry, dict):
+                continue
+            epss_val = entry.get("epss") or entry.get("epss_score")
+            if epss_val is not None:
                 try:
-                    vendor_epss[vendor].append(float(epss))
+                    vendor_epss[vendor].append(float(epss_val))
                 except (ValueError, TypeError):
                     pass
 

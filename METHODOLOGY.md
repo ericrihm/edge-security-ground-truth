@@ -6,6 +6,31 @@ This document describes the data sources, scope definitions, counting procedures
 
 ---
 
+## Research Questions
+
+This project is structured to answer three empirical questions using the methods described in the sections below.
+
+**RQ1.** Are CISA KEV counts across edge-appliance vendors consistent with a uniform distribution, or do some vendors accumulate significantly more exploited vulnerabilities?
+*Answered by: chi-squared goodness-of-fit test (§7.3).*
+
+**RQ2.** Do vendor-specific CWE patterns reveal recurring SDL weaknesses, or are weakness classes distributed uniformly across vendors?
+*Answered by: per-vendor CWE matrix (§7.2).*
+
+**RQ3.** Is time-to-exploit for edge appliances faster than the industry-wide baseline, and does it vary significantly by vendor?
+*Answered by: TTE analysis benchmarked against Mandiant/GTIG figures (§7.1).*
+
+### Hypotheses
+
+| RQ | Null hypothesis (H₀) |
+|----|----------------------|
+| RQ1 | Vendor KEV counts do not differ from a uniform distribution across the eleven vendors (i.e., expected count = total / 11 for each vendor). |
+| RQ2 | CWE assignments are distributed uniformly across vendors; no vendor shows a statistically anomalous concentration of a particular weakness class. |
+| RQ3 | Median TTE for edge appliances in this dataset does not differ from the Mandiant industry-wide median TTE; vendor-level TTE distributions are drawn from the same underlying population. |
+
+All three null hypotheses are tested at α = 0.05. Given n = 11 vendors and the confounds described in §4, results are treated as descriptive findings rather than definitive causal conclusions.
+
+---
+
 ## 1. Data Sources
 
 ### 1.1 CISA Known Exploited Vulnerabilities (KEV) Catalog
