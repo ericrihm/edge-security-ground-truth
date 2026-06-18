@@ -59,6 +59,48 @@ We assign no overall rank, weight nothing into one number, and name no "worst." 
 
 ---
 
+## 7. Analysis tools (reproducible)
+
+All analysis scripts use Python stdlib only (no pip dependencies). Each reads the enriched dataset and fetches the live CISA KEV catalog at runtime for date/ransomware fields.
+
+| Script | Purpose | Output formats |
+|--------|---------|---------------|
+| [`scripts/build_kev_counts.py`](./scripts/build_kev_counts.py) | Count KEV CVEs per vendor from live CISA feed | JSON |
+| [`scripts/enrich_epss.py`](./scripts/enrich_epss.py) | Add EPSS scores from FIRST.org API | JSON |
+| [`scripts/enrich_nvd.py`](./scripts/enrich_nvd.py) | Add CVSS, CWE, publish dates from NVD 2.0 API | JSON |
+| [`scripts/analyze_cwe.py`](./scripts/analyze_cwe.py) | CWE pattern analysis — global distribution, per-vendor matrix, recurring weaknesses | text / markdown / json |
+| [`scripts/analyze_tte.py`](./scripts/analyze_tte.py) | Time-to-exploit analysis — TTE distribution, zero-days, ransomware association, year trends | text / markdown / json |
+| [`scripts/analyze_statistics.py`](./scripts/analyze_statistics.py) | Statistical framework — chi-squared, HHI, Gini, Spearman correlation, ransomware concentration | text / markdown / json |
+| [`scripts/analyze_patterns.py`](./scripts/analyze_patterns.py) | Cross-vendor pattern analysis — EPSS distributions, severity clustering | text / markdown / json |
+
+### Statistical methods
+
+All statistical computations are implemented from first principles in Python's `math` module:
+
+- **Chi-squared goodness-of-fit** tests whether vendor counts differ from uniform. P-value uses the Wilson-Hilferty normal approximation.
+- **Herfindahl-Hirschman Index (HHI)** measures market/count concentration: 1/n = perfectly equal, 1.0 = monopoly.
+- **Gini coefficient** measures inequality in the count distribution: 0 = perfect equality, 1 = maximum concentration.
+- **Coefficient of variation** (CV = σ/μ) measures dispersion relative to the mean.
+- **Spearman rank correlation** tests monotonic relationships (e.g., CVE count vs. EPSS severity). Significance via t-distribution approximation.
+
+These methods are adequate for n=11 vendors. Results should not be over-interpreted for such small samples.
+
+---
+
+## 8. Deep-dive analyses
+
+| Document | Topic |
+|----------|-------|
+| [docs/CWE-ANALYSIS.md](./docs/CWE-ANALYSIS.md) | CWE weakness patterns — which vulnerability classes recur, per-vendor weakness matrix |
+| [docs/TIME-TO-EXPLOIT.md](./docs/TIME-TO-EXPLOIT.md) | Time-to-exploit distribution, confirmed zero-days, ransomware association |
+| [docs/STATISTICAL-FRAMEWORK.md](./docs/STATISTICAL-FRAMEWORK.md) | Statistical tests — are vendor differences significant or random? |
+| [docs/THREAT-ATTRIBUTION.md](./docs/THREAT-ATTRIBUTION.md) | Threat actor attribution matrix — who targets which vendors |
+| [docs/LITERATURE-REVIEW.md](./docs/LITERATURE-REVIEW.md) | Academic and industry literature context |
+| [docs/DEFENDER-PLAYBOOK.md](./docs/DEFENDER-PLAYBOOK.md) | Actionable defender response procedures |
+| [docs/ANALYSIS.md](./docs/ANALYSIS.md) | Cross-vendor pattern analysis (EPSS, severity, trends) |
+
+---
+
 ## Sources & corrections
 
 Primary sources: CISA KEV catalog & Emergency Directives, FIRST.org EPSS, Mandiant/GTIG TTE, VulnCheck 2026, NVD, vendor PSIRTs, and named research (Volexity, Mandiant, Rapid7, Tenable, watchTowr, Talos, Arctic Wolf). Every factual claim in the README and per‑vendor docs carries an inline citation.

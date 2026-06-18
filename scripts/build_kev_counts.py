@@ -42,6 +42,10 @@ SCOPE = {
                                  exclude=r"Workspace|XenApp|XenDesktop|ShareFile|Endpoint Management"),
     "F5":                   dict(include=r"BIG-IP",
                                  exclude=r"BIG-IQ|NGINX"),
+    "Zyxel":                dict(include=r"Multiple Firewalls|USG|ATP|ZyWALL|VPN|FLEX",
+                                 exclude=r"NAS|Network-Attached Storage|Router|CPE|DSL|Access Point"),
+    "Sophos":               dict(include=r"Firewall|XG Firewall|SG UTM|SFOS|CyberoamOS",
+                                 exclude=r"Web Appliance|Intercept X|Central|Endpoint|Email"),
 }
 
 def in_window(d, window):

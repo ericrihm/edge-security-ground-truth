@@ -39,6 +39,22 @@ In April 2025, CISA [issued an alert](https://www.bleepingcomputer.com/news/secu
 
 Fortinet's unit-count leadership is real. Its security disclosure posture and SSL-VPN vulnerability recurrence are not defensible on the same grounds.
 
-## Latest development — FortiBleed (June 2026)
+## CVE-2026-24858 — FortiCloud SSO Authentication Bypass (January 2026)
 
-In mid-June 2026, a dataset reportedly exposing login credentials for **~74,000 internet-facing FortiGate devices** surfaced in cybercriminal communities ([CyberScoop](https://cyberscoop.com/ortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)). Researchers attribute it not to a single new zero-day but to a **convergence of already-known issues**: unpatched FortiOS flaws (chiefly [CVE-2026-24858](https://www.cisa.gov/news-events/alerts/2026/01/28/fortinet-releases-guidance-address-ongoing-exploitation-authentication-bypass-vulnerability-cve-2026), the FortiCloud SSO authentication bypass actively exploited since January 2026), legacy SHA-256 password hashing on older FortiOS versions, and recycled credentials already circulating from infostealer campaigns and prior breaches. Included here as context — it is not a new KEV entry.
+[CVE-2026-24858](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) (CWE-288, NVD CVSS 9.8) is an authentication bypass in FortiCloud's single sign-on implementation. An attacker with any valid FortiCloud account could authenticate to devices registered to *other* accounts via cross-tenant SSO token reuse — the SSO implementation did not verify that the authenticating identity matched the device's owning account.
+
+**True zero-day:** [Arctic Wolf](https://arcticwolf.com/resources/blog/) confirmed exploitation from at least January 15, 2026. Patches were not released until January 28 — a **13-day zero-day window**. CISA added it to the KEV catalog on January 27 with a **3-day remediation deadline** (January 30), one of the shortest ever assigned ([CyberScoop](https://cyberscoop.com/ortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/), [BleepingComputer](https://www.bleepingcomputer.com/news/security/fortinet-warns-of-new-zero-day-exploited-to-hijack-firewalls/)).
+
+**Products affected** (Fortinet advisory FG-IR-26-060): FortiOS, FortiManager, FortiAnalyzer, FortiProxy, FortiWeb, FortiSwitchManager, FortiNAC-F. **Post-exploitation TTPs** documented by Arctic Wolf: config download, local admin account creation (usernames including `audit`, `backup`, `itadmin`, `secadmin`), VPN enablement, and firewall rule modification. Fortinet's emergency response included globally disabling FortiCloud SSO on January 26–27, re-enabling only for devices running patched firmware.
+
+No threat actor attribution has been publicly confirmed. Coalition documented **14 zero-day advisories for critical Fortinet flaws in under four years** — Fortinet accounts for >7% of all zero-day advisories Coalition has issued ([CyberScoop](https://cyberscoop.com/ortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)).
+
+## FortiBleed credential dump (June 18, 2026) — developing incident
+
+On June 18, 2026, security researcher Volodymyr "Bob" Diachenko reported discovery of a credential dump affecting approximately **73,932 Fortinet firewall/VPN URLs** across 194 countries and 21,632 unique domains, found on a misconfigured attacker server. The incident was reported independently by [BleepingComputer](https://www.bleepingcomputer.com/), [Help Net Security](https://www.helpnetsecurity.com/), [Arctic Wolf](https://arcticwolf.com/resources/blog/), [SecurityAffairs](https://securityaffairs.com/), CSO Online, and [HKCERT](https://www.hkcert.org/).
+
+Attack methods reportedly included credential stuffing from prior breach dumps, VPN hash cracking on a 45-GPU Hashtopolis cluster, and configuration file extraction. Fortinet characterized the data as "a resharing of information obtained through previous incidents and brute-force attacks."
+
+**This is distinct from prior incidents:** the 2021 leak (~87,000 SSL-VPN credentials from [CVE-2018-13379](https://nvd.nist.gov/vuln/detail/CVE-2018-13379)) and the January 2025 Belsen Group dump (~15,000 devices from [CVE-2022-40684](https://nvd.nist.gov/vuln/detail/CVE-2022-40684) data collected in 2022). Some reports link FortiBleed to CVE-2026-24858 exploitation, but this connection is **claimed, not conclusively established** — credential stuffing and hash cracking are vendor-agnostic techniques.
+
+**Status as of June 18, 2026:** developing. CISA has not issued a formal advisory. Claims will be re-verified as additional sources confirm or fail to corroborate.

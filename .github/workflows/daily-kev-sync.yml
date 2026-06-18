@@ -1,0 +1,58 @@
+name: Daily KEV Sync
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Fetch KEV and rebuild counts
+        run: python3 scripts/build_kev_counts.py --format json
+
+      - name: Check for changes
+        id: diff
+        run: |
+          git diff --exit-code scripts/kev_edge_counts.json && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/kev_edge_counts.json
+          git commit -m "chore: daily KEV sync"
+          git push
+
+      - name: No changes
+        if: steps.diff.outputs.changed == 'false'
+        run: echo "::notice::No changes to KEV edge counts"
+
+      - name: Job summary
+        run: |
+          echo "## KEV Edge Counts" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Vendor | CVE Count |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|--------|-----------|" >> "$GITHUB_STEP_SUMMARY"
+          python3 -c "
+          import json
+          with open('scripts/kev_edge_counts.json') as f:
+              data = json.load(f)
+          counts = data.get('_metadata', {}).get('counts', {})
+          for vendor, count in sorted(counts.items(), key=lambda x: -x[1]):
+              print(f'| {vendor} | {count} |')
+          " >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Changed: **${{ steps.diff.outputs.changed }}**" >> "$GITHUB_STEP_SUMMARY"

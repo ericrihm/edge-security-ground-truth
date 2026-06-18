@@ -112,13 +112,29 @@
     "CVE-2023-46747",
     "CVE-2025-53521"
   ],
+  "Zyxel": [
+    "CVE-2020-29583",
+    "CVE-2022-30525",
+    "CVE-2023-28771",
+    "CVE-2023-33009",
+    "CVE-2023-33010",
+    "CVE-2024-11667"
+  ],
+  "Sophos": [
+    "CVE-2020-12271",
+    "CVE-2020-25223",
+    "CVE-2022-1040",
+    "CVE-2022-3236",
+    "CVE-2020-15069",
+    "CVE-2020-29574"
+  ],
   "_metadata": {
     "catalog_version": "2026.06.18",
     "window": [
       "2020-01-01",
-      "2026-06-18"
+      "2026-12-31"
     ],
-    "generated_at": "2026-06-18T17:03:24Z",
+    "generated_at": "2026-06-18T18:36:28Z",
     "scope_rules": {
       "SonicWall": {
         "include": "SonicOS|SMA|SSLVPN|SSL[- ]?VPN|Secure Remote Access|SRA",
@@ -155,6 +171,14 @@
       "F5": {
         "include": "BIG-IP",
         "exclude": "BIG-IQ|NGINX"
+      },
+      "Zyxel": {
+        "include": "Multiple Firewalls|USG|ATP|ZyWALL|VPN|FLEX",
+        "exclude": "NAS|Network-Attached Storage|Router|CPE|DSL|Access Point"
+      },
+      "Sophos": {
+        "include": "Firewall|XG Firewall|SG UTM|SFOS|CyberoamOS",
+        "exclude": "Web Appliance|Intercept X|Central|Endpoint|Email"
       }
     },
     "counts": {
@@ -166,7 +190,9 @@
       "Fortinet": 18,
       "Check Point": 2,
       "Citrix": 11,
-      "F5": 6
+      "F5": 6,
+      "Zyxel": 6,
+      "Sophos": 6
     }
   }
 }

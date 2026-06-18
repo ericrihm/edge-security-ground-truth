@@ -1,0 +1,48 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Compile check
+        run: python3 -m py_compile scripts/build_kev_counts.py
+
+      - name: Run with --as-of 2026-06-18
+        run: python3 scripts/build_kev_counts.py --format json --as-of 2026-06-18
+
+      - name: Verify all vendors have docs
+        run: |
+          python3 -c "
+          import json, sys, os
+          with open('scripts/kev_edge_counts.json') as f:
+              data = json.load(f)
+          vendors = [k for k in data if k != '_metadata']
+          # Map vendor names to expected doc filenames
+          name_map = {
+              'Palo Alto Networks': 'PaloAlto.md',
+              'Check Point': 'CheckPoint.md',
+          }
+          missing = []
+          for v in vendors:
+              doc = name_map.get(v, v.replace(' ', '') + '.md')
+              path = os.path.join('docs', doc)
+              if not os.path.isfile(path):
+                  missing.append(f'{v} -> {path}')
+          if missing:
+              print('Missing vendor docs:')
+              for m in missing:
+                  print(f'  {m}')
+              sys.exit(1)
+          print(f'All {len(vendors)} vendors have docs.')
+          "
