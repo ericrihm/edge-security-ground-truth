@@ -141,9 +141,10 @@ jobs:
           with open(readme) as f:
               content = f.read()
 
-          # Extract all relative file paths from markdown links: [text](path)
-          # Exclude URLs (http/https) and anchors (#...)
-          pattern = re.compile(r'\(([^)]+)\)')
+          # Extract markdown LINK TARGETS only: the (path) in [text](path).
+          # The leading ']' anchor avoids matching parenthetical prose.
+          # Exclude URLs (http/https), anchors (#...), and mailto below.
+          pattern = re.compile(r'\]\(([^)]+)\)')
           missing = []
           checked = []
 
