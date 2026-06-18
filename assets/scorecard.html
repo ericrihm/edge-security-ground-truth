@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  :root{
+    --bg0:#090d18; --bg1:#0d1426; --ink:#e9eef9; --mut:#9aabc6; --faint:#5d6f90;
+    --line:rgba(140,165,210,.13); --rowbg:rgba(20,31,55,.5);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{width:1200px;font-family:-apple-system,"SF Pro Display","Inter",Segoe UI,system-ui,sans-serif;
+    color:var(--ink);background:linear-gradient(170deg,#101a32 0%,var(--bg1) 46%,var(--bg0) 100%);
+    -webkit-font-smoothing:antialiased}
+  .wrap{padding:52px 56px 38px}
+  .eyebrow{font-size:13px;letter-spacing:.18em;font-weight:700;color:var(--faint);text-transform:uppercase}
+  h1{font-size:54px;line-height:1.04;font-weight:840;letter-spacing:-.02em;margin:14px 0 0}
+  .sub{font-size:18px;line-height:1.5;color:var(--mut);max-width:1010px;margin-top:16px;font-weight:440}
+  .sub b{color:var(--ink);font-weight:680}
+
+  .heads{display:grid;grid-template-columns:64px 220px 1fr;gap:18px;margin:30px 0 6px;padding:0 18px;
+    font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .row{display:grid;grid-template-columns:64px 220px 1fr;gap:18px;align-items:center;
+    padding:16px 18px;border-radius:13px;background:var(--rowbg);border:1px solid var(--line);margin-bottom:9px;
+    position:relative;overflow:hidden}
+  .row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sev)}
+  .rank{display:flex;align-items:center;gap:0}
+  .rank .n{font-size:30px;font-weight:850;color:var(--sev);line-height:1;letter-spacing:-.03em;width:46px}
+  .vendor{font-size:21px;font-weight:760;letter-spacing:-.01em}
+  .vendor .tag{display:block;font-size:12px;font-weight:600;color:var(--faint);letter-spacing:.02em;margin-top:3px;text-transform:none}
+  .signal{font-size:15.5px;line-height:1.46;color:var(--mut)}
+  .signal b{color:var(--ink);font-weight:660}
+  .signal .note{color:var(--faint);font-style:italic}
+
+  .foot{margin-top:24px;padding-top:18px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:flex-end;gap:28px}
+  .foot .m{font-size:14.5px;line-height:1.5;color:var(--mut);max-width:740px}
+  .foot .m b{color:var(--ink)}
+  .foot .src{font-size:12px;color:var(--faint);text-align:right;line-height:1.7;white-space:nowrap}
+  .foot .src b{color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Perimeter &amp; Edge Security · ranked by CISA KEV + disclosure, not marketing</div>
+  <h1>Raw CVE counts mislead.</h1>
+  <p class="sub">Install-base size inflates a vendor's CVE/KEV total and the research attention it draws — a confounder, not a verdict. These six are ranked by the signals market share <b>can't</b> fake: <b>time-to-mass-exploitation</b>, <b>per-unit KEV density</b>, and <b>disclosure transparency</b>.</p>
+
+  <div class="heads"><div>Rank</div><div>Vendor</div><div>The signal that earns the spot</div></div>
+
+  <div class="row" style="--sev:#ff4d4d">
+    <div class="rank"><span class="n">1</span></div>
+    <div class="vendor">SonicWall<span class="tag">SMB firewall / SSL-VPN</span></div>
+    <div class="signal"><b>Its own cloud-backup service was breached and turned against customers.</b> Stolen configs fed downstream ransomware; breach scope was walked back from &ldquo;&lt;5%&rdquo; to <b>all</b> backup customers.</div>
+  </div>
+  <div class="row" style="--sev:#ff6a40">
+    <div class="rank"><span class="n">2</span></div>
+    <div class="vendor">Ivanti<span class="tag">Connect Secure SSL-VPN</span></div>
+    <div class="signal">Chained zero-days exploited <b>before any patch existed</b> (ED 24-01 ordered federal disconnect) — then a critical RCE recurrence a year later.</div>
+  </div>
+  <div class="row" style="--sev:#ff8a33">
+    <div class="rank"><span class="n">3</span></div>
+    <div class="vendor">Juniper<span class="tag">SRX / Junos</span></div>
+    <div class="signal"><b>~8 days</b> from advisory to mass exploitation on the 2023 J-Web chain; nation-state implants later found on carrier-grade routers.</div>
+  </div>
+  <div class="row" style="--sev:#f0a52e">
+    <div class="rank"><span class="n">4</span></div>
+    <div class="vendor">Cisco<span class="tag">ASA / FTD</span></div>
+    <div class="signal">One state actor burned <b>four ASA/FTD zero-days</b> across two ArcaneDoor campaigns. <span class="note">Its high raw KEV count is all-product scale, not firewalls alone.</span></div>
+  </div>
+  <div class="row" style="--sev:#d8b341">
+    <div class="rank"><span class="n">5</span></div>
+    <div class="vendor">Palo Alto<span class="tag">PAN-OS</span></div>
+    <div class="signal">Seven 2024 KEV entries; <b>three were pre-patch or near-zero-day</b> — a pattern market share can't explain away.</div>
+  </div>
+  <div class="row" style="--sev:#9fb0c8">
+    <div class="rank"><span class="n">6</span></div>
+    <div class="vendor">Fortinet<span class="tag">FortiOS SSL-VPN</span></div>
+    <div class="signal">Four pre-auth SSL-VPN KEV bugs in one daemon over five years (three RCE); <b>documented silent patching</b> <span class="note">— counter to the &ldquo;most transparent&rdquo; claim.</span></div>
+  </div>
+
+  <div class="foot">
+    <div class="m"><b>Rank = demonstrated incident risk + disclosure posture</b> within a bounded recent window — not raw CVE count, and not total product quality. Lower rank ≠ &ldquo;safe.&rdquo; Every claim is sourced in the repo.</div>
+    <div class="src"><b>Sources:</b> CISA KEV · vendor PSIRTs<br>Mandiant · Talos · watchTowr · Rapid7<br>github.com/ericrihm/edge-security-ground-truth</div>
+  </div>
+</div>
+</body>
+</html>
