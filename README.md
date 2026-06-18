@@ -43,7 +43,7 @@ The table counts **CISA‑KEV‑listed CVEs affecting each vendor's edge applian
 | [Check Point](docs/CheckPoint.md) | Quantum Security Gateway | **2** |
 | [Array Networks](docs/ArrayNetworks.md) | AG / vxAG SSL‑VPN gateway (ArrayOS) | **2** |
 
-![Exploited edge CVEs by vendor — CISA KEV 2020–2026; the thirteen vendors span 2–18](assets/edge-kev-chart.png)
+![Exploited edge CVEs by vendor — CISA KEV 2020–2026; the thirteen vendors span 2–18](assets/edge-kev-chart.svg)
 
 **The most important takeaway is the spread, not the order.** Under a consistent scope, the thirteen major edge vendors sit between **2 and 18** exploited edge CVEs over six years — all under active exploitation. Fortinet's higher count tracks its **~50% unit market share** (the popularity tax we can't normalize away), not demonstrably weaker code. Check Point's low count (2) partly reflects fewer disclosed edge vulnerabilities but also lower installed base and researcher attention — it does **not** mean Check Point is safe (CVE‑2024‑24919 was exploited at scale by nation‑states). **No vendor is dramatically cleaner than the others.** Anyone selling you "vendor X is secure, vendor Y isn't" on raw counts is selling you noise. (See [Caveats](#caveats-sources--corrections): counts still partly reflect installed base, which we cannot normalize away.)
 
@@ -100,6 +100,7 @@ Beyond counts and per-vendor narratives, this repository includes structured ana
 | [Time-to-Exploit](docs/TIME-TO-EXPLOIT.md) | Median TTE 36 days; 41% exploited within 7 days; 38 confirmed zero-days across 11 of 13 vendors; 41% ransomware-associated |
 | [Statistical Framework](docs/STATISTICS.md) | χ²(12)=33.65, p≈0.0008 — counts differ from uniform, but confounders (installed base, researcher attention) are uncontrolled |
 | [Threat Attribution](docs/THREAT-ATTRIBUTION.md) | 22-actor attribution matrix; China-nexus, Iran-nexus, and ransomware groups all target edge devices preferentially |
+| [Threat Actors](docs/THREAT-ACTORS.md) | Which threat actors target which vendors |
 | [Related Work / Literature Review](docs/RELATED-WORK.md) | Academic and industry context — vulnerability metrics limitations, exploitation timing research, edge as attack surface |
 | [Defender Playbook](docs/DEFENDER-PLAYBOOK.md) | Actionable response procedures keyed to KEV alerts |
 | [Vendor Comparison Matrix](docs/VENDOR-MATRIX.md) | Side-by-side 8-dimension comparison: KEV count, zero-days, ransomware, TTE, CWE profile, APT attribution, disclosure |
@@ -186,38 +187,3 @@ This repo does reach a conclusion — just not a per‑vendor verdict. Three fin
 ```
 
 See also [`CITATION.cff`](./CITATION.cff) for machine-readable citation metadata.
-
----
-
-## Analysis tools
-
-This repository includes scripts for deeper analysis beyond raw counts:
-
-| Script | What it does |
-|--------|-------------|
-| scripts/build_kev_counts.py | Core: reproducible edge-KEV counter from live CISA feed |
-| scripts/enrich_epss.py | Adds EPSS exploitation probability scores |
-| scripts/enrich_nvd.py | Adds CVSS scores, CWE IDs, and publication dates from NVD |
-| scripts/analyze_patterns.py | Cross-vendor timeline, concentration, and YoY trend analysis |
-| scripts/analyze_cwe.py | CWE weakness-class patterns across vendors |
-| scripts/analyze_tte.py | Time-to-exploit computation (disclosure to exploitation) |
-| scripts/analyze_statistics.py | Statistical significance tests and confidence intervals |
-
-All scripts are stdlib-only Python with no dependencies.
-
-## Deep-dive documents
-
-| Document | Topic |
-|----------|-------|
-| [METHODOLOGY.md](METHODOLOGY.md) | Full methodology, scope rules, and limitations |
-| [DEFENDER-PLAYBOOK.md](docs/DEFENDER-PLAYBOOK.md) | Practical response guide for edge appliance security |
-| [CWE-ANALYSIS.md](docs/CWE-ANALYSIS.md) | What weakness classes dominate edge exploitation |
-| [TIME-TO-EXPLOIT.md](docs/TIME-TO-EXPLOIT.md) | How fast are edge CVEs exploited after disclosure |
-| [THREAT-ACTORS.md](docs/THREAT-ACTORS.md) | Which threat actors target which vendors |
-| [STATISTICS.md](docs/STATISTICS.md) | Statistical rigor: can we distinguish vendors from noise? |
-| [RELATED-WORK.md](docs/RELATED-WORK.md) | Literature review and academic positioning |
-| [ANALYSIS.md](docs/ANALYSIS.md) | Cross-vendor pattern analysis snapshot |
-| [COGNITIVE-BIASES.md](docs/COGNITIVE-BIASES.md) | How anchoring, loss aversion, and 5 other biases distort vendor decisions |
-| [THE-NUMBERS.md](docs/THE-NUMBERS.md) | 15 statistics that should change how you think about edge security |
-| [WHAT-IF-SCENARIOS.md](docs/WHAT-IF-SCENARIOS.md) | Five counterfactual deployment scenarios with real CVE timelines |
-| [VENDOR-QUESTIONS.md](docs/VENDOR-QUESTIONS.md) | 20 data-grounded questions for vendor procurement and renewal |

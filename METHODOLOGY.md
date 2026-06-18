@@ -316,6 +316,8 @@ The data pipeline has three stages:
 
 Each stage is idempotent: re-running produces the same output given the same upstream data. The enrichment scripts preserve existing data when adding new fields (EPSS enrichment does not overwrite NVD data, and vice versa).
 
+**Canonical enrichment order.** The stages must run in the order `enrich_epss.py` -> `enrich_nvd.py` -> `enrich_kev.py`, with the KEV-metadata stage (`enrich_kev.py`, which adds `kev_date_added`, `kev_due_date`, and `ransomware`) running **last** because it appends fields onto whatever EPSS and NVD data already exists. To make re-runs safe regardless of stage order, `enrich_nvd.py` now starts each entry from a full copy of the prior enriched entry and overlays only the freshly fetched NVD fields on top, rather than reconstructing a fresh dict containing only EPSS and NVD fields. This guarantees that a later `enrich_nvd.py --skip-existing` resume run preserves all previously written fields -- including the KEV-metadata fields and the `_source` provenance tag -- instead of silently stripping them.
+
 ### 6.2 EPSS Enrichment
 
 **Script:** `scripts/enrich_epss.py`

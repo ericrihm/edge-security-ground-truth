@@ -324,7 +324,15 @@ def fetch_nvd_cve(cve_id):
 
 
 def merge_enriched(vendors, existing, nvd_data):
-    """Merge NVD data into enriched structure, preserving EPSS data."""
+    """Merge NVD data into enriched structure, preserving ALL prior fields.
+
+    Each entry starts from a copy of the full existing entry, so any field
+    written by an earlier stage -- EPSS (epss/percentile) AND KEV metadata
+    (kev_date_added/kev_due_date/ransomware) plus _source -- is preserved.
+    Freshly fetched NVD fields are then overlaid on top.  This prevents a
+    re-run (e.g. --skip-existing) from silently stripping KEV-metadata fields
+    that enrich_kev.py added after the last NVD enrichment.
+    """
     enriched = {}
     for vendor, cves in vendors.items():
         vendor_existing = {}
@@ -333,25 +341,17 @@ def merge_enriched(vendors, existing, nvd_data):
 
         vendor_out = {}
         for cve in cves:
-            entry = {}
-            # Preserve existing EPSS data
-            if cve in vendor_existing:
-                old = vendor_existing[cve]
-                if "epss" in old:
-                    entry["epss"] = old["epss"]
-                if "percentile" in old:
-                    entry["percentile"] = old["percentile"]
+            # Start from a COPY of the full existing entry so every prior
+            # field (EPSS, prior NVD, KEV metadata, _source) carries forward.
+            existing_entry = vendor_existing.get(cve)
+            if isinstance(existing_entry, dict):
+                entry = dict(existing_entry)
+            else:
+                entry = {}
 
-            # Add NVD data (from fresh fetch or from existing)
+            # Overlay freshly fetched NVD data on top of the preserved fields.
             if cve in nvd_data:
                 entry.update(nvd_data[cve])
-            elif cve in vendor_existing:
-                # Preserve existing NVD data if we didn't re-fetch
-                old = vendor_existing[cve]
-                for key in ("cvss", "cvss_severity", "cvss_vector", "cwe",
-                            "cwe_name", "cwe_secondary", "published"):
-                    if key in old:
-                        entry[key] = old[key]
 
             vendor_out[cve] = entry
         enriched[vendor] = vendor_out

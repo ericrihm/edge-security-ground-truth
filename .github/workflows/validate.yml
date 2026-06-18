@@ -198,3 +198,344 @@ jobs:
               sys.exit(1)
           print(f'All {len(vendors)} vendors have docs.')
           EOF
+
+  # ====================================================================
+  # CORRECTNESS GATES — lock dataset invariants
+  # Runs after the main validate job. All assertions use stdlib-only
+  # Python 3; no pip deps are installed.
+  # ====================================================================
+  correctness-gates:
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # ------------------------------------------------------------------
+      # Gate 1: build_kev_counts.py --as-of 2026-06-18 must produce
+      # exactly 13 vendors and 115 total CVEs.
+      # ------------------------------------------------------------------
+      - name: Gate 1 — vendor count and total CVEs (build_kev_counts)
+        run: |
+          python3 scripts/build_kev_counts.py --format json --as-of 2026-06-18
+          python3 - <<'PYEOF'
+          import json, sys
+
+          EXPECTED_VENDORS = 13
+          EXPECTED_TOTAL   = 115
+
+          with open("scripts/kev_edge_counts.json") as f:
+              data = json.load(f)
+
+          vendors = [k for k in data if k != "_metadata"]
+          total   = sum(len(v) for v in data.values() if isinstance(v, list))
+
+          errors = []
+          if len(vendors) != EXPECTED_VENDORS:
+              errors.append(
+                  f"vendor count: expected {EXPECTED_VENDORS}, got {len(vendors)} "
+                  f"({sorted(vendors)})"
+              )
+          if total != EXPECTED_TOTAL:
+              errors.append(
+                  f"total CVEs: expected {EXPECTED_TOTAL}, got {total}"
+              )
+
+          if errors:
+              for e in errors:
+                  print(f"ERROR: {e}")
+              sys.exit(1)
+
+          print(
+              f"Gate 1 PASS — {len(vendors)} vendors, {total} CVEs "
+              f"(as-of 2026-06-18)"
+          )
+          PYEOF
+
+      # ------------------------------------------------------------------
+      # Gate 2: analyze_tte.py --no-fetch --format json must yield
+      # vendor_tte with exactly 13 entries and total_cves == 115.
+      # Guards the --no-fetch reproducibility contract.
+      # ------------------------------------------------------------------
+      - name: Gate 2 — analyze_tte --no-fetch reproducibility
+        run: |
+          python3 - <<'PYEOF'
+          import json, subprocess, sys
+
+          EXPECTED_VTT_LEN   = 13
+          EXPECTED_TOTAL_CVES = 115
+
+          result = subprocess.run(
+              ["python3", "scripts/analyze_tte.py", "--no-fetch", "--format", "json"],
+              capture_output=True, text=True
+          )
+          if result.returncode != 0:
+              print("ERROR: analyze_tte.py --no-fetch exited non-zero")
+              print(result.stderr)
+              sys.exit(1)
+
+          try:
+              data = json.loads(result.stdout)
+          except json.JSONDecodeError as e:
+              print(f"ERROR: analyze_tte.py --no-fetch did not produce valid JSON: {e}")
+              sys.exit(1)
+
+          vtt_len    = len(data.get("vendor_tte", {}))
+          total_cves = data.get("total_cves")
+
+          errors = []
+          if vtt_len != EXPECTED_VTT_LEN:
+              errors.append(
+                  f"vendor_tte length: expected {EXPECTED_VTT_LEN}, got {vtt_len}"
+              )
+          if total_cves != EXPECTED_TOTAL_CVES:
+              errors.append(
+                  f"total_cves: expected {EXPECTED_TOTAL_CVES}, got {total_cves}"
+              )
+
+          if errors:
+              for e in errors:
+                  print(f"ERROR: {e}")
+              sys.exit(1)
+
+          print(
+              f"Gate 2 PASS — vendor_tte length={vtt_len}, "
+              f"total_cves={total_cves}"
+          )
+          PYEOF
+
+      # ------------------------------------------------------------------
+      # Gate 3: per-vendor ransomware counts from kev_edge_enriched.json
+      # must match the committed expected map exactly.
+      # ransomware == "Known" is the CISA KEV field value for ransomware
+      # campaign association.
+      # ------------------------------------------------------------------
+      - name: Gate 3 — per-vendor ransomware counts
+        run: |
+          python3 - <<'PYEOF'
+          import json, sys
+
+          # Committed expected map — update this when the dataset changes.
+          EXPECTED = {
+              "Fortinet":           12,
+              "Ivanti":              8,
+              "SonicWall":           7,
+              "Palo Alto Networks":  5,
+              "Citrix":              4,
+              "Cisco":               3,
+              "F5":                  3,
+              "Check Point":         2,
+              "Sophos":              1,
+              "Zyxel":               1,
+              "Array Networks":      1,
+              "Juniper":             0,
+              "WatchGuard":          0,
+          }
+
+          with open("scripts/kev_edge_enriched.json") as f:
+              data = json.load(f)
+
+          vendors = {k: v for k, v in data.items() if not k.startswith("_")}
+          errors  = []
+
+          for vendor, expected_count in EXPECTED.items():
+              if vendor not in vendors:
+                  errors.append(f"{vendor!r}: missing from kev_edge_enriched.json")
+                  continue
+              actual = sum(
+                  1 for c in vendors[vendor].values()
+                  if c.get("ransomware") == "Known"
+              )
+              if actual != expected_count:
+                  errors.append(
+                      f"{vendor!r}: ransomware count expected {expected_count}, got {actual}"
+                  )
+
+          # Flag any vendor in the file that is not in the expected map
+          unexpected = [v for v in vendors if v not in EXPECTED]
+          if unexpected:
+              errors.append(f"unexpected vendors in enriched data: {unexpected}")
+
+          if errors:
+              for e in errors:
+                  print(f"ERROR: {e}")
+              sys.exit(1)
+
+          total_rw = sum(EXPECTED.values())
+          print(
+              f"Gate 3 PASS — ransomware counts match for all {len(EXPECTED)} vendors "
+              f"({total_rw} total ransomware-associated CVEs)"
+          )
+          PYEOF
+
+      # ------------------------------------------------------------------
+      # Gate 4: markdown link checker over README.md + docs/*.md.
+      # Fails on:
+      #   (a) host with unknown short TLD (catches "nvd.ni"-style truncation)
+      #   (b) path segment matching a known vendor name with its first char
+      #       dropped (catches "cyberscoop.com/ortinet"-style typos)
+      # Dependency-free (re + urllib.parse only).
+      # ------------------------------------------------------------------
+      - name: Gate 4 — markdown link checker (truncated URL detection)
+        run: |
+          python3 - <<'PYEOF'
+          import re, sys, os
+          from urllib.parse import urlparse
+
+          # TLDs and ccTLDs that are legitimate even when short.
+          KNOWN_SHORT_TLDS = {
+              "com", "net", "org", "gov", "edu", "mil", "int",
+              "io",  "co",  "ai",  "fr",  "uk",  "de",  "jp",
+              "sg",  "ca",  "au",  "ch",  "nl",  "se",  "no",
+              "fi",  "dk",  "at",  "be",  "es",  "it",  "pl",
+              "ru",  "cn",  "br",  "mx",  "in",  "kr",  "tw",
+              "hk",  "za",  "nz",  "eu",  "us",
+          }
+
+          # Vendor names with their first character dropped; these should
+          # never appear as the leading slug in a URL path.
+          TRUNCATED_VENDOR_SLUGS = {
+              "ortinet",       # fortinet  -> ortinet
+              "isco",          # cisco     -> isco
+              "itrix",         # citrix    -> itrix
+              "vanti",         # ivanti    -> vanti
+              "alo-alto",      # palo-alto -> alo-alto
+              "onicwall",      # sonicwall -> onicwall
+              "uniper",        # juniper   -> uniper
+              "ophos",         # sophos    -> ophos
+              "yxel",          # zyxel     -> yxel
+              "atchguard",     # watchguard -> atchguard
+              "heckpoint",     # checkpoint -> heckpoint
+              "rray-networks", # array-networks -> rray-networks
+          }
+
+          def check_link(url):
+              """Return an error string, or None if the URL looks well-formed."""
+              try:
+                  parsed = urlparse(url)
+                  host   = parsed.netloc.lower().split(":")[0]
+              except Exception as exc:
+                  return f"parse error: {exc}"
+
+              if not host:
+                  return "empty host"
+
+              parts = host.split(".")
+              if len(parts) < 2:
+                  return f"single-label host: {host!r}"
+
+              tld = parts[-1]
+              if tld not in KNOWN_SHORT_TLDS and len(tld) <= 3:
+                  return f"unknown short TLD {tld!r} in host {host!r}"
+
+              for label in parts[:-1]:
+                  if label == "":
+                      return f"empty label in host {host!r}"
+
+              # Check first two path segments for truncated vendor names.
+              segs = [
+                  s.lower()
+                  for s in parsed.path.lstrip("/").split("/")
+                  if s
+              ]
+              for seg in segs[:2]:
+                  # A segment like "ortinet-zero-day" begins with a truncation.
+                  word = seg.split("-")[0] if "-" in seg else seg
+                  if seg in TRUNCATED_VENDOR_SLUGS or word in TRUNCATED_VENDOR_SLUGS:
+                      return (
+                          f"path segment {seg!r} matches a truncated vendor "
+                          f"name (first char missing?)"
+                      )
+
+              return None
+
+          md_files = ["README.md"] + [
+              os.path.join("docs", f)
+              for f in sorted(os.listdir("docs"))
+              if f.endswith(".md")
+          ]
+
+          errors        = []
+          total_checked = 0
+          link_re       = re.compile(r"\[([^\]]*)\]\((https?://[^)]+)\)")
+
+          for fn in md_files:
+              if not os.path.isfile(fn):
+                  continue
+              with open(fn) as fh:
+                  content = fh.read()
+              for m in link_re.finditer(content):
+                  url = m.group(2).strip()
+                  total_checked += 1
+                  reason = check_link(url)
+                  if reason:
+                      errors.append(f"{fn}: {url!r} — {reason}")
+
+          print(
+              f"Checked {total_checked} external links across {len(md_files)} files"
+          )
+          if errors:
+              print(f"ERRORS ({len(errors)}):")
+              for e in errors:
+                  print(f"  {e}")
+              sys.exit(1)
+
+          print("Gate 4 PASS — no malformed or truncated URLs detected")
+          PYEOF
+
+      # ------------------------------------------------------------------
+      # Gate 5: every CVE listed in kev_edge_counts.json must exist as a
+      # key in kev_edge_enriched.json (no un-enriched CVEs).
+      # ------------------------------------------------------------------
+      - name: Gate 5 — no un-enriched CVEs
+        run: |
+          python3 - <<'PYEOF'
+          import json, sys
+
+          with open("scripts/kev_edge_counts.json") as f:
+              counts = json.load(f)
+
+          with open("scripts/kev_edge_enriched.json") as f:
+              enriched = json.load(f)
+
+          # Build a flat set of all CVE IDs present in the enriched file.
+          enriched_cves = set()
+          for vendor, cves in enriched.items():
+              if vendor.startswith("_"):
+                  continue
+              enriched_cves.update(cves.keys())
+
+          # Every CVE in counts must appear in enriched.
+          missing = []
+          for vendor, cve_list in counts.items():
+              if vendor == "_metadata":
+                  continue
+              if not isinstance(cve_list, list):
+                  continue
+              for cve_id in cve_list:
+                  if cve_id not in enriched_cves:
+                      missing.append((vendor, cve_id))
+
+          counts_total = sum(
+              len(v) for k, v in counts.items()
+              if k != "_metadata" and isinstance(v, list)
+          )
+
+          if missing:
+              print(
+                  f"ERROR: {len(missing)} CVE(s) appear in kev_edge_counts.json "
+                  f"but are absent from kev_edge_enriched.json:"
+              )
+              for vendor, cve_id in sorted(missing):
+                  print(f"  {vendor}: {cve_id}")
+              sys.exit(1)
+
+          print(
+              f"Gate 5 PASS — all {counts_total} CVEs in kev_edge_counts.json "
+              f"are present in kev_edge_enriched.json"
+          )
+          PYEOF

@@ -1,0 +1,223 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "sc": "https://schema.org/"
+  },
+  "@type": "sc:Dataset",
+  "name": "edge-security-ground-truth",
+  "description": "Uniform, reproducible, cited exploitation data for perimeter and edge security vendors — firewalls, SSL-VPN gateways, and remote-access appliances. 115 CISA KEV-listed CVEs across 13 vendors (2019–2026). CISA KEV backbone enriched with NVD CVSS/CWE scores, FIRST EPSS probabilities, and ransomware campaign association.",
+  "url": "https://github.com/ericrihm/edge-security-ground-truth",
+  "version": "1.0.0",
+  "datePublished": "2026-06-18",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": {
+    "@type": "Person",
+    "name": "Eric Rihm",
+    "email": "ericrihm@gmail.com",
+    "url": "https://github.com/ericrihm"
+  },
+  "keywords": [
+    "CISA KEV",
+    "vulnerability management",
+    "edge security",
+    "firewall",
+    "SSL VPN",
+    "perimeter security",
+    "EPSS",
+    "CVSS",
+    "CWE",
+    "ransomware",
+    "zero-day",
+    "cybersecurity"
+  ],
+  "citation": "Eric Rihm. (2026). Edge Security Ground Truth. https://github.com/ericrihm/edge-security-ground-truth",
+  "cr:conformsTo": "http://mlcommons.org/croissant/1.0",
+  "cr:distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "edge_kev_dataset_csv",
+      "name": "edge_kev_dataset.csv",
+      "description": "Flat CSV export: one row per CVE with vendor, identifiers, KEV dates, time-to-exploit, CVSS, CWE, EPSS, and ransomware flag. 115 data rows + 1 header row.",
+      "contentUrl": "scripts/edge_kev_dataset.csv",
+      "encodingFormat": "text/csv",
+      "sha256": ""
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "kev_edge_enriched_json",
+      "name": "kev_edge_enriched.json",
+      "description": "Structured enrichment source: vendor-namespaced dict of CVE records with full field set including CVSS vector, secondary CWE list, and dataset _metadata block.",
+      "contentUrl": "scripts/kev_edge_enriched.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "kev_edge_counts_json",
+      "name": "kev_edge_counts.json",
+      "description": "Vendor-to-CVE-list mapping used as scope definition and row-ordering reference for the CSV export.",
+      "contentUrl": "scripts/kev_edge_counts.json",
+      "encodingFormat": "application/json"
+    }
+  ],
+  "cr:recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "edge_kev_dataset",
+      "name": "edge_kev_dataset",
+      "description": "One record per CVE in the edge-security-ground-truth dataset.",
+      "source": {
+        "fileObject": { "@id": "edge_kev_dataset_csv" },
+        "extract": { "column": "" }
+      },
+      "cr:field": [
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/vendor",
+          "name": "vendor",
+          "description": "Vendor name. One of 13 values: Array Networks, Check Point, Cisco, Citrix, F5, Fortinet, Ivanti, Juniper, Palo Alto Networks, SonicWall, Sophos, WatchGuard, Zyxel.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "vendor" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/cve",
+          "name": "cve",
+          "description": "CVE identifier (e.g., CVE-2021-44228). Unique within the dataset.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "cve" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/kev_date_added",
+          "name": "kev_date_added",
+          "description": "Date CISA added the CVE to the Known Exploited Vulnerabilities catalog (YYYY-MM-DD). Never blank.",
+          "dataType": "sc:Date",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "kev_date_added" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/kev_due_date",
+          "name": "kev_due_date",
+          "description": "CISA-mandated federal remediation deadline (YYYY-MM-DD). Never blank.",
+          "dataType": "sc:Date",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "kev_due_date" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/published",
+          "name": "published",
+          "description": "NVD public disclosure date (YYYY-MM-DD), or KEV dateAdded as fallback. Never blank.",
+          "dataType": "sc:Date",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "published" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/tte_days",
+          "name": "tte_days",
+          "description": "Time-to-exploit in days (kev_date_added minus published). Negative values indicate zero-day exploitation before NVD publication. Range: -25 to 3891. Never blank in this dataset.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "tte_days" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/cvss",
+          "name": "cvss",
+          "description": "CVSS v3.x base score (0.0–10.0). Blank for 4 CVEs published too recently to have an NVD score.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "cvss" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/cvss_severity",
+          "name": "cvss_severity",
+          "description": "CVSS v3.x severity label: LOW, MEDIUM, HIGH, or CRITICAL. Blank when cvss is blank.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "cvss_severity" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/cwe",
+          "name": "cwe",
+          "description": "Primary CWE identifier (e.g., CWE-89). Blank for 2 CVEs with no NVD CWE assignment.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "cwe" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/cwe_name",
+          "name": "cwe_name",
+          "description": "Human-readable CWE name (e.g., Improper Neutralization of Special Elements used in an SQL Command). Blank when cwe is blank.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "cwe_name" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/epss",
+          "name": "epss",
+          "description": "FIRST EPSS exploit probability (0.0–1.0). Higher = greater predicted likelihood of exploitation within 30 days. Never blank; range 0.00865–0.99999.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "epss" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/percentile",
+          "name": "percentile",
+          "description": "EPSS percentile rank (0.0–1.0): fraction of all EPSS-scored CVEs with a lower score. Never blank; range 0.539–1.000.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "percentile" }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edge_kev_dataset/ransomware",
+          "name": "ransomware",
+          "description": "Known ransomware campaign association per CISA KEV. Values: Known (47 CVEs) or Unknown (68 CVEs). Never blank.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": { "@id": "edge_kev_dataset_csv" },
+            "extract": { "column": "ransomware" }
+          }
+        }
+      ]
+    }
+  ]
+}
