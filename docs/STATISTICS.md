@@ -1,7 +1,7 @@
 # Statistical Analysis of CISA KEV Edge-Appliance Exploitation
 
 This document presents the statistical methods and results used to evaluate whether
-differences in CISA Known Exploited Vulnerabilities (KEV) counts across 11
+differences in CISA Known Exploited Vulnerabilities (KEV) counts across 13
 edge-appliance vendors are statistically meaningful. It is intended to read like
 the Results section of a security measurement paper.
 
@@ -12,39 +12,42 @@ Python; no numpy or scipy). Catalog version: 2026.06.18.
 
 ## 1. Descriptive Statistics
 
-We analyze N = 107 CVEs distributed across k = 11 vendors. The per-vendor counts are:
+We analyze N = 115 CVEs distributed across k = 13 vendors. The per-vendor counts are:
 
 | Vendor | KEV Count | Share |
 |--------|----------:|------:|
-| Fortinet | 18 | 16.8% |
-| Cisco | 13 | 12.1% |
-| Ivanti | 13 | 12.1% |
-| Palo Alto Networks | 12 | 11.2% |
-| SonicWall | 12 | 11.2% |
-| Citrix | 11 | 10.3% |
-| Juniper | 8 | 7.5% |
-| F5 | 6 | 5.6% |
-| Sophos | 6 | 5.6% |
-| Zyxel | 6 | 5.6% |
-| Check Point | 2 | 1.9% |
+| Fortinet | 18 | 15.7% |
+| Cisco | 13 | 11.3% |
+| Citrix | 13 | 11.3% |
+| Ivanti | 13 | 11.3% |
+| Palo Alto Networks | 12 | 10.4% |
+| SonicWall | 12 | 10.4% |
+| Juniper | 8 | 7.0% |
+| F5 | 6 | 5.2% |
+| Sophos | 6 | 5.2% |
+| Zyxel | 6 | 5.2% |
+| WatchGuard | 4 | 3.5% |
+| Check Point | 2 | 1.7% |
+| Array Networks | 2 | 1.7% |
 
 | Statistic | Value |
 |-----------|------:|
-| Mean | 9.73 |
-| Median | 11 |
-| Standard Deviation | 4.54 |
-| Variance | 20.62 |
+| Mean | 8.85 |
+| Median | 8 |
+| Standard Deviation | 4.98 |
+| Variance | 24.81 |
 | Q1 | 6.0 |
-| Q3 | 12.5 |
-| Interquartile Range (IQR) | 6.5 |
+| Q3 | 13.0 |
+| Interquartile Range (IQR) | 7.0 |
 | Range | 16 (2 to 18) |
-| Coefficient of Variation (CV) | 0.467 |
+| Coefficient of Variation (CV) | 0.563 |
 
-**Interpretation.** The distribution is moderately right-skewed: the median (11)
-exceeds the mean (9.73), driven by Check Point's low count of 2 pulling the
-mean down. A CV of 0.467 indicates moderate dispersion -- counts vary, but not
-by an order of magnitude. The IQR of 6.5 tells us that the middle 50% of vendors
-have between 6 and 12.5 KEV entries, a factor of roughly 2x rather than 10x.
+**Interpretation.** The distribution is mildly right-skewed: the median (8)
+is below the mean (8.85), with Fortinet's count of 18 pulling the mean up while
+the low-count vendors (Check Point and Array Networks at 2) anchor the bottom.
+A CV of 0.563 indicates moderate dispersion -- counts vary, but not
+by an order of magnitude. The IQR of 7.0 tells us that the middle 50% of vendors
+have between 6 and 13 KEV entries, a factor of roughly 2x rather than 10x.
 
 ---
 
@@ -59,23 +62,23 @@ The HHI is the sum of squared market shares. For k equal vendors, HHI = 1/k.
 
 | Metric | Value |
 |--------|------:|
-| HHI (observed) | 0.10892 |
-| HHI (equal baseline, 1/11) | 0.09091 |
-| HHI (normalized) | 0.01981 |
-| Gini coefficient | 0.2464 |
-| CR3 (top-3 concentration ratio) | 41.1% |
+| HHI (observed) | 0.09943 |
+| HHI (equal baseline, 1/13) | 0.07692 |
+| HHI (normalized) | 0.02439 |
+| Gini coefficient | 0.3023 |
+| CR3 (top-3 concentration ratio) | 38.26% |
 
-**Interpretation.** The normalized HHI of 0.020 is well below the DOJ/FTC
+**Interpretation.** The normalized HHI of 0.024 is well below the DOJ/FTC
 threshold of 0.15 for "moderately concentrated" markets. By the HHI lens,
 KEV exploitation is **unconcentrated** -- it is spread across vendors roughly
 in proportion to what we would expect from random variation alone.
 
-The Gini coefficient of 0.246 indicates mild inequality: present but modest.
-For context, a Gini of 0.25 is comparable to the income distribution of
+The Gini coefficient of 0.302 indicates mild inequality: present but modest.
+For context, a Gini of 0.30 is comparable to the income distribution of
 Scandinavian countries -- relatively egalitarian. A Gini above 0.40 would
 indicate substantial concentration.
 
-The CR3 of 41.1% means the top three vendors (Fortinet, Cisco, Ivanti) account
+The CR3 of 38.26% means the top three vendors (Fortinet, Cisco, Citrix) account
 for less than half of all edge KEVs. This is a diffuse distribution.
 
 **Key finding:** Exploitation is NOT concentrated in a few "insecure" vendors.
@@ -93,8 +96,14 @@ parameter is increasing over time. The Poisson is the natural model for count
 data (non-negative integer events in a time interval).
 
 **Method.** Ordinary least squares regression of count_t on year_t (recoded to
-t = 0, 1, ..., T), with the standard error computed under the Poisson assumption
-that Var(Y) = E[Y], yielding SE(slope) = sqrt(mean_lambda / SS_tt).
+t = 0, 1, ..., T), with the standard error first computed under the Poisson
+assumption that Var(Y) = E[Y], yielding SE(slope) = sqrt(mean_lambda / SS_tt).
+Because count data are typically over-dispersed, we then apply a quasi-Poisson
+correction: we estimate the dispersion parameter phi as the Pearson chi-squared
+of the fitted line divided by the residual degrees of freedom (n - 2), and
+multiply the Poisson SE by sqrt(phi). The corrected z and p are reported
+alongside the naive figures. (Underdispersion, phi < 1, is treated
+conservatively by flooring phi at 1.0.)
 
 | Year | Published CVEs |
 |------|---------------:|
@@ -106,16 +115,18 @@ that Var(Y) = E[Y], yielding SE(slope) = sqrt(mean_lambda / SS_tt).
 | 2019 | 11 |
 | 2020 | 19 |
 | 2021 | 9 |
-| 2022 | 8 |
-| 2023 | 17 |
+| 2022 | 10 |
+| 2023 | 18 |
 | 2024 | 17 |
-| 2025 | 16 |
-| 2026 | 4 |
+| 2025 | 20 |
+| 2026 | 5 |
 
-- Model: lambda(t) = 1.209 + 1.170 * t
-- Slope: **+1.17 CVEs/year** (SE = 0.213)
-- z = 5.503, p < 0.001
-- **Significant increase**
+- Model: lambda(t) = 0.736 + 1.352 * t
+- Slope: **+1.352 CVEs/year** (Poisson SE = 0.22)
+- Naive Poisson: z = 6.131, p < 0.001
+- Dispersion phi = 3.13; quasi-Poisson SE = SE * sqrt(phi) = 0.39
+- Overdispersion-adjusted: z = 3.466, p = 0.0005
+- **Significant increase (even after overdispersion adjustment)**
 
 **Interpretation.** The increasing trend is statistically significant, but we
 urge caution in interpreting this as "edge appliances are getting less secure."
@@ -129,13 +140,19 @@ Several confounders explain the upward slope equally well:
    research target (ProxyLogon, Citrix Bleed, Ivanti Connect Secure campaigns).
    More researchers looking means more vulnerabilities found.
 
-3. **2026 is partial.** Only 4 CVEs for 2026 (as of June) will increase as the year
+3. **2026 is partial.** Only 5 CVEs for 2026 (as of June) will increase as the year
    progresses. The slope would be shallower if estimated on complete years only.
 
-The Poisson model is also misspecified: counts exhibit overdispersion (the
+The pure Poisson model is misspecified: counts exhibit overdispersion (the
 2020 spike of 19 and 2014-2018 sparse counts violate the equal mean-variance
-assumption). A negative binomial would be more appropriate for formal inference,
-but the stdlib-only constraint prevents that here.
+assumption). The estimated dispersion of phi = 3.13 confirms this -- the
+year-to-year variance is roughly 3x the mean. We therefore report the
+quasi-Poisson-adjusted standard error (Poisson SE inflated by sqrt(phi)),
+which widens the SE from 0.22 to 0.39 and lowers the z from 6.131 to 3.466.
+The trend remains significant (p = 0.0005) even under this more conservative
+variance assumption. A full negative-binomial fit would be marginally more
+appropriate, but the quasi-Poisson correction captures the same overdispersion
+adjustment within the stdlib-only constraint.
 
 ---
 
@@ -145,13 +162,13 @@ but the stdlib-only constraint prevents that here.
 
 We test whether the vendor distribution departs significantly from uniform.
 
-- H0: All 11 vendors have equal expected KEV counts (9.73 each)
-- chi-squared(10) = 21.196
-- p = 0.020
+- H0: All 13 vendors have equal expected KEV counts (8.85 each)
+- chi-squared(12) = 33.652
+- p = 0.00082
 
 **Result: Reject H0 at alpha = 0.05.** The vendor counts are significantly
-non-uniform. Fortinet's 18 and Check Point's 2 are the primary contributors
-to the chi-squared statistic.
+non-uniform. Fortinet's 18 and the low counts of Check Point and Array Networks
+(2 each) are the primary contributors to the chi-squared statistic.
 
 **Critical caveat:** Rejecting uniformity does NOT demonstrate that vendors
 differ in code quality. The chi-squared test answers "are these counts plausibly
@@ -161,30 +178,40 @@ transparency, not security engineering quality.
 
 ### 4b. Pairwise Vendor Comparisons
 
-For each of the C(11,2) = 55 vendor pairs, we compute a 2x2 chi-squared test
-with Yates continuity correction, comparing vendor A's count vs vendor B's count
-against the total pool.
+For each of the C(13,2) = 78 vendor pairs, we use a **conditional exact binomial
+test**. The earlier method built a 2x2 table `[[ci, N-ci], [cj, N-cj]]`, whose
+effective sample size is 2N because every one of the N CVEs in the corpus appears
+in the "rest" cell of *both* vendor rows -- this double-counts the entire dataset
+and inflates the chi-squared statistic. The conditional test instead fixes the
+pair total n = ci + cj and asks whether the split k = ci out of n trials departs
+from p = 0.5 (the rate-equality null), using the exact two-sided binomial. Pairs
+whose minimum expected cell (n * 0.5) falls below 5 are flagged as having low
+power, where the large-sample approximation would be unreliable.
 
 | Correction | Significant Pairs |
 |------------|------------------:|
-| Raw (p < 0.05) | 9 of 55 |
-| Bonferroni (p < 0.000909) | **1 of 55** |
+| Raw (p < 0.05) | 19 of 78 |
+| Bonferroni (p < 0.000641) | **2 of 78** |
 
-The sole pair surviving Bonferroni correction:
+The pairs surviving Bonferroni correction:
 
-| Vendor A | Vendor B | Counts | chi-squared | p |
-|----------|----------|--------|:--------:|------:|
-| Check Point | Fortinet | 2 vs 18 | 12.41 | 0.00055 |
+| Vendor A | Vendor B | Counts | n | p |
+|----------|----------|--------|:-:|------:|
+| Fortinet | Check Point | 18 vs 2 | 20 | 0.0004 |
+| Fortinet | Array Networks | 18 vs 2 | 20 | 0.0004 |
 
-**Interpretation.** After correcting for 55 simultaneous tests, only the most
-extreme pair (Fortinet vs Check Point, a 9:1 ratio) is distinguishable. The
-remaining 54 pairs -- including Fortinet vs Cisco (18 vs 13), Cisco vs Zyxel
-(13 vs 6), and all other comparisons that might appear meaningful in a
-bar chart -- are NOT statistically significant after multiple-testing correction.
+**Interpretation.** After correcting for 78 simultaneous tests, only the most
+extreme pairs (Fortinet vs Check Point and Fortinet vs Array Networks, both a
+9:1 ratio) are distinguishable. The remaining 76 pairs -- including Fortinet vs
+Cisco (18 vs 13), Cisco vs Zyxel (13 vs 6), and all other comparisons that might
+appear meaningful in a bar chart -- are NOT statistically significant after
+multiple-testing correction.
 
 This is a direct consequence of the small sample sizes involved. With total
-N = 107 spread across 11 vendors, the statistical power to detect moderate
-differences is very low.
+N = 115 spread across 13 vendors, the statistical power to detect moderate
+differences is very low; 9 of the 78 pairwise comparisons also have a minimum
+expected cell below 5, where even the exact test has little power to separate
+the vendors.
 
 ---
 
@@ -194,29 +221,31 @@ For each vendor, we tabulate the CVSS v3.1 severity breakdown of their KEV entri
 
 | Vendor | Critical | High | Medium | Low | No Score | Mean CVSS | Crit+High % |
 |--------|:--------:|:----:|:------:|:---:|:--------:|----------:|:-----------:|
+| Array Networks | 1 | 1 | 0 | 0 | 0 | 8.50 | 100% |
 | Check Point | 1 | 1 | 0 | 0 | 0 | 8.95 | 100% |
 | Cisco | 1 | 6 | 6 | 0 | 0 | 7.11 | 54% |
-| Citrix | 4 | 1 | 4 | 0 | 2 | 7.76 | 56% |
+| Citrix | 6 | 1 | 4 | 0 | 2 | 8.13 | 64% |
 | F5 | 5 | 1 | 0 | 0 | 0 | 9.63 | 100% |
 | Fortinet | 11 | 1 | 5 | 1 | 0 | 7.96 | 67% |
 | Ivanti | 5 | 8 | 0 | 0 | 0 | 8.51 | 100% |
 | Juniper | 2 | 1 | 5 | 0 | 0 | 6.75 | 38% |
-| Palo Alto Networks | 3 | 2 | 0 | 0 | 7 | 9.30 | 100% |
+| Palo Alto Networks | 4 | 6 | 0 | 0 | 2 | 8.76 | 100% |
 | SonicWall | 6 | 4 | 2 | 0 | 0 | 8.48 | 83% |
 | Sophos | 6 | 0 | 0 | 0 | 0 | 9.83 | 100% |
+| WatchGuard | 3 | 1 | 0 | 0 | 0 | 9.43 | 100% |
 | Zyxel | 5 | 1 | 0 | 0 | 0 | 9.42 | 100% |
 
 **Interpretation.** KEV-listed CVEs are overwhelmingly critical or high severity
 across all vendors, which is expected: CISA catalogs actively exploited
 vulnerabilities, and attackers preferentially exploit high-impact bugs. The
-overall mean CVSS is 8.43.
+overall mean CVSS is 8.57.
 
 Vendors with lower mean CVSS (Juniper 6.75, Cisco 7.11) are not necessarily
 "safer" -- they may have more medium-severity KEV entries because their specific
 exploitation patterns (e.g., Juniper J-Web PHP chaining, Cisco ASA XSS) produce
 confirmed exploitation at lower CVSS thresholds.
 
-Palo Alto Networks has 7 CVEs with no CVSS score (NVD has not assigned scores
+Palo Alto Networks has 2 CVEs with no CVSS score (NVD has not assigned scores
 to recent PAN-SA advisories using Palo Alto's own scoring system). This is a
 data completeness artifact, not a severity signal.
 
@@ -229,21 +258,23 @@ CVE will be exploited in the next 30 days. We compare mean EPSS across vendors.
 
 | Vendor | N | Mean EPSS | Median | Min | Max |
 |--------|--:|----------:|-------:|----:|----:|
+| Array Networks | 2 | 0.3535 | 0.3535 | 0.0305 | 0.6765 |
 | Check Point | 2 | 0.7057 | 0.7057 | 0.4115 | 0.9998 |
 | Cisco | 13 | 0.5475 | 0.6327 | 0.1403 | 0.9999 |
-| Citrix | 11 | 0.5680 | 0.5763 | 0.0319 | 1.0000 |
+| Citrix | 13 | 0.5598 | 0.5763 | 0.0319 | 1.0000 |
 | F5 | 6 | 0.6071 | 0.7879 | 0.0225 | 1.0000 |
 | Fortinet | 18 | 0.5486 | 0.5843 | 0.0087 | 1.0000 |
 | Ivanti | 13 | 0.7775 | 0.9862 | 0.1415 | 1.0000 |
 | Juniper | 8 | 0.5387 | 0.7305 | 0.0110 | 0.9421 |
 | Palo Alto Networks | 12 | 0.5128 | 0.3554 | 0.0186 | 1.0000 |
 | SonicWall | 12 | 0.4290 | 0.2848 | 0.0191 | 0.9991 |
+| Sophos | 6 | 0.5898 | 0.6988 | 0.0473 | 0.9980 |
+| WatchGuard | 4 | 0.4860 | 0.4789 | 0.1225 | 0.8637 |
+| Zyxel | 6 | 0.5820 | 0.5943 | 0.0296 | 0.9994 |
 
-Overall mean: 0.5685 | Overall median: 0.6140
+Overall mean: 0.5628 | Overall median: 0.6140
 
-Sophos and Zyxel are absent because their enriched records lack EPSS scores.
-
-**Interpretation.** EPSS scores are high across the board (overall mean 0.57),
+**Interpretation.** EPSS scores are high across the board (overall mean 0.56),
 which is tautological: KEV-listed CVEs are known to be actively exploited,
 and EPSS models partially incorporate exploitation evidence. The variation
 between vendors (Ivanti 0.78, SonicWall 0.43) reflects differences in the
@@ -264,23 +295,26 @@ chi-squared distribution.
 |--------|:--------:|:------------:|:------------:|------:|
 | Fortinet | 18 | 10.66 | 28.45 | 17.79 |
 | Cisco | 13 | 6.91 | 22.23 | 15.32 |
+| Citrix | 13 | 6.91 | 22.23 | 15.32 |
 | Ivanti | 13 | 6.91 | 22.23 | 15.32 |
 | Palo Alto Networks | 12 | 6.19 | 20.96 | 14.77 |
 | SonicWall | 12 | 6.19 | 20.96 | 14.77 |
-| Citrix | 11 | 5.48 | 19.69 | 14.20 |
 | Juniper | 8 | 3.44 | 15.77 | 12.32 |
 | F5 | 6 | 2.19 | 13.06 | 10.87 |
 | Sophos | 6 | 2.19 | 13.06 | 10.87 |
 | Zyxel | 6 | 2.19 | 13.06 | 10.87 |
+| WatchGuard | 4 | 1.08 | 10.24 | 9.17 |
 | Check Point | 2 | 0.22 | 7.22 | 7.00 |
+| Array Networks | 2 | 0.22 | 7.22 | 7.00 |
 
 **Interpretation.** The confidence intervals are wide relative to the observed
 values. Fortinet's CI of [10.66, 28.45] fully contains the observed counts
-of 8 other vendors. Cisco's CI of [6.91, 22.23] overlaps with every vendor
-except Check Point.
+of most other vendors. Cisco's CI of [6.91, 22.23] overlaps with every vendor
+except Check Point and Array Networks.
 
-Of 55 vendor pairs, **54 (98%) have overlapping confidence intervals**. Only
-Fortinet vs Check Point (CI non-overlap) is statistically separable.
+Of 78 vendor pairs, **75 (96%) have overlapping confidence intervals**. Only
+3 pairs (Fortinet vs Check Point, Fortinet vs Array Networks, and Fortinet vs
+WatchGuard) have non-overlapping CIs and are statistically separable.
 
 This means: if we observed a new independent time window of similar length,
 the vendor ranking could easily shuffle. A vendor at 6 could plausibly appear
@@ -295,13 +329,14 @@ realization of a highly uncertain process.
 
 The evidence converges from multiple angles:
 
-1. **Concentration is low.** HHI normalized = 0.020, Gini = 0.246. The distribution
+1. **Concentration is low.** HHI normalized = 0.024, Gini = 0.302. The distribution
    is close to uniform.
 
-2. **Only one pair survives correction.** After Bonferroni adjustment of 55
-   pairwise tests, only Fortinet vs Check Point (18 vs 2) is significant.
+2. **Only two pairs survive correction.** After Bonferroni adjustment of 78
+   pairwise tests, only Fortinet vs Check Point and Fortinet vs Array Networks
+   (both 18 vs 2) are significant.
 
-3. **98% of CI pairs overlap.** Poisson confidence intervals show that nearly
+3. **96% of CI pairs overlap.** Poisson confidence intervals show that nearly
    all vendor counts are statistically indistinguishable from each other.
 
 4. **CVSS and EPSS do not differentiate.** Severity distributions are uniformly
@@ -309,8 +344,9 @@ The evidence converges from multiple angles:
    by KEV membership itself.
 
 The honest statistical answer is: **Fortinet has significantly more KEV entries
-than Check Point. Every other vendor comparison is noise at these sample sizes.**
-Any ranking of the remaining 9 vendors (ranging 6-13) is not supported by the data.
+than the two lowest-count vendors (Check Point and Array Networks). Every other
+vendor comparison is noise at these sample sizes.** Any ranking of the
+intermediate vendors (ranging 4-13) is not supported by the data.
 
 ---
 
@@ -363,7 +399,7 @@ epidemiology where diseases screened more frequently appear more prevalent.
 
 ## 10. Limitations
 
-1. **Small sample sizes.** N = 107 total, with per-vendor counts of 2-18,
+1. **Small sample sizes.** N = 115 total, with per-vendor counts of 2-18,
    severely limits statistical power. Many real differences (if they exist)
    cannot be detected at conventional significance levels. This is a
    fundamental constraint of the KEV catalog's size for this vendor set.
@@ -394,10 +430,13 @@ epidemiology where diseases screened more frequently appear more prevalent.
    affect counts. Different scope choices would yield different numbers.
    The scope is documented in `kev_edge_counts.json` metadata.
 
-7. **P-value approximations.** Chi-squared p-values use the Wilson-Hilferty
-   normal approximation; Poisson CIs use the Garwood method with approximate
-   chi-squared quantiles. These are accurate to ~0.01 for our parameter ranges
-   but are not exact.
+7. **P-value approximations.** The chi-squared uniformity p-value uses the
+   Wilson-Hilferty normal approximation, and Poisson CIs use the Garwood method
+   with approximate chi-squared quantiles; these are accurate to ~0.01 for our
+   parameter ranges but are not exact. The pairwise vendor comparisons, by
+   contrast, use an exact two-sided binomial test (no approximation), and the
+   year-trend now reports an overdispersion-adjusted (quasi-Poisson) standard
+   error alongside the naive Poisson SE.
 
 ---
 

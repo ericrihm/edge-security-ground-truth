@@ -1,6 +1,6 @@
 # Edge Security Vendor Comparison Matrix
 
-**Scope:** 107 CISA KEV-listed CVEs across 11 edge/perimeter vendors (firewalls, SSL-VPNs, remote-access gateways). All numbers sourced from project data files: `kev_edge_counts.json`, `kev_edge_enriched.json`, `CWE-ANALYSIS.md`, `TIME-TO-EXPLOIT.md`, `THREAT-ATTRIBUTION.md`, and per-vendor docs.
+**Scope:** 115 CISA KEV-listed CVEs across 13 edge/perimeter vendors (firewalls, SSL-VPNs, remote-access gateways). All numbers sourced from project data files: `kev_edge_counts.json`, `kev_edge_enriched.json`, `CWE-ANALYSIS.md`, `TIME-TO-EXPLOIT.md`, `THREAT-ATTRIBUTION.md`, and per-vendor docs.
 
 **Generated:** 2026-06-18
 
@@ -11,16 +11,18 @@
 | Vendor | KEV Count | Zero-Days | Ransomware CVEs | Median TTE | Top CWE Category | Attributed APTs | Silent Patch | Vendor Breach |
 |--------|----------:|----------:|----------------:|-----------:|-------------------|-----------------|:------------:|:-------------:|
 | Fortinet | 18 | 7 | 12 | 21d | Auth/Access Control (8) | UNC3886, China-nexus (unspecified) | Y | N |
-| Ivanti | 13 | 6 | 8 | 160d | Injection (6) | UNC5221, UNC5337 | N | N |
 | Cisco | 13 | 4 | 3 | 378d | Memory Safety (4) | UAT4356/STORM-1849 (ArcaneDoor) | N | N |
+| Citrix | 13 | 7 | 4 | 7d | Memory Safety (6) | LockBit affiliates, China-nexus | N | N |
+| Ivanti | 13 | 6 | 8 | 160d | Injection (6) | UNC5221, UNC5337 | N | N |
 | Palo Alto Networks | 12 | 4 | 5 | 7d | Auth/Access Control (4) | UTA0218 | N | N |
 | SonicWall | 12 | 2 | 7 | 254d | Injection (5) | Akira, Fog (ransomware) | N | Y |
-| Citrix | 11 | 6 | 4 | 8d | Memory Safety (4) | LockBit affiliates, China-nexus | N | N |
 | Juniper | 8 | 1 | 0 | 88d | Auth/Access Control (7) | UNC3886 | N | N |
 | F5 | 6 | 1 | 3 | 84d | Auth/Access + Memory (2 each) | None confirmed publicly | N | N |
-| Zyxel | 6 | 0 | 1 | 12d | Memory Safety + Injection (2 each) | Mirai botnets, Helldown | Y | N |
 | Sophos | 6 | 3 | 1 | 550d | Injection (4) | DriftingCloud, TA413, Pacific Rim cluster | N | N |
+| Zyxel | 6 | 0 | 1 | 12d | Memory Safety + Injection (2 each) | Mirai botnets, Helldown | Y | N |
+| WatchGuard | 4 | 1 | 0 | 34d | Memory Safety (3) | Sandworm (GRU, Cyclops Blink) | N | N |
 | Check Point | 2 | 2 | 2 | 1d | Auth/Access Control (1) | Iran-nexus | N | N |
+| Array Networks | 2 | 0 | 1 | 312d | Auth/Access + Injection (1 each) | Earth Kasha/MirrorFace (China-nexus) | N | N |
 
 ### Column Definitions
 
@@ -47,7 +49,7 @@ Ivanti is the injection leader in this dataset: 6 of 13 CVEs (46%) are code or c
 
 ### Cisco (13 KEV, 4 zero-days, 3 ransomware)
 
-Cisco's profile is shaped by ASA/FTD -- a long-lived C/C++ codebase where memory-safety bugs (4 CVEs) and legacy vulnerabilities drive the numbers. The median TTE of 378 days is the second-highest, heavily skewed by CVE-2014-2120 (TTE=3,891 days) and other pre-2020 CVEs retroactively added to KEV. The ArcaneDoor campaign (CVE-2024-20353/20359) demonstrated state-level zero-day capability against Cisco's firewall platform. Cisco has 13 KEV entries, tying Ivanti for second place.
+Cisco's profile is shaped by ASA/FTD -- a long-lived C/C++ codebase where memory-safety bugs (4 CVEs) and legacy vulnerabilities drive the numbers. The median TTE of 378 days is the second-highest, heavily skewed by CVE-2014-2120 (TTE=3,891 days) and other pre-2020 CVEs retroactively added to KEV. The ArcaneDoor campaign (CVE-2024-20353/20359) demonstrated state-level zero-day capability against Cisco's firewall platform. Cisco has 13 KEV entries, tying Citrix and Ivanti for second place.
 
 ### Palo Alto Networks (12 KEV, 4 zero-days, 5 ransomware)
 
@@ -57,9 +59,9 @@ Palo Alto has a fast median TTE (7 days) and 4 zero-days including CVE-2024-3400
 
 SonicWall's CWE profile combines SQL injection (3 CVEs in SMA appliances) with auth bypass (3 CVEs). The ransomware count (7) is disproportionately high relative to zero-days (2), reflecting SonicWall's position in the SMB firewall market where Akira and Fog ransomware operators specifically target volume over precision. SonicWall is the only vendor with a documented breach of its own infrastructure: the 2025 MySonicWall cloud backup incident exposed encrypted credentials, VPN configurations, and network topology for up to 240,000 devices, leading directly to the Marquis Software ransomware attack affecting 74 U.S. banks.
 
-### Citrix (11 KEV, 6 zero-days, 4 ransomware)
+### Citrix (13 KEV, 7 zero-days, 4 ransomware)
 
-Citrix has the highest zero-day rate (55%) among vendors with 6+ CVEs. Memory-safety bugs (4 CVEs) in the NetScaler C codebase dominate, including the catastrophic CitrixBleed (CVE-2023-4966) which LockBit affiliates exploited to breach Boeing, ICBC, DP World, and others. The median TTE of 8 days reflects rapid weaponization once vulnerabilities are disclosed. CVE-2019-19781 was a watershed event -- a path traversal that sat with mitigation-only guidance for weeks while exploitation expanded.
+Citrix has the highest zero-day rate (54%) among vendors with 6+ CVEs. Memory-safety bugs (6 CVEs) in the NetScaler C codebase dominate, including the catastrophic CitrixBleed (CVE-2023-4966) which LockBit affiliates exploited to breach Boeing, ICBC, DP World, and others. The median TTE of 7 days reflects rapid weaponization once vulnerabilities are disclosed. CVE-2019-19781 was a watershed event -- a path traversal that sat with mitigation-only guidance for weeks while exploitation expanded.
 
 ### Juniper (8 KEV, 1 zero-day, 0 ransomware)
 
@@ -77,9 +79,17 @@ Zyxel is the only vendor with zero confirmed zero-days and has the lowest ransom
 
 Sophos has a high zero-day rate (50%) with 3 of 6 CVEs exploited before disclosure, all in the XG Firewall (2020-2022). The standout data point is the Pacific Rim campaign: Sophos documented a five-year defensive operation against overlapping China-nexus clusters (with Volt Typhoon, APT31, and APT41 TTP overlap) targeting their firewall platform. The median TTE of 550 days is the highest in the dataset, entirely driven by true zero-days where KEV listing was backdated (e.g., CVE-2020-12271 TTE=555d despite being a true zero-day). All 4 injection CVEs are in the XG Firewall codebase.
 
+### WatchGuard (4 KEV, 1 zero-day, 0 ransomware)
+
+WatchGuard's mid-range footprint (4 CVEs) is dominated by memory corruption: three of four entries are out-of-bounds writes (CWE-787), split across two subsystems -- the 2022 HTTP management-plane RCE (CVE-2022-26318) and a 2025 pair in the `iked` IKEv2 VPN daemon (CVE-2025-9242, CVE-2025-14733). The lone outlier, CVE-2022-23176 (CWE-269 privilege management), was the access primitive Russia's GRU-attributed Sandworm group chained into the Cyclops Blink botnet before an April 2022 FBI court-authorized takedown. CVE-2025-14733 is WatchGuard's one confirmed zero-day -- added to KEV on its NVD publication date (December 19, 2025) with active exploitation and a one-week federal deadline. WatchGuard carries zero CISA ransomware-association flags: its KEV record is a nation-state and botnet story, not a ransomware one. Its SMB-skewed installed base (~117,000 internet-exposed instances counted in late 2025) is a structural slow-to-patch risk multiplier, the same dynamic documented for Zyxel.
+
 ### Check Point (2 KEV, 2 zero-days, 2 ransomware)
 
 Check Point has the smallest sample (2 CVEs) making statistical comparison unreliable. Both CVEs are zero-days (100% rate). CVE-2024-24919 was attributed to Iran-nexus actors and exploited before the vendor advisory -- mnemonic.io confirmed exploitation before Check Point's disclosure. The median TTE of 1 day is the fastest in the dataset. No documented silent patching. The small KEV footprint may reflect either a stronger product security posture or lower attacker prioritization; the data cannot distinguish these explanations.
+
+### Array Networks (2 KEV, 0 zero-days, 1 ransomware)
+
+Array Networks ties Check Point for the smallest sample (2 CVEs), but the two profiles differ sharply. Neither Array CVE is a confirmed zero-day -- both were patched well before their KEV listing, most strikingly CVE-2023-28461 (CWE-306 missing authentication, CVSS 9.8), whose ~20-month gap between the March 2023 fix and the November 2024 KEV addition is the longest such tail among the low-count vendors. That CVE carries CISA's ransomware-association flag, though the well-documented exploitation is the China-nexus Earth Kasha / MirrorFace espionage campaign (LodeInfo, NOOPDOOR, Cobalt Strike) against targets in Japan, Taiwan, and India -- the ransomware "Known" flag is CISA-asserted but less publicly corroborated. The second entry, CVE-2025-66644 (CWE-78 OS command injection, CVSS 7.2 with a PR:H prerequisite), was added to KEV three days after publication in December 2025. The access-control-plus-injection pairing aligns Array more with the broader edge-VPN exploitation pattern (Ivanti, Citrix) than with Check Point's credential-extraction / auth-bypass profile, and a small installed base (~3,427 internet-exposed gateways) plus a thin researcher community plausibly explain the low count.
 
 ---
 
@@ -89,13 +99,13 @@ Check Point has the smallest sample (2 CVEs) making statistical comparison unrel
 
 **Vendors:** Fortinet (18), Ivanti (13), Cisco (13), Palo Alto Networks (12), SonicWall (12)
 
-These five vendors account for 68 of 107 CVEs (64%). They share large enterprise and government install bases, making them high-value targets for both nation-state espionage and ransomware operations. All five have named APT attributions. The differentiator within this group is the dominant weakness class: Fortinet and Palo Alto skew toward auth failures, Ivanti and SonicWall toward injection, Cisco toward memory safety.
+These five vendors account for 68 of 115 CVEs (59%). They share large enterprise and government install bases, making them high-value targets for both nation-state espionage and ransomware operations. All five have named APT attributions. The differentiator within this group is the dominant weakness class: Fortinet and Palo Alto skew toward auth failures, Ivanti and SonicWall toward injection, Cisco toward memory safety.
 
 ### Group B: Mid-Volume, High-Severity
 
-**Vendors:** Citrix (11), Juniper (8)
+**Vendors:** Citrix (13), Juniper (8)
 
-Mid-range KEV counts but with concentration effects. Citrix has the highest zero-day rate (55%) among vendors with 6+ CVEs, and the CitrixBleed incident had outsized real-world impact (Boeing, ICBC). Juniper's 88% auth/access-control concentration is the most skewed CWE profile of any vendor. Both have documented China-nexus targeting.
+Mid-range KEV counts but with concentration effects. Citrix has the highest zero-day rate (54%) among vendors with 6+ CVEs, and the CitrixBleed incident had outsized real-world impact (Boeing, ICBC). Juniper's 88% auth/access-control concentration is the most skewed CWE profile of any vendor. Both have documented China-nexus targeting.
 
 ### Group C: Smaller Footprint, Concentrated Risk
 
@@ -118,15 +128,17 @@ Two CVEs is insufficient to establish a pattern. Check Point's numbers (100% zer
 | Vendor | Zero-Day Rate | Zero-Days / Total |
 |--------|-------------:|------------------:|
 | Check Point | 100% | 2/2 |
-| Citrix | 55% | 6/11 |
+| Citrix | 54% | 7/13 |
 | Sophos | 50% | 3/6 |
 | Ivanti | 46% | 6/13 |
 | Fortinet | 39% | 7/18 |
 | Palo Alto Networks | 33% | 4/12 |
 | Cisco | 31% | 4/13 |
+| WatchGuard | 25% | 1/4 |
 | SonicWall | 17% | 2/12 |
 | F5 | 17% | 1/6 |
 | Juniper | 12% | 1/8 |
+| Array Networks | 0% | 0/2 |
 | Zyxel | 0% | 0/6 |
 
 ### By Ransomware Density (% of KEV CVEs used in ransomware campaigns)
@@ -138,12 +150,14 @@ Two CVEs is insufficient to establish a pattern. Check Point's numbers (100% zer
 | Ivanti | 62% | 8/13 |
 | SonicWall | 58% | 7/12 |
 | F5 | 50% | 3/6 |
+| Array Networks | 50% | 1/2 |
 | Palo Alto Networks | 42% | 5/12 |
-| Citrix | 36% | 4/11 |
+| Citrix | 31% | 4/13 |
 | Cisco | 23% | 3/13 |
 | Sophos | 17% | 1/6 |
 | Zyxel | 17% | 1/6 |
 | Juniper | 0% | 0/8 |
+| WatchGuard | 0% | 0/4 |
 
 ### By Exploitation Speed (Median TTE)
 
@@ -151,13 +165,15 @@ Two CVEs is insufficient to establish a pattern. Check Point's numbers (100% zer
 |--------|----------:|
 | Check Point | 1d |
 | Palo Alto Networks | 7d |
-| Citrix | 8d |
+| Citrix | 7d |
 | Zyxel | 12d |
 | Fortinet | 21d |
+| WatchGuard | 34d |
 | F5 | 84d |
 | Juniper | 88d |
 | Ivanti | 160d |
 | SonicWall | 254d |
+| Array Networks | 312d |
 | Cisco | 378d |
 | Sophos | 550d |
 

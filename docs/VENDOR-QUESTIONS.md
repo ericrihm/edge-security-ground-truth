@@ -2,7 +2,7 @@
 
 A procurement and renewal checklist for CISOs, security architects, and procurement teams evaluating edge security vendors -- firewalls, SSL-VPNs, and remote-access gateways.
 
-Every question below is grounded in a specific finding from this dataset: 107 CISA KEV-listed CVEs across 11 vendors, 2020--2026. No question is hypothetical. Each one maps to a documented failure mode that cost real organizations real money.
+Every question below is grounded in a specific finding from this dataset: 115 CISA KEV-listed CVEs across 13 vendors, 2020--2026. No question is hypothetical. Each one maps to a documented failure mode that cost real organizations real money.
 
 **How to use this document:** Bring these questions to your vendor evaluation, RFP, or contract renewal. The "Data Point" tells you why the question matters. The "Good Answer" tells you what an honest, mature vendor says. The "Red Flag" tells you what evasion sounds like.
 
@@ -12,7 +12,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### A1. How many of your edge-product CVEs appear in CISA's Known Exploited Vulnerabilities catalog, and what is the year-over-year trend?
 
-**Data Point:** Across 11 major edge vendors, KEV counts for edge-only products range from 2 (Check Point) to 18 (Fortinet) over six years. The overall dataset contains 107 exploited edge CVEs. KEV additions are not declining -- 2024 added 19, 2025 added 21 (TIME-TO-EXPLOIT.md, KEV Additions by Year table).
+**Data Point:** Across 13 major edge vendors, KEV counts for edge-only products range from 2 (Check Point, Array Networks) to 18 (Fortinet) over six years. The overall dataset contains 115 exploited edge CVEs. KEV additions are not declining -- 2024 added 19, 2025 added 21 (TIME-TO-EXPLOIT.md, KEV Additions by Year table).
 
 **Good Answer:** The vendor provides the exact number without prompting, breaks it down by product line and year, and explains the trend in context (e.g., "our 2024 count reflects increased researcher attention after our bug bounty expansion"). They distinguish edge-only products from their full portfolio.
 
@@ -22,7 +22,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### A2. What percentage of your KEV-listed edge CVEs were zero-days -- exploited before any patch was available?
 
-**Data Point:** 36 of 107 edge CVEs (34%) in this dataset were exploited at or before public disclosure. 10 of 11 vendors have at least one confirmed zero-day. By vendor: Citrix 55%, Sophos 50%, Ivanti 46%, Fortinet 39%, Palo Alto 33%, Cisco 31%. Only Zyxel has zero confirmed zero-days (TIME-TO-EXPLOIT.md, Zero-Days by Vendor table).
+**Data Point:** 38 of 115 edge CVEs (33%) in this dataset were exploited at or before public disclosure. 11 of 13 vendors have at least one confirmed zero-day. By vendor: Citrix 54%, Sophos 50%, Ivanti 46%, Fortinet 39%, Palo Alto 33%, Cisco 31%. Zyxel and Array Networks have zero confirmed zero-days (TIME-TO-EXPLOIT.md, Zero-Days by Vendor table).
 
 **Good Answer:** The vendor acknowledges zero-day history with specifics: "Two of our seven KEV entries were exploited pre-patch. Here is what we changed in our development process afterward." They describe investments in variant analysis (finding siblings of reported bugs before attackers do).
 
@@ -32,7 +32,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### A3. How many of your exploited CVEs have been associated with ransomware campaigns?
 
-**Data Point:** 46 of 107 edge CVEs (43%) are flagged by CISA as used in known ransomware campaigns. Fortinet leads with 12 ransomware-associated CVEs (67% of their KEV total). SonicWall has 6 (50%), driven by Akira and Fog ransomware targeting SonicOS CVE-2024-40766 (Arctic Wolf documented 30+ intrusions). CitrixBleed (CVE-2023-4966) was exploited by LockBit affiliates to breach Boeing, ICBC, DP World, and Allen & Overy (VENDOR-MATRIX.md, Ransomware Density table; TIME-TO-EXPLOIT.md, Ransomware Association section).
+**Data Point:** 47 of 115 edge CVEs (41%) are flagged by CISA as used in known ransomware campaigns. Fortinet leads with 12 ransomware-associated CVEs (67% of their KEV total). SonicWall has 7 (58%), driven by Akira and Fog ransomware targeting SonicOS CVE-2024-40766 (Arctic Wolf documented 30+ intrusions). CitrixBleed (CVE-2023-4966) was exploited by LockBit affiliates to breach Boeing, ICBC, DP World, and Allen & Overy (VENDOR-MATRIX.md, Ransomware Density table; TIME-TO-EXPLOIT.md, Ransomware Association section).
 
 **Good Answer:** The vendor knows which of their CVEs appeared in ransomware campaigns, names them, and explains the downstream response (customer notification, IOC publication, coordination with law enforcement). They provide data on how quickly they issued patches for ransomware-targeted CVEs.
 
@@ -52,7 +52,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### A5. Has any nation-state actor been publicly attributed to exploiting your products?
 
-**Data Point:** 22 distinct threat actors have been attributed to exploiting edge CVEs in this dataset. China-nexus actors dominate: UNC3886 (Fortinet + Juniper), UNC5221/UNC5337 (Ivanti), UTA0218 (Palo Alto), DriftingCloud/TA413 and the Pacific Rim cluster (Sophos). The ArcaneDoor actor (UAT4356/STORM-1849) targeted Cisco ASA/FTD. Iran-nexus actors exploited Check Point CVE-2024-24919. Only F5 has zero public actor attributions -- which does not mean absence of sophisticated exploitation, only absence of public naming (THREAT-ATTRIBUTION.md, Attribution Matrix).
+**Data Point:** 22 distinct threat actors have been attributed to exploiting edge CVEs in this dataset across 11 of 13 vendors. China-nexus actors dominate: UNC3886 (Fortinet + Juniper), UNC5221/UNC5337 (Ivanti), UTA0218 (Palo Alto), DriftingCloud/TA413 and the Pacific Rim cluster (Sophos). The ArcaneDoor actor (UAT4356/STORM-1849) targeted Cisco ASA/FTD. Iran-nexus actors exploited Check Point CVE-2024-24919. F5, WatchGuard, and Array Networks have zero public actor attributions -- which does not mean absence of sophisticated exploitation, only absence of public naming (THREAT-ATTRIBUTION.md, Attribution Matrix).
 
 **Good Answer:** The vendor acknowledges public attributions by name, describes their collaboration with government agencies (CISA, NSA, Five Eyes), and explains what architectural changes resulted from the campaigns. Sophos publishing the Pacific Rim five-year timeline is the transparency benchmark in this dataset.
 
@@ -116,7 +116,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### C11. What percentage of your exploited edge CVEs are authentication bypasses or missing-authentication bugs?
 
-**Data Point:** Authentication and access-control failures account for 30 of 107 exploited edge CVEs (28%) -- the single largest weakness category. The trend is worsening: auth bugs went from 12% of exploited CVEs (pre-2019) to 35% (2024+). Fortinet has 8 auth/access-control CVEs (44% of their KEV total). Juniper has 7 (88%). Palo Alto has 4 (33%). CWE-306 (Missing Authentication for Critical Function) alone accounts for 7 CVEs across 4 vendors -- meaning the management API was simply unprotected (CWE-ANALYSIS.md, Per-Vendor CWE Distribution table; CWE Evolution Over Time section).
+**Data Point:** Authentication and access-control failures account for 31 of 115 exploited edge CVEs (27%) -- the single largest weakness category. The trend is worsening: auth bugs went from 12% of exploited CVEs (pre-2019) to 31% (2024+). Fortinet has 8 auth/access-control CVEs (44% of their KEV total). Juniper has 7 (88%). Palo Alto has 4 (33%). CWE-306 (Missing Authentication for Critical Function) alone accounts for 8 CVEs across 5 vendors -- meaning the management API was simply unprotected (CWE-ANALYSIS.md, Per-Vendor CWE Distribution table; CWE Evolution Over Time section).
 
 **Good Answer:** The vendor provides the specific number and describes the architectural root cause. For example: "Three of our exploited CVEs were authentication bypasses. Root cause: our management plane had legacy API endpoints that predated our auth framework. We have completed a full auth-surface audit and every endpoint now requires authentication with no exceptions. Here are the test results."
 
@@ -126,7 +126,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### C12. What programming languages are your edge appliance's SSL-VPN engine and management plane written in?
 
-**Data Point:** Memory-safety bugs (buffer overflows, out-of-bounds writes) account for 22 of 107 exploited edge CVEs (21%), and the share is surging -- from 14% in 2020--2021 to 30% in 2024+. Cisco ASA, Citrix NetScaler, and Fortinet FortiOS each have 4+ memory-safety KEV entries in their C/C++ SSL-VPN and packet-parsing code. CISA's Secure-by-Design initiative specifically calls for adoption of memory-safe languages for these components (CWE-ANALYSIS.md, Memory-Safe Languages section; CWE Evolution Over Time table).
+**Data Point:** Memory-safety bugs (buffer overflows, out-of-bounds writes) account for 27 of 115 exploited edge CVEs (23%), and the share is surging -- from 14% in 2020--2021 to 36% in 2024+. Cisco ASA, Citrix NetScaler, and Fortinet FortiOS each have 4+ memory-safety KEV entries in their C/C++ SSL-VPN and packet-parsing code. CISA's Secure-by-Design initiative specifically calls for adoption of memory-safe languages for these components (CWE-ANALYSIS.md, Memory-Safe Languages section; CWE Evolution Over Time table).
 
 **Good Answer:** The vendor states the language and describes their migration plan: "Our SSL-VPN engine is written in C. We are rewriting the TLS parser in Rust, with completion targeted for [date]. Our management API is already in Go/Python/Java." They provide a roadmap with deliverables, not aspirations.
 
@@ -136,7 +136,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### C13. How do you prevent OS command injection in your management interfaces?
 
-**Data Point:** OS command injection (CWE-78) appears across 5 of 11 vendors: Ivanti, Palo Alto, SonicWall, Sophos, and Zyxel. This is functionally universal -- it happens when management interfaces shell out to system commands with attacker-controlled input instead of using safe APIs. Sophos has 4 injection CVEs (67% of their KEV total), all in the XG Firewall. SonicWall has 5 injection CVEs (42%), including 3 SQL injections in the SMA appliance line suggesting shared vulnerable database-interaction patterns (CWE-ANALYSIS.md, Universal CWEs section; Vendor-Specific Observations).
+**Data Point:** OS command injection (CWE-78) appears across 6 of 13 vendors: Array Networks, Ivanti, Palo Alto, SonicWall, Sophos, and Zyxel. This is functionally universal -- it happens when management interfaces shell out to system commands with attacker-controlled input instead of using safe APIs. Sophos has 4 injection CVEs (67% of their KEV total), all in the XG Firewall. SonicWall has 5 injection CVEs (42%), including 3 SQL injections in the SMA appliance line suggesting shared vulnerable database-interaction patterns (CWE-ANALYSIS.md, Universal CWEs section; Vendor-Specific Observations).
 
 **Good Answer:** "We do not use shell calls for any operation reachable from the management plane. All system operations use language-native APIs. We enforce this through static analysis rules in our CI pipeline that block `system()`, `exec()`, and equivalent calls in any code path reachable from an HTTP handler. Here is our SAST configuration."
 
@@ -146,7 +146,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### C14. What is your process for finding and eliminating vulnerability variants after a CVE is reported?
 
-**Data Point:** Multiple vendors show recurring CVEs in the same component. Fortinet's `sslvpnd` has produced 4 separate KEV entries (CVE-2020-12812, CVE-2022-42475, CVE-2023-27997, CVE-2024-21762). Sophos has 3 CVEs (CVE-2020-12271, CVE-2022-1040, CVE-2022-3236) hitting the same User Portal/Webadmin surface -- a recurring architectural weakness. The CWE-ANALYSIS.md "Recurring Weakness Indicators" table identifies 10 vendor-category pairs with 3+ exploited CVEs in the same weakness class. These are not independent mistakes -- they are systemic SDL gaps (CWE-ANALYSIS.md, Recurring Weakness Indicators table).
+**Data Point:** Multiple vendors show recurring CVEs in the same component. Fortinet's `sslvpnd` has produced 4 separate KEV entries (CVE-2020-12812, CVE-2022-42475, CVE-2023-27997, CVE-2024-21762). Sophos has 3 CVEs (CVE-2020-12271, CVE-2022-1040, CVE-2022-3236) hitting the same User Portal/Webadmin surface -- a recurring architectural weakness. The CWE-ANALYSIS.md "Recurring Weakness Indicators" table identifies 11 vendor-category pairs with 3+ exploited CVEs in the same weakness class. These are not independent mistakes -- they are systemic SDL gaps (CWE-ANALYSIS.md, Recurring Weakness Indicators table).
 
 **Good Answer:** "When we receive a CVE report, we conduct variant analysis: we search the entire codebase for the same pattern, not just the specific instance. For CVE-[X], our variant scan found N additional instances that we fixed in the same release. We measure variant-analysis coverage and publish it in our annual SDL report."
 
@@ -160,7 +160,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 **Good Answer:** "Yes. [Named third party] reviewed our management-plane auth architecture in [year]. The report is available under mutual NDA. We also submit to CISA's Secure-by-Design pledge and publish annual SDL metrics."
 
-**Red Flag:** "Our internal security team conducts architecture reviews." Internal reviews found zero of the 36 zero-days in this dataset. Every zero-day was discovered by external researchers (Mandiant, Volexity, Rapid7, watchTowr, Lexfo) or by the attacker themselves. Internal review is necessary but obviously insufficient.
+**Red Flag:** "Our internal security team conducts architecture reviews." Internal reviews found zero of the 38 zero-days in this dataset. Every zero-day was discovered by external researchers (Mandiant, Volexity, Rapid7, watchTowr, Lexfo) or by the attacker themselves. Internal review is necessary but obviously insufficient.
 
 ---
 
@@ -168,7 +168,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### D16. What is the median time-to-exploit for your product's CVEs, and how has it changed?
 
-**Data Point:** The dataset-wide median TTE is 40 days, but this masks a dramatic acceleration. For CVEs published in 2024, median TTE across all vendors is 0 days -- exploitation is simultaneous with disclosure. For 2025, it is 3 days. Per-vendor medians range from 1 day (Check Point) to 550 days (Sophos), but these are distorted by legacy CVEs backdated when KEV launched in 2021. The operationally relevant metric: for CVEs published in 2024+, median TTE converges to 0--3 days across all vendors (TIME-TO-EXPLOIT.md, TTE Distribution; Median TTE by NVD Publication Year table).
+**Data Point:** The dataset-wide median TTE is 36 days, but this masks a dramatic acceleration. For CVEs published in 2024, median TTE across all vendors is 0 days -- exploitation is simultaneous with disclosure. For 2025, it is 3 days. Per-vendor medians range from 1 day (Check Point) to 550 days (Sophos), but these are distorted by legacy CVEs backdated when KEV launched in 2021. The operationally relevant metric: for CVEs published in 2024+, median TTE converges to 0--3 days across all vendors (TIME-TO-EXPLOIT.md, TTE Distribution; Median TTE by NVD Publication Year table).
 
 **Good Answer:** The vendor provides per-year TTE data for their products, acknowledges the acceleration, and describes how their release engineering has adapted: "Our average time from internal fix to customer-available patch has decreased from N days to M days over the past 3 years. We support hotfix deployment without full firmware upgrade for critical fixes."
 
@@ -178,7 +178,7 @@ Every question below is grounded in a specific finding from this dataset: 107 CI
 
 ### D17. How many of your CVEs have been weaponized by ransomware groups, and what did you do about it?
 
-**Data Point:** 46 of 107 edge CVEs (43%) are CISA-flagged as ransomware-associated. SonicWall CVE-2024-40766 was mass-exploited by Akira and Fog ransomware -- Arctic Wolf documented 30+ intrusions. CitrixBleed (CVE-2023-4966) was used by LockBit affiliates in attacks on Boeing, ICBC, DP World, and Allen & Overy. Fortinet has 12 ransomware-associated CVEs, accounting for 26% of all ransomware-linked edge CVEs in the dataset (TIME-TO-EXPLOIT.md, Ransomware Association table; VENDOR-MATRIX.md).
+**Data Point:** 47 of 115 edge CVEs (41%) are CISA-flagged as ransomware-associated. SonicWall CVE-2024-40766 was mass-exploited by Akira and Fog ransomware -- Arctic Wolf documented 30+ intrusions. CitrixBleed (CVE-2023-4966) was used by LockBit affiliates in attacks on Boeing, ICBC, DP World, and Allen & Overy. Fortinet has 12 ransomware-associated CVEs, accounting for 26% of all ransomware-linked edge CVEs in the dataset (TIME-TO-EXPLOIT.md, Ransomware Association table; VENDOR-MATRIX.md).
 
 **Good Answer:** The vendor provides the count, names the ransomware groups, and describes proactive measures: customer notification campaigns, IOC feeds, partnership with CISA/FBI for takedown operations, and engineering changes to reduce the pre-auth attack surface that ransomware operators target for initial access.
 
@@ -232,7 +232,7 @@ Questions C11--C15 are designed for security architects evaluating the long-term
 
 ### Across Vendors
 
-No vendor in this dataset is dramatically safer than the others. Eleven vendors, 2--18 exploited edge CVEs each, all under active exploitation. The purpose of these questions is not to find a "safe" vendor -- it is to find a vendor whose response posture, transparency, and engineering trajectory give you the best chance of surviving the next zero-day.
+No vendor in this dataset is dramatically safer than the others. Thirteen vendors, 2--18 exploited edge CVEs each, all under active exploitation. The purpose of these questions is not to find a "safe" vendor -- it is to find a vendor whose response posture, transparency, and engineering trajectory give you the best chance of surviving the next zero-day.
 
 ---
 
@@ -251,4 +251,4 @@ All data points reference analyses in this repository, reproducible from the liv
 
 ---
 
-*Dataset: 107 CISA KEV-listed CVEs, 11 edge vendors, 2020--2026. Last updated: 2026-06-18.*
+*Dataset: 115 CISA KEV-listed CVEs, 13 edge vendors, 2020--2026. Last updated: 2026-06-18.*

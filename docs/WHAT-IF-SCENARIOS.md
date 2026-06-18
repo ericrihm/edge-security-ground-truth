@@ -2,7 +2,7 @@
 
 Every edge security deployment starts with a procurement decision. You compare vendors, read analyst reports, check a few CVE counts, maybe get a demo. Then you sign a contract and live with that choice for 5-7 years.
 
-This document takes the 107 CISA KEV-listed edge CVEs in this repository and asks: **what would your life have looked like** under five different decisions? Not in the abstract -- with specific dates, specific CVEs, and specific consequences.
+This document takes the 115 CISA KEV-listed edge CVEs in this repository and asks: **what would your life have looked like** under five different decisions? Not in the abstract -- with specific dates, specific CVEs, and specific consequences.
 
 The data is from [`kev_edge_enriched.json`](../scripts/kev_edge_enriched.json), [`TIME-TO-EXPLOIT.md`](./TIME-TO-EXPLOIT.md), [`CWE-ANALYSIS.md`](./CWE-ANALYSIS.md), and [`VENDOR-MATRIX.md`](./VENDOR-MATRIX.md). Every number is reproducible.
 
@@ -88,7 +88,7 @@ Three major new CVEs hit, plus two more legacy entries:
 
 ## Scenario 2: "What if you chose the vendor with the fewest CVEs?"
 
-Your CISO says: "Pick the vendor with the cleanest track record." You pull CISA KEV numbers and see Check Point has **2 entries** against 107 total. Fortinet has 18. The choice seems obvious.
+Your CISO says: "Pick the vendor with the cleanest track record." You pull CISA KEV numbers and see Check Point has **2 entries** against 115 total. Fortinet has 18. The choice seems obvious.
 
 You deploy Check Point Quantum Security Gateways.
 
@@ -106,8 +106,8 @@ Both of Check Point's CVEs are zero-days. That is a **100% zero-day rate** -- th
 |--------|----------:|--------------:|----------------:|
 | Fortinet | 18 | 39% | 67% |
 | **Check Point** | **2** | **100%** | **100%** |
-| Citrix | 11 | 55% | 36% |
-| Palo Alto | 12 | 33% | 33% |
+| Citrix | 13 | 54% | 31% |
+| Palo Alto | 12 | 33% | 42% |
 
 Check Point's median TTE is **1 day**. The fastest in the entire dataset. When a Check Point vulnerability is exploited, it is exploited essentially immediately.
 
@@ -131,23 +131,23 @@ Two incidents in six years versus eighteen for Fortinet. But both of yours were 
 
 You have a mature vulnerability management program. You scan weekly, prioritize CISA KEV entries, and commit to deploying patches within 30 calendar days of vendor advisory. This puts you ahead of most organizations -- CISA's own BOD 22-01 allows 14 days for critical KEV entries, but many organizations take 60-90 days in practice.
 
-How many of the 107 exploited edge CVEs would have been weaponized before your 30-day window closed?
+How many of the 115 exploited edge CVEs would have been weaponized before your 30-day window closed?
 
-### The answer: 48%
+### The answer: 49%
 
-**51 of 107 CVEs** (47.7%) were added to CISA KEV within 30 days of NVD publication. This means exploitation was confirmed -- not theoretical, not "proof-of-concept available," but confirmed active exploitation in the wild -- before your 30-day patch cycle could complete.
+**56 of 115 CVEs** (48.7%) were added to CISA KEV within 30 days of NVD publication. This means exploitation was confirmed -- not theoretical, not "proof-of-concept available," but confirmed active exploitation in the wild -- before your 30-day patch cycle could complete.
 
 The breakdown:
 
 | TTE Bucket | CVEs | Cumulative % | Your 30-day patch covers? |
 |------------|-----:|-------------:|:-------------------------:|
-| Negative (exploited before disclosure) | 6 | 5.6% | No -- no patch exists yet |
-| 0 days (same-day) | 20 | 24.3% | No -- patch just released |
-| 1-7 days | 17 | 40.2% | No -- still in your review queue |
-| 8-30 days | 8 | 47.7% | Maybe -- depends on timing |
-| 31-90 days | 9 | 56.1% | Yes |
-| 91-365 days | 10 | 65.4% | Yes |
-| 365+ days | 37 | 100% | Yes |
+| Negative (exploited before disclosure) | 6 | 5.2% | No -- no patch exists yet |
+| 0 days (same-day) | 35 | 35.7% | No -- patch just released |
+| 1-7 days | 6 | 40.9% | No -- still in your review queue |
+| 8-30 days | 9 | 48.7% | Maybe -- depends on timing |
+| 31-90 days | 11 | 58.3% | Yes |
+| 91-365 days | 10 | 67.0% | Yes |
+| 365+ days | 38 | 100% | Yes |
 
 ### What "30 days" actually means in practice
 
@@ -155,9 +155,9 @@ Your 30-day clock starts when the vendor publishes an advisory. But:
 
 1. **6 CVEs were exploited before any advisory existed.** Your clock has not started. You cannot patch what has not been disclosed. These include CVE-2022-42475 (Fortinet, exploited 20 days before NVD), CVE-2023-46805 and CVE-2024-21887 (Ivanti, exploited 2 days before NVD), and CVE-2025-40602 (SonicWall, 1 day before).
 
-2. **20 CVEs were exploited on the same day as disclosure.** Your clock starts at t=0, but attackers already have working exploits. You need to discover the advisory, assess the impact, test the patch in a lab, schedule a maintenance window, deploy, and verify. Even an aggressive team cannot do this in zero days.
+2. **35 CVEs were exploited on the same day as disclosure.** Your clock starts at t=0, but attackers already have working exploits. You need to discover the advisory, assess the impact, test the patch in a lab, schedule a maintenance window, deploy, and verify. Even an aggressive team cannot do this in zero days.
 
-3. **17 CVEs were exploited within 1-7 days.** Your patch is in the approval pipeline. Your change advisory board meets next Tuesday. The attackers are already inside.
+3. **6 CVEs were exploited within 1-7 days.** Your patch is in the approval pipeline. Your change advisory board meets next Tuesday. The attackers are already inside.
 
 ### Specific examples of what you would have missed
 
@@ -167,7 +167,7 @@ Your 30-day clock starts when the vendor publishes an advisory. But:
 
 ### The uncomfortable conclusion
 
-A 30-day patch cycle protects you against roughly **52% of exploited edge CVEs** -- the ones that sit in the long tail before being weaponized. It leaves you exposed to the 48% that are weaponized before you can act. For the most dangerous CVEs (zero-days, nation-state campaigns), a patch cycle of any length is insufficient because the vulnerability is exploited before the patch exists.
+A 30-day patch cycle protects you against roughly **51% of exploited edge CVEs** -- the ones that sit in the long tail before being weaponized. It leaves you exposed to the 49% that are weaponized before you can act. For the most dangerous CVEs (zero-days, nation-state campaigns), a patch cycle of any length is insufficient because the vulnerability is exploited before the patch exists.
 
 ---
 
@@ -175,16 +175,16 @@ A 30-day patch cycle protects you against roughly **52% of exploited edge CVEs**
 
 You invest heavily. You build a rapid-response capability: 24/7 SOC monitoring for CISA KEV additions, pre-staged test environments for every edge vendor, pre-approved emergency change windows, and a commitment to deploy critical patches within 7 calendar days. This is elite-tier patch management -- very few organizations achieve this consistently.
 
-### The answer: 40% still get through
+### The answer: 41% still get through
 
-**43 of 107 CVEs** (40.2%) were added to KEV within 7 days of disclosure. Your 7-day process catches 60% of exploited edge CVEs before the confirmed exploitation date, but 40% were already weaponized before your fastest possible response.
+**47 of 115 CVEs** (40.9%) were added to KEV within 7 days of disclosure. Your 7-day process catches 59% of exploited edge CVEs before the confirmed exploitation date, but 41% were already weaponized before your fastest possible response.
 
 | TTE Bucket | CVEs | What happened |
 |------------|-----:|---------------|
 | Negative TTE | 6 | Exploited before disclosure. No patch existed during exploitation. |
-| TTE = 0 | 20 | Exploited same day. Patch available but deployment takes time. |
-| TTE 1-7 days | 17 | You might catch these -- if you started the moment the advisory dropped. |
-| TTE 8+ days | 64 | Your 7-day process covers these. |
+| TTE = 0 | 35 | Exploited same day. Patch available but deployment takes time. |
+| TTE 1-7 days | 6 | You might catch these -- if you started the moment the advisory dropped. |
+| TTE 8+ days | 68 | Your 7-day process covers these. |
 
 ### The improvement is real but bounded
 
@@ -192,13 +192,13 @@ Compared to a 30-day cycle:
 
 | Metric | 30-day cycle | 7-day cycle | Improvement |
 |--------|:-----------:|:----------:|:-----------:|
-| CVEs exploited before patch deployed | 51 (48%) | 43 (40%) | 8 fewer exposures |
-| Zero-days (no patch to deploy) | 26 | 26 | No change |
-| Same-day exploitation | 20 | 20 | No change |
+| CVEs exploited before patch deployed | 56 (49%) | 47 (41%) | 9 fewer exposures |
+| Zero-days (no patch to deploy) | 38 | 38 | No change |
+| Same-day exploitation | 35 | 35 | No change |
 
-The 7-day cycle saves you from **8 additional CVEs** that were exploited between days 8-30. That is meaningful -- it includes CVEs like CVE-2023-4966 (CitrixBleed, TTE=8 days, used by LockBit at Boeing and ICBC) and CVE-2022-1040 (Sophos, TTE=6 days, Pacific Rim campaign).
+The 7-day cycle saves you from **9 additional CVEs** that were exploited between days 8-30. That is meaningful -- it includes CVEs like CVE-2023-4966 (CitrixBleed, TTE=8 days, used by LockBit at Boeing and ICBC) and CVE-2022-1040 (Sophos, TTE=6 days, Pacific Rim campaign).
 
-But it does not help with the 26 zero-days (exploited at or before disclosure) or the 20 same-day exploitations. Those require a different defense entirely: assume-breach posture, network segmentation, anomaly detection, and the ability to hunt for indicators of compromise rather than waiting for a patch.
+But it does not help with the 38 zero-days (exploited at or before disclosure) or the 35 same-day exploitations. Those require a different defense entirely: assume-breach posture, network segmentation, anomaly detection, and the ability to hunt for indicators of compromise rather than waiting for a patch.
 
 ### What the 7-day elite defenders actually do
 
@@ -217,13 +217,13 @@ Every scenario above treats the vendor choice as the key decision. But what if t
 
 ### The data: CWE class concentrations
 
-From the [CWE Analysis](./CWE-ANALYSIS.md), three weakness categories account for 71% of all 107 exploited edge CVEs:
+From the [CWE Analysis](./CWE-ANALYSIS.md), three weakness categories account for 72% of all 115 exploited edge CVEs:
 
 | Category | CVEs | Share | Key CWEs |
 |----------|-----:|------:|----------|
-| Auth / Access Control | 30 | 28% | CWE-287, CWE-288, CWE-306, CWE-863, CWE-284 |
-| Injection | 24 | 22% | CWE-78, CWE-89, CWE-94, CWE-77 |
-| Memory Safety | 22 | 21% | CWE-120, CWE-121, CWE-122, CWE-787 |
+| Auth / Access Control | 31 | 27% | CWE-287, CWE-288, CWE-306, CWE-863, CWE-284 |
+| Injection | 25 | 22% | CWE-78, CWE-89, CWE-94, CWE-77 |
+| Memory Safety | 27 | 23% | CWE-120, CWE-121, CWE-122, CWE-787 |
 
 These are not exotic zero-days in novel attack surfaces. They are the same bug classes OWASP warned about in 2003.
 
@@ -231,7 +231,7 @@ These are not exotic zero-days in novel attack surfaces. They are the same bug c
 
 **If you blocked authentication bypasses (CWE-287, CWE-288, CWE-306):**
 
-These three CWEs alone account for 22 of 107 CVEs (20.6%) across 8 of 11 vendors. Every vendor except Citrix, Sophos, and Zyxel has at least one. Specific examples you would have stopped:
+These three CWEs alone account for 24 of 115 CVEs (20.9%) across 9 of 13 vendors. Every vendor except Citrix, Sophos, Zyxel, and WatchGuard has at least one. Specific examples you would have stopped:
 
 | CVE | Vendor | CVSS | What it did |
 |-----|--------|-----:|-------------|
@@ -255,7 +255,7 @@ How would you "block authentication bypasses" without vendor cooperation? You ca
 
 **If you also blocked injection (CWE-78, CWE-89, CWE-94, CWE-77):**
 
-Adding injection defenses covers another 24 CVEs (22.4%). These two categories combined eliminate **43% of the attack surface**. Key injection CVEs you would have stopped:
+Adding injection defenses covers another 25 CVEs (21.7%). These two categories combined eliminate **49% of the attack surface**. Key injection CVEs you would have stopped:
 
 | CVE | Vendor | CVSS | What it did |
 |-----|--------|-----:|-------------|
@@ -280,10 +280,12 @@ Here is what makes CWE-based defense superior to vendor selection: **auth bypass
 | Palo Alto | 4 | 2 | 6 | 50% |
 | Sophos | 0 | 4 | 4 | 67% |
 | Cisco | 2 | 2 | 4 | 31% |
-| Citrix | 2 | 2 | 4 | 36% |
+| Citrix | 2 | 2 | 4 | 31% |
 | F5 | 2 | 1 | 3 | 50% |
 | Check Point | 1 | 0 | 1 | 50% |
 | Zyxel | 0 | 2 | 2 | 33% |
+| WatchGuard | 0 | 0 | 0 | 0% |
+| Array Networks | 1 | 1 | 2 | 100% |
 
 No matter which vendor you chose in 2020, auth bypass and injection defenses would have reduced your exploited-CVE exposure by 31-88%. **The weakness class is more predictive than the vendor brand.**
 
@@ -309,9 +311,9 @@ Five scenarios, one conclusion: **the controllable variable is response speed an
 |----------|-----------------|
 | Fortinet since 2020 | High-volume exposure: 18 KEVs, emergency patches every ~4 months, 7 zero-days, 1 silent patch. The largest vendor is also the most-targeted. |
 | Pick lowest CVE count | Check Point's 2 CVEs are both zero-days (100%), both ransomware-linked. Low count hides high per-incident severity. |
-| 30-day patch cycle | 48% of CVEs exploited before your patch deploys. A mature patching program still leaves you exposed to nearly half the threat. |
-| 7-day emergency patches | 40% still exploited before day 7. Better, but zero-days and same-day exploitation defeat any patch-only strategy. |
-| Defend by CWE class | Blocking auth bypass + injection eliminates 43% of the attack surface across *every* vendor. Architectural controls beat vendor selection. |
+| 30-day patch cycle | 49% of CVEs exploited before your patch deploys. A mature patching program still leaves you exposed to nearly half the threat. |
+| 7-day emergency patches | 41% still exploited before day 7. Better, but zero-days and same-day exploitation defeat any patch-only strategy. |
+| Defend by CWE class | Blocking auth bypass + injection eliminates 49% of the attack surface across *every* vendor. Architectural controls beat vendor selection. |
 
 The edge is the most dangerous component in your network. Every vendor's edge products have been exploited in the wild. The question is not "which vendor is safe?" -- none of them are. The question is: "How fast can you respond, and have you built defenses that work even when the patch does not exist yet?"
 
@@ -319,4 +321,4 @@ The edge is the most dangerous component in your network. Every vendor's edge pr
 
 ---
 
-*Data sources: CISA KEV catalog (2020-01-01 to 2026-06-18), NVD API 2.0, FIRST EPSS, per-vendor incident reports. All numbers reproducible from [`scripts/kev_edge_enriched.json`](../scripts/kev_edge_enriched.json). See [METHODOLOGY.md](../METHODOLOGY.md) for scope rules and limitations.*
+*Data sources: CISA KEV catalog (2020-01-01 to 2026-06-18), NVD API 2.0, FIRST EPSS, per-vendor incident reports. All numbers reproducible from [`scripts/kev_edge_enriched.json`](../scripts/kev_edge_enriched.json). Dataset: 115 CVEs, 13 vendors. See [METHODOLOGY.md](../METHODOLOGY.md) for scope rules and limitations.*

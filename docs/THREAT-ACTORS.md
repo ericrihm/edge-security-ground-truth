@@ -1,6 +1,6 @@
 # Threat Actor Analysis: Edge Device Exploitation
 
-**Scope:** Named threat actors and campaigns documented targeting edge/perimeter devices (firewalls, SSL-VPNs, ADCs, remote-access gateways) from the 11 vendors tracked in this project. Data compiled from `data/threat_actors.json` and cross-referenced against vendor documentation in this repo.
+**Scope:** Named threat actors and campaigns documented targeting edge/perimeter devices (firewalls, SSL-VPNs, ADCs, remote-access gateways) from the 13 vendors tracked in this project. Data compiled from `data/threat_actors.json` and cross-referenced against vendor documentation in this repo.
 
 **Last updated:** 2026-06-18
 
@@ -25,8 +25,10 @@ The matrix below classifies each vendor by the types of threat actors documented
 | **SonicWall** | | | | X | | X |
 | **Zyxel** | | | X | X | X | |
 | **Check Point** | | X | | X | | |
+| **WatchGuard** | | | | | | |
+| **Array Networks** | | | | X | | |
 
-**Reading the matrix:** China-nexus actors have documented exploitation of 8 of 11 vendors. Ransomware groups have documented exploitation of 5 of 11. Only Zyxel has confirmed botnet-scale exploitation. Three vendors (SonicWall, Zyxel, Check Point) have no confirmed China-nexus targeting. Only Check Point has confirmed Iran-nexus state actor targeting.
+**Reading the matrix:** China-nexus actors have documented exploitation of 8 of 13 vendors. Ransomware groups have documented exploitation of 6 of 13. Only Zyxel has confirmed botnet-scale exploitation. Five vendors (SonicWall, Zyxel, Check Point, WatchGuard, Array Networks) have no confirmed China-nexus targeting. Only Check Point has confirmed Iran-nexus state actor targeting.
 
 ---
 
@@ -34,7 +36,7 @@ The matrix below classifies each vendor by the types of threat actors documented
 
 ### 2.1 China-Nexus Actors
 
-China-nexus groups constitute the dominant threat to edge devices in this dataset. At least 12 distinct actor clusters have been attributed to exploitation of 8 of the 11 tracked vendors. Attribution sources include Mandiant/GTIG, Volexity, CrowdStrike, Cisco Talos, Sophos X-Ops, Recorded Future, and multiple government agencies (CISA, NSA, FBI, Five Eyes partners).
+China-nexus groups constitute the dominant threat to edge devices in this dataset. At least 12 distinct actor clusters have been attributed to exploitation of 8 of the 13 tracked vendors. Attribution sources include Mandiant/GTIG, Volexity, CrowdStrike, Cisco Talos, Sophos X-Ops, Recorded Future, and multiple government agencies (CISA, NSA, FBI, Five Eyes partners).
 
 #### UNC3886
 
@@ -221,7 +223,7 @@ China-nexus groups constitute the dominant threat to edge devices in this datase
 
 China-nexus actors dominate the edge device threat landscape by every measure in this dataset.
 
-**Breadth:** 8 of 11 vendors have documented China-nexus exploitation (Fortinet, Ivanti, Cisco, Palo Alto, Sophos, Juniper, F5, Citrix). The three exceptions -- SonicWall, Zyxel, and Check Point -- skew toward SMB markets that are less strategically valuable for espionage targeting.
+**Breadth:** 8 of 13 vendors have documented China-nexus exploitation (Fortinet, Ivanti, Cisco, Palo Alto, Sophos, Juniper, F5, Citrix). The five exceptions -- SonicWall, Zyxel, Check Point, WatchGuard, and Array Networks -- skew toward SMB markets that are less strategically valuable for espionage targeting.
 
 **Depth:** Multiple distinct China-nexus clusters target the same vendor. Sophos alone has been exploited by at least 5 attributed China-linked groups (Volt Typhoon, APT31, APT41, DriftingCloud, TA413) per the Pacific Rim report (Sophos, Oct 2024). Fortinet has been targeted by UNC3886, Volt Typhoon, the BOLDMOVE actor, and Pioneer Kitten (Iran, but using Fortinet access).
 
@@ -293,6 +295,8 @@ Based on documented attribution, each vendor's threat actor profile can be class
 | **State actors + ransomware + botnet** | Zyxel | Full-spectrum targeting. Devices face mass scanning, credential harvesting, DDoS recruitment, and targeted intrusion. |
 | **Ransomware + unattributed state** | SonicWall | Ransomware is the documented primary threat. The MySonicWall breach was attributed to a state actor by Mandiant but the nation was not disclosed. |
 | **Iran-nexus + ransomware** | Check Point | Iran-nexus state actors using access for ransomware enablement. Distinct threat model from China-nexus espionage. |
+| **Ransomware only** | Array Networks | CVE-2023-28461 is CISA-flagged ransomware-associated. No public nation-state attribution. |
+| **No documented attribution** | WatchGuard | No public threat-actor attribution for any KEV entries. Does not indicate absence of exploitation. |
 
 ---
 
@@ -319,7 +323,7 @@ The following vendors have **documented nation-state-level exploitation** of the
 
 **Key takeaways for state-threat-model defenders:**
 
-1. **Every major enterprise VPN/firewall vendor has documented state-level exploitation.** There is no "safe" vendor choice that eliminates state actor risk. The question is not "which vendor avoids state targeting" but "which vendor's detection, response, and transparency posture best supports defenders when state actors inevitably arrive."
+1. **Every major enterprise VPN/firewall vendor has documented state-level exploitation.** There is no "safe" vendor choice that eliminates state actor risk among the 8 of 13 vendors with confirmed nation-state attribution; the remaining 5 (SonicWall, Zyxel, Check Point, WatchGuard, Array Networks) skew SMB/SOHO and face ransomware and botnet threats instead. The question is not "which vendor avoids state targeting" but "which vendor's detection, response, and transparency posture best supports defenders when state actors inevitably arrive."
 
 2. **China-nexus actors invest in vendor-specific offensive tooling.** BOLDMOVE (Fortinet), TINYSHELL variants (Juniper), SPAWN family (Ivanti), Line Dancer/Runner/RayInitiator/LINE VIPER (Cisco), and UPSTYLE (Palo Alto) are all purpose-built. Patching addresses known vulnerabilities; it does not address the offensive R&D pipeline targeting your specific platform.
 

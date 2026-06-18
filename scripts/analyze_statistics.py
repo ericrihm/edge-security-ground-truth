@@ -97,6 +97,63 @@ def chi2_2x2(a, b, c, d):
     return chi2, chi2_p_value(chi2, 1)
 
 
+def binom_pmf(k, n, p):
+    """Exact binomial probability mass P(X = k) for X ~ Binomial(n, p).
+    Uses log-gamma for the binomial coefficient to stay numerically stable.
+    """
+    if k < 0 or k > n:
+        return 0.0
+    if p <= 0.0:
+        return 1.0 if k == 0 else 0.0
+    if p >= 1.0:
+        return 1.0 if k == n else 0.0
+    log_coef = (math.lgamma(n + 1) - math.lgamma(k + 1) - math.lgamma(n - k + 1))
+    log_p = log_coef + k * math.log(p) + (n - k) * math.log(1.0 - p)
+    return math.exp(log_p)
+
+
+def binom_test_two_sided(k, n, p=0.5):
+    """Exact two-sided binomial test.
+
+    Tests the null H0: probability of success = p, given k successes in n
+    trials.  The two-sided p-value is the sum of all outcome probabilities
+    that are no more likely than the observed outcome (the standard
+    "method of small p-values" used by R's binom.test).
+    """
+    if n == 0:
+        return 1.0
+    p_obs = binom_pmf(k, n, p)
+    # Numerical tolerance so floating-point ties are counted in.
+    tol = p_obs * (1.0 + 1e-9) + 1e-12
+    total = 0.0
+    for i in range(n + 1):
+        if binom_pmf(i, n, p) <= tol:
+            total += binom_pmf(i, n, p)
+    return min(1.0, total)
+
+
+def binom_cond_test(ci, cj):
+    """Conditional (binomial) comparison of two Poisson/count vendors.
+
+    Given counts ci and cj, condition on the total n = ci + cj and test
+    whether the split k = ci out of n trials departs from p = 0.5 (i.e.
+    whether the two vendors have equal underlying rates).  This avoids the
+    double-counting of the 2x2 [[ci, N-ci],[cj, N-cj]] table, whose effective
+    sample size is 2N because every CVE in the dataset appears in the
+    "failure" cell of both rows.
+
+    Returns (n_trials, k_successes, p_value, min_expected_cell, low_count_flag).
+    Under H0 each cell expectation is n * 0.5; flag if min expected cell < 5.
+    """
+    n = ci + cj
+    if n == 0:
+        return 0, 0, 1.0, 0.0, True
+    k = ci
+    p = binom_test_two_sided(k, n, 0.5)
+    min_expected = n * 0.5
+    return n, k, p, min_expected, (min_expected < 5)
+
+
 def poisson_ci(k, alpha=0.05):
     """Exact Poisson confidence interval using the chi-squared relationship.
     Uses Garwood (1936) method: CI is [chi2(alpha/2, 2k)/2, chi2(1-alpha/2, 2k+2)/2].
@@ -175,19 +232,40 @@ def poisson_mle_rate_test(counts_by_year):
     slope = ss_ty / ss_tt
     intercept = y_mean - slope * t_mean
 
-    # Under Poisson assumption, Var(Y_t) = E[Y_t] = lambda_t
-    # SE of slope ~ sqrt(mean_lambda / ss_tt)
+    # Under the Poisson assumption, Var(Y_t) = E[Y_t] = lambda_t, so the
+    # naive SE of the slope ~ sqrt(mean_lambda / ss_tt).
     mean_lambda = max(y_mean, 1.0)  # avoid division by zero
     se_slope = math.sqrt(mean_lambda / ss_tt)
     z = slope / se_slope if se_slope > 0 else 0.0
     p = 2.0 * (1.0 - _normal_cdf(abs(z)))
 
-    if p < 0.05 and slope > 0:
-        interp = "Significant increase (p < 0.05)"
-    elif p < 0.05 and slope < 0:
-        interp = "Significant decrease (p < 0.05)"
+    # ---- Overdispersion (quasi-Poisson) adjustment -----------------------
+    # Count data are frequently OVER-dispersed (variance > mean), which makes
+    # the pure-Poisson SE too small and the trend look more significant than
+    # it is.  Estimate the dispersion phi as the Pearson chi-squared statistic
+    # divided by residual degrees of freedom, using the fitted line as the
+    # per-year mean.  A quasi-Poisson / negative-binomial-style correction
+    # multiplies the Poisson SE by sqrt(phi).
+    fitted = [max(intercept + slope * t, 1e-9) for t in t_vals]
+    df_resid = n - 2  # two estimated params (intercept, slope)
+    if df_resid > 0:
+        pearson = sum((y - f) ** 2 / f for y, f in zip(y_vals, fitted))
+        phi = pearson / df_resid
     else:
-        interp = "No significant trend (p >= 0.05)"
+        phi = 1.0
+    # Quasi-Poisson never shrinks the SE below the Poisson SE; underdispersion
+    # (phi < 1) is treated conservatively by flooring phi at 1.0.
+    phi_adj = max(phi, 1.0)
+    se_slope_quasi = se_slope * math.sqrt(phi_adj)
+    z_quasi = slope / se_slope_quasi if se_slope_quasi > 0 else 0.0
+    p_quasi = 2.0 * (1.0 - _normal_cdf(abs(z_quasi)))
+
+    if p_quasi < 0.05 and slope > 0:
+        interp = "Significant increase (p < 0.05, overdispersion-adjusted)"
+    elif p_quasi < 0.05 and slope < 0:
+        interp = "Significant decrease (p < 0.05, overdispersion-adjusted)"
+    else:
+        interp = "No significant trend after overdispersion adjustment (p >= 0.05)"
 
     return {
         "years": {y: counts_by_year[y] for y in years},
@@ -196,6 +274,10 @@ def poisson_mle_rate_test(counts_by_year):
         "se_slope": round(se_slope, 3),
         "z_score": round(z, 3),
         "p_value": round(p, 4),
+        "dispersion_phi": round(phi, 3),
+        "se_slope_quasi": round(se_slope_quasi, 3),
+        "z_score_quasi": round(z_quasi, 3),
+        "p_value_quasi": round(p_quasi, 4),
         "interpretation": interp,
     }
 
@@ -360,24 +442,30 @@ def analyze(counts_data, enriched_data):
         "reject_h0": chi2_p < 0.05,
     }
 
-    # Pairwise vendor comparisons using 2x2 chi-squared
-    # For each pair: compare vendor_i count vs vendor_j count
-    # Table: [[count_i, total-count_i], [count_j, total-count_j]]
+    # Pairwise vendor comparisons using a CONDITIONAL binomial test.
+    # The earlier approach built a 2x2 table [[ci, N-ci],[cj, N-cj]], whose
+    # effective sample size is 2N because every CVE appears in the "rest" cell
+    # of BOTH vendors -- it double-counts the whole dataset and inflates chi2.
+    # Instead, condition on the pair total n = ci + cj and test whether
+    # k = ci successes out of n trials departs from p = 0.5 (exact two-sided
+    # binomial).  Cells with min expected count < 5 are flagged as having low
+    # power / unreliable large-sample approximations.
     pair_tests = []
     for i in range(n):
         for j in range(i + 1, n):
             vi, vj = vendor_names[i], vendor_names[j]
             ci, cj = vendor_counts[vi], vendor_counts[vj]
-            rest_i = total - ci
-            rest_j = total - cj
-            chi2, p = chi2_2x2(ci, rest_i, cj, rest_j)
+            n_trials, k, p, min_exp, low_flag = binom_cond_test(ci, cj)
             pair_tests.append({
                 "vendor_a": vi,
                 "vendor_b": vj,
                 "count_a": ci,
                 "count_b": cj,
                 "difference": abs(ci - cj),
-                "chi2": round(chi2, 3),
+                "n_trials": n_trials,
+                "k_successes": k,
+                "min_expected_cell": round(min_exp, 2),
+                "low_expected_cell": low_flag,
                 "p_value": round(p, 5),
                 "significant": p < 0.05,
             })
@@ -392,11 +480,14 @@ def analyze(counts_data, enriched_data):
     pair_tests.sort(key=lambda x: (not x["bonferroni_significant"], -x["difference"]))
 
     results["pairwise_tests"] = {
-        "method": "Chi-squared 2x2 with Yates correction",
+        "method": ("Conditional exact binomial test: given counts ci, cj, test "
+                   "k=ci of n=ci+cj trials against p=0.5 (two-sided). Avoids the "
+                   "2N double-counting of a [[ci,N-ci],[cj,N-cj]] 2x2 table."),
         "n_comparisons": n_comparisons,
         "bonferroni_alpha": round(bonferroni_alpha, 5),
         "significant_pairs_raw": sum(1 for p in pair_tests if p["significant"]),
         "significant_pairs_bonferroni": sum(1 for p in pair_tests if p["bonferroni_significant"]),
+        "low_expected_cell_pairs": sum(1 for p in pair_tests if p["low_expected_cell"]),
         "tests": pair_tests,
     }
 
@@ -589,8 +680,11 @@ def print_text(results):
         print(f"  Model: lambda(t) = {pt['intercept']} + {pt['slope_per_year']} * t")
         for y, cnt in sorted(pt["years"].items()):
             print(f"    {y}: {cnt}")
-        print(f"  Slope:  {pt['slope_per_year']} CVEs/year  (SE={pt['se_slope']})")
-        print(f"  z = {pt['z_score']},  p = {pt['p_value']}")
+        print(f"  Slope:  {pt['slope_per_year']} CVEs/year  (Poisson SE={pt['se_slope']})")
+        print(f"  Naive Poisson:  z = {pt['z_score']},  p = {pt['p_value']}")
+        print(f"  Dispersion phi = {pt['dispersion_phi']}  "
+              f"(quasi-Poisson SE = SE * sqrt(phi) = {pt['se_slope_quasi']})")
+        print(f"  Overdispersion-adjusted:  z = {pt['z_score_quasi']},  p = {pt['p_value_quasi']}")
         print(f"  {pt['interpretation']}")
 
     # 4. Chi-squared + pairwise
@@ -607,14 +701,16 @@ def print_text(results):
     print(f"    Method: {pw['method']}")
     print(f"    Raw significant (p<0.05):         {pw['significant_pairs_raw']}")
     print(f"    Bonferroni significant (p<{pw['bonferroni_alpha']:.5f}): {pw['significant_pairs_bonferroni']}")
+    print(f"    Pairs with min expected cell < 5 (low power, flagged): {pw['low_expected_cell_pairs']}")
     print()
     sig_pairs = [t for t in pw["tests"] if t["bonferroni_significant"]]
     if sig_pairs:
         print("  Significant pairs after Bonferroni correction:")
         print(_fmt_table(
-            ["Vendor A", "Vendor B", "Counts", "chi2", "p"],
+            ["Vendor A", "Vendor B", "Counts", "n", "p", "min_exp<5"],
             [(t["vendor_a"], t["vendor_b"], f"{t['count_a']} vs {t['count_b']}",
-              f"{t['chi2']:.2f}", f"{t['p_value']:.5f}") for t in sig_pairs[:15]],
+              t["n_trials"], f"{t['p_value']:.5f}",
+              "FLAG" if t["low_expected_cell"] else "") for t in sig_pairs[:15]],
         ))
     else:
         print("  No pairs survive Bonferroni correction.")
@@ -737,8 +833,10 @@ def print_markdown(results):
         print("|------|------:|")
         for y, cnt in sorted(pt["years"].items()):
             print(f"| {y} | {cnt} |")
-        print(f"\n- Slope: **{pt['slope_per_year']}** CVEs/year (SE = {pt['se_slope']})")
-        print(f"- z = {pt['z_score']}, p = {pt['p_value']}")
+        print(f"\n- Slope: **{pt['slope_per_year']}** CVEs/year (Poisson SE = {pt['se_slope']})")
+        print(f"- Naive Poisson: z = {pt['z_score']}, p = {pt['p_value']}")
+        print(f"- Dispersion phi = {pt['dispersion_phi']}; quasi-Poisson SE = SE * sqrt(phi) = {pt['se_slope_quasi']}")
+        print(f"- Overdispersion-adjusted: z = {pt['z_score_quasi']}, p = {pt['p_value_quasi']}")
         print(f"- **{pt['interpretation']}**")
 
     # 4
@@ -753,14 +851,16 @@ def print_markdown(results):
     print(f"- Method: {pw['method']}")
     print(f"- {pw['n_comparisons']} comparisons, Bonferroni alpha = {pw['bonferroni_alpha']:.5f}")
     print(f"- Raw significant: {pw['significant_pairs_raw']}")
-    print(f"- Bonferroni significant: **{pw['significant_pairs_bonferroni']}**\n")
+    print(f"- Bonferroni significant: **{pw['significant_pairs_bonferroni']}**")
+    print(f"- Pairs with min expected cell < 5 (flagged, low power): {pw['low_expected_cell_pairs']}\n")
 
     sig = [t for t in pw["tests"] if t["bonferroni_significant"]]
     if sig:
-        print("| Vendor A | Vendor B | Counts | chi2 | p | Significant |")
-        print("|----------|----------|--------|-----:|--:|:-----------:|")
+        print("| Vendor A | Vendor B | Counts | n | p | min exp <5 |")
+        print("|----------|----------|--------|--:|--:|:----------:|")
         for t in sig:
-            print(f"| {t['vendor_a']} | {t['vendor_b']} | {t['count_a']} vs {t['count_b']} | {t['chi2']:.2f} | {t['p_value']:.5f} | Yes |")
+            flag = "FLAG" if t["low_expected_cell"] else ""
+            print(f"| {t['vendor_a']} | {t['vendor_b']} | {t['count_a']} vs {t['count_b']} | {t['n_trials']} | {t['p_value']:.5f} | {flag} |")
     else:
         print("*No pairs survive Bonferroni correction.*")
 

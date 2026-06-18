@@ -126,7 +126,7 @@ Check Point's Quantum Gateway has a smaller internet-exposed installed base than
 
 ### 2. Zero-Day Rate as the Corrective Signal
 
-While the absolute count is 2, both entries are zero-days -- a 100% zero-day rate. Compare this to Fortinet (5/18 = 28%) or Cisco (7/13 = 54%). A 100% zero-day rate means that every time Check Point has appeared in the KEV catalog, it was because adversaries were already exploiting the vulnerability before the vendor could patch it. This is the most dangerous exploitation pattern: defenders have zero lead time.
+While the absolute count is 2, both entries are zero-days -- a 100% zero-day rate. Compare this to Fortinet (7/18 = 39%) or Cisco (4/13 = 31%). A 100% zero-day rate means that every time Check Point has appeared in the KEV catalog, it was because adversaries were already exploiting the vulnerability before the vendor could patch it. This is the most dangerous exploitation pattern: defenders have zero lead time.
 
 ### 3. Ransomware Rate
 

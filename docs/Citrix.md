@@ -1,12 +1,12 @@
 # Citrix (NetScaler ADC / NetScaler Gateway)
 
-**Scope: NetScaler ADC and NetScaler Gateway (formerly Citrix ADC / Citrix Gateway / Citrix SD-WAN WANOP).** Remote access gateway and application delivery controller. Product is now owned by Cloud Software Group following the 2022 acquisition from Elliott Management. *(11 edge KEV entries, 2019--2025.)*
+**Scope: NetScaler ADC and NetScaler Gateway (formerly Citrix ADC / Citrix Gateway / Citrix SD-WAN WANOP).** Remote access gateway and application delivery controller. Product is now owned by Cloud Software Group following the 2022 acquisition from Elliott Management. *(13 edge KEV entries, 2019--2026.)*
 
 ---
 
 ## KEV CVE Summary Table
 
-All 11 CISA KEV-listed CVEs for Citrix NetScaler ADC/Gateway edge appliances, ordered by KEV date added.
+All 13 CISA KEV-listed CVEs for Citrix NetScaler ADC/Gateway edge appliances, ordered by KEV date added.
 
 | CVE | CVSS | CWE Class | Published | KEV Date | Zero-Day | Ransomware |
 |-----|------|-----------|-----------|----------|:--------:|:----------:|
@@ -21,8 +21,10 @@ All 11 CISA KEV-listed CVEs for Citrix NetScaler ADC/Gateway edge appliances, or
 | [CVE-2023-6549](https://nvd.nist.gov/vuln/detail/CVE-2023-6549) | 8.2 | CWE-119 Buffer Overflow | 2024-01-17 | 2024-01-17 | Y | N |
 | [CVE-2025-6543](https://nvd.nist.gov/vuln/detail/CVE-2025-6543) | -- | CWE-119 Buffer Overflow | 2025-06-25 | 2025-06-30 | N | N |
 | [CVE-2025-5777](https://nvd.nist.gov/vuln/detail/CVE-2025-5777) | -- | CWE-125 Out-of-bounds Read | 2025-06-17 | 2025-07-10 | N | Y |
+| [CVE-2025-7775](https://nvd.nist.gov/vuln/detail/CVE-2025-7775) | 9.8 | CWE-119 Buffer Overflow | 2025-08-26 | -- | N | N |
+| [CVE-2026-3055](https://nvd.nist.gov/vuln/detail/CVE-2026-3055) | 9.8 | CWE-125 Out-of-bounds Read | 2026-03-23 | -- | Y | N |
 
-**Summary statistics:** 11 KEV entries. 6 confirmed zero-days (55%) -- exploitation observed before or simultaneously with patch availability. 4 flagged by CISA for known ransomware campaigns (36%). The dominant CWE pattern is memory safety (CWE-119/CWE-125, 3 instances) and code injection (CWE-94, 2 instances), with access control (CWE-284) and path traversal (CWE-22) completing the picture. The record includes two of the most impactful edge CVEs ever documented: CVE-2019-19781 (33-day unpatched window, 80,000+ companies exposed) and CVE-2023-4966 (CitrixBleed -- Boeing, ICBC, DP World, Allen & Overy breached via LockBit).
+**Summary statistics:** 13 KEV entries. 7 confirmed zero-days (54%) -- exploitation observed before or simultaneously with patch availability. 4 flagged by CISA for known ransomware campaigns (31%). The dominant CWE pattern is memory safety (CWE-119/CWE-125, 5 instances) and code injection (CWE-94, 2 instances), with access control (CWE-284) and path traversal (CWE-22) completing the picture. The record includes two of the most impactful edge CVEs ever documented: CVE-2019-19781 (33-day unpatched window, 80,000+ companies exposed) and CVE-2023-4966 (CitrixBleed -- Boeing, ICBC, DP World, Allen & Overy breached via LockBit).
 
 ---
 
@@ -111,7 +113,7 @@ EPSS score: 0.99999 (99.993rd percentile).
 
 Both were disclosed on [January 16, 2024](https://support.citrix.com/article/CTX584986) and added to KEV the following day -- same-day confirmation of active exploitation, making both confirmed zero-days. Citrix's advisory acknowledged active exploitation in the wild. These two CVEs close out a six-month period (July 2023 -- January 2024) in which Citrix disclosed four actively exploited zero-days, three of which enabled pre-auth compromise.
 
-### 2025: Continued Exploitation
+### 2025--2026: Continued Exploitation
 
 **CVE-2025-6543** (CWE-119, buffer overflow) was published on June 25, 2025 and [added to KEV on June 30, 2025](https://www.cisa.gov/known-exploited-vulnerabilities-catalog). CVSS score is pending NVD assignment. The vulnerability affects NetScaler ADC and Gateway, continuing the memory-safety pattern documented in CVE-2023-4966 and CVE-2023-6549.
 
@@ -119,13 +121,17 @@ Both were disclosed on [January 16, 2024](https://support.citrix.com/article/CTX
 
 EPSS score for CVE-2025-5777: 0.999 (99.96th percentile) -- among the highest scores in the dataset, reflecting active exploitation.
 
+**CVE-2025-7775** (CVSS 9.8, CWE-119, buffer overflow) was published on August 26, 2025 and added to the CISA KEV catalog. The vulnerability affects NetScaler ADC and NetScaler Gateway (bare "NetScaler" product designation), extending the memory-safety pattern first documented in CVE-2023-4966.
+
+**CVE-2026-3055** (CVSS 9.8, CWE-125, out-of-bounds read) was published on March 23, 2026 and added to the CISA KEV catalog as a confirmed zero-day. The vulnerability affects NetScaler ADC and NetScaler Gateway (bare "NetScaler" product designation). Its CWE-125 classification places it in the same memory-safety sub-category as CVE-2025-5777 and the original CitrixBleed out-of-bounds read primitive.
+
 ---
 
 ## CWE Weakness Profile
 
 | Category | Count | CVEs |
 |----------|------:|------|
-| **Memory Safety** (CWE-119, CWE-125) | 3 | CVE-2023-4966, CVE-2023-6549, CVE-2025-6543 (+ CWE-125: CVE-2025-5777) |
+| **Memory Safety** (CWE-119, CWE-125) | 5 | CVE-2023-4966, CVE-2023-6549, CVE-2025-6543, CVE-2025-7775 (CWE-119); CVE-2025-5777, CVE-2026-3055 (CWE-125) |
 | **Code Injection** (CWE-94) | 2 | CVE-2023-3519, CVE-2023-6548 |
 | **Access Control** (CWE-284) | 2 | CVE-2020-8193, CVE-2020-8196 |
 | **Path Traversal** (CWE-22) | 1 | CVE-2019-19781 |
@@ -191,7 +197,7 @@ The two historically defining CVEs (CVE-2019-19781 and CVE-2023-4966) carry maxi
 
 - **No documented silent patching.** Citrix has not been documented shipping security fixes without issuing corresponding advisories.
 - **Coordinated multi-agency response.** The CVE-2023-4966 (CitrixBleed) response involved simultaneous advisories from CISA, FBI, and ACSC. The CVE-2022-27518 response included an NSA advisory.
-- **Advisory availability for all KEV entries.** All 11 CVEs have corresponding vendor advisories with affected-version matrices.
+- **Advisory availability for all KEV entries.** All 13 CVEs have corresponding vendor advisories with affected-version matrices.
 
 ### Concerns
 
@@ -204,7 +210,7 @@ The two historically defining CVEs (CVE-2019-19781 and CVE-2023-4966) carry maxi
 
 ## Defender Implications
 
-**1. Treat NetScaler as a persistent high-value target with a documented zero-day cadence.** Six of 11 KEV entries were zero-days. The 2023 cluster produced four zero-days in six months. Organizations running NetScaler for remote access should maintain pre-positioned incident response playbooks, assume that the next advisory may disclose exploitation already in progress, and plan for emergency patching within hours -- not days -- of any Critical advisory.
+**1. Treat NetScaler as a persistent high-value target with a documented zero-day cadence.** Seven of 13 KEV entries were zero-days. The 2023 cluster produced four zero-days in six months. Organizations running NetScaler for remote access should maintain pre-positioned incident response playbooks, assume that the next advisory may disclose exploitation already in progress, and plan for emergency patching within hours -- not days -- of any Critical advisory.
 
 **2. Invalidate all sessions after any Citrix patch cycle.** CitrixBleed (CVE-2023-4966) demonstrated that session tokens can be stolen from device memory before patching, and those tokens remain valid after the patch is applied. [CISA's advisory (AA23-325A)](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-325a) recommends invalidating all active sessions and rotating all credentials after patching any NetScaler vulnerability -- not just CitrixBleed. This should be standard operating procedure for all NetScaler patch events.
 
@@ -226,5 +232,5 @@ The two historically defining CVEs (CVE-2019-19781 and CVE-2023-4966) carry maxi
 - **BleepingComputer:** [CitrixBleed LockBit exploitation](https://www.bleepingcomputer.com/news/security/critical-citrix-bleed-vulnerability-exploited-by-lockbit-ransomware/); DP World and Allen & Overy reporting
 - **ZDNet:** [80,000+ companies affected by CVE-2019-19781](https://www.zdnet.com/article/over-80000-companies-may-be-affected-by-citrix-vulnerability/)
 - **Reuters:** ICBC Treasury market disruption reporting
-- **NVD:** CVSS scoring and CWE classification for all 11 CVEs
+- **NVD:** CVSS scoring and CWE classification for all 13 CVEs
 - **FIRST.org EPSS:** [Exploit Prediction Scoring System data](https://api.first.org/data/v1/epss)

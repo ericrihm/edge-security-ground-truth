@@ -18,8 +18,49 @@ Usage:
 import argparse
 import collections
 import json
+import math
 import os
 import sys
+
+
+# ---------------------------------------------------------------------------
+# Exact statistics (stdlib-only): Fisher exact test from first principles
+# ---------------------------------------------------------------------------
+def _log_choose(n, k):
+    """log(n choose k) via lgamma; 0 outside the valid range."""
+    if k < 0 or k > n or n < 0:
+        return float("-inf")
+    return math.lgamma(n + 1) - math.lgamma(k + 1) - math.lgamma(n - k + 1)
+
+
+def _hypergeom_logpmf(a, row1, col1, total):
+    """log P(X = a) for the hypergeometric distribution of the (1,1) cell of a
+    2x2 table with row1 = a+b, col1 = a+c, and grand total N."""
+    return (_log_choose(col1, a)
+            + _log_choose(total - col1, row1 - a)
+            - _log_choose(total, row1))
+
+
+def fisher_exact_one_sided(a, b, c, d):
+    """One-sided (right tail) Fisher exact test for the 2x2 table
+        [[a, b],
+         [c, d]]
+    Tests for ENRICHMENT of the (1,1) cell: P(X >= a) under the
+    hypergeometric null with fixed margins. Pure stdlib.
+    """
+    row1 = a + b
+    col1 = a + c
+    total = a + b + c + d
+    if total == 0:
+        return 1.0
+    a_min = max(0, col1 - (total - row1))
+    a_max = min(row1, col1)
+    p = 0.0
+    for x in range(a, a_max + 1):
+        if x < a_min:
+            continue
+        p += math.exp(_hypergeom_logpmf(x, row1, col1, total))
+    return min(1.0, p)
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ENRICHED_PATH = os.path.join(SCRIPT_DIR, "kev_edge_enriched.json")
@@ -387,6 +428,75 @@ def section_recurring(r, min_count=3):
 
 
 # ---------------------------------------------------------------------------
+# Statistical significance of recurring weaknesses
+# ---------------------------------------------------------------------------
+def section_weakness_significance(r):
+    """One-sided Fisher exact test per (vendor, CWE-category) vs the rest.
+
+    For each vendor V and category C, build the 2x2 table
+        [[ a, b ],
+         [ c, d ]]
+    where
+        a = CVEs of vendor V in category C
+        b = CVEs of vendor V NOT in category C
+        c = CVEs of all OTHER vendors in category C
+        d = CVEs of all OTHER vendors NOT in category C
+    and test (one-sided, right tail) whether category C is ENRICHED for
+    vendor V relative to the rest of the corpus.
+
+    Multiple-testing is controlled with a Bonferroni correction:
+    alpha_corrected = alpha / number_of_tests.  Returns the full test list
+    plus which survive Bonferroni.
+    """
+    total = r["total"]
+    # Category totals across the whole corpus.
+    cat_total = collections.Counter()
+    for vendor in r["vendor_cat"]:
+        for cat, cnt in r["vendor_cat"][vendor].items():
+            cat_total[cat] += cnt
+
+    vendor_total = {v: sum(c.values()) for v, c in r["vendor_cat"].items()}
+
+    # Candidate (vendor, category) pairs: every category a vendor actually has,
+    # excluding the catch-all bucket which is not an interpretable weakness.
+    tests = []
+    for vendor in sorted(r["vendor_cat"]):
+        for cat, a in r["vendor_cat"][vendor].items():
+            if cat == "Other / Unclassified" or a == 0:
+                continue
+            b = vendor_total[vendor] - a
+            c = cat_total[cat] - a
+            d = total - vendor_total[vendor] - c
+            p = fisher_exact_one_sided(a, b, c, d)
+            tests.append({
+                "vendor": vendor,
+                "category": cat,
+                "a": a, "b": b, "c": c, "d": d,
+                "vendor_cat_pct": round(100 * a / vendor_total[vendor], 1) if vendor_total[vendor] else 0,
+                "corpus_cat_pct": round(100 * cat_total[cat] / total, 1) if total else 0,
+                "p_value": p,
+            })
+
+    n_tests = len(tests)
+    alpha = 0.05
+    bonf_alpha = alpha / n_tests if n_tests else alpha
+    for t in tests:
+        t["bonferroni_significant"] = t["p_value"] < bonf_alpha
+        t["raw_significant"] = t["p_value"] < alpha
+
+    tests.sort(key=lambda x: (not x["bonferroni_significant"], x["p_value"]))
+
+    return {
+        "n_tests": n_tests,
+        "alpha": alpha,
+        "bonferroni_alpha": bonf_alpha,
+        "n_raw_significant": sum(1 for t in tests if t["raw_significant"]),
+        "n_bonferroni_significant": sum(1 for t in tests if t["bonferroni_significant"]),
+        "tests": tests,
+    }
+
+
+# ---------------------------------------------------------------------------
 # Output: text
 # ---------------------------------------------------------------------------
 def print_text(r):
@@ -484,6 +594,26 @@ def print_text(r):
             print(f"    {', '.join(cves)}")
     else:
         print("  (none found)")
+
+    # Statistical significance of recurring weaknesses
+    print(f"\n{'-' * W}")
+    print("STATISTICAL SIGNIFICANCE OF RECURRING WEAKNESSES")
+    print("-" * W)
+    sig = section_weakness_significance(r)
+    print(f"One-sided Fisher exact per (vendor, CWE-category) vs the rest.")
+    print(f"  Tests: {sig['n_tests']}   alpha = {sig['alpha']}   "
+          f"Bonferroni alpha = {sig['bonferroni_alpha']:.6f}")
+    print(f"  Raw significant (p<0.05):      {sig['n_raw_significant']}")
+    print(f"  Bonferroni significant:        {sig['n_bonferroni_significant']}")
+    surviving = [t for t in sig["tests"] if t["bonferroni_significant"]]
+    if surviving:
+        print("\n  Surviving Bonferroni correction:")
+        for t in surviving:
+            print(f"    {t['vendor']} / {t['category']}: "
+                  f"{t['a']} of {t['a']+t['b']} ({t['vendor_cat_pct']:.0f}% vs "
+                  f"{t['corpus_cat_pct']:.0f}% corpus), p = {t['p_value']:.2e}")
+    else:
+        print("\n  No (vendor, category) pair survives Bonferroni correction.")
 
 
 # ---------------------------------------------------------------------------
@@ -593,6 +723,28 @@ def print_markdown(r):
     else:
         print("(None at the 3+ threshold.)\n")
 
+    # Statistical significance of recurring weaknesses
+    print("\n## Statistical Significance of Recurring Weaknesses\n")
+    sig = section_weakness_significance(r)
+    print("One-sided Fisher exact test per (vendor, CWE-category) versus the "
+          "rest of the corpus, with Bonferroni correction for multiple "
+          "comparisons.\n")
+    print(f"- Tests: {sig['n_tests']}")
+    print(f"- alpha = {sig['alpha']}, Bonferroni alpha = "
+          f"{sig['bonferroni_alpha']:.6f}")
+    print(f"- Raw significant (p < 0.05): {sig['n_raw_significant']}")
+    print(f"- **Bonferroni significant: {sig['n_bonferroni_significant']}**\n")
+    surviving = [t for t in sig["tests"] if t["bonferroni_significant"]]
+    if surviving:
+        print("| Vendor | Category | Vendor share | Corpus share | p-value |")
+        print("|--------|----------|-------------:|-------------:|--------:|")
+        for t in surviving:
+            print(f"| {t['vendor']} | {t['category']} | "
+                  f"{t['a']}/{t['a']+t['b']} ({t['vendor_cat_pct']:.0f}%) | "
+                  f"{t['corpus_cat_pct']:.0f}% | {t['p_value']:.2e} |")
+    else:
+        print("*No (vendor, category) pair survives Bonferroni correction.*")
+
 
 # ---------------------------------------------------------------------------
 # Output: JSON
@@ -656,6 +808,24 @@ def print_json(r):
         "recurring_weaknesses": [
             {"vendor": v, "category": cat, "count": cnt, "cves": cves}
             for v, cat, cnt, cves in section_recurring(r, 3)
+        ],
+        "weakness_significance": {
+            k: (round(v, 8) if isinstance(v, float) else v)
+            for k, v in section_weakness_significance(r).items()
+            if k != "tests"
+        },
+        "weakness_significance_tests": [
+            {
+                "vendor": t["vendor"],
+                "category": t["category"],
+                "a": t["a"], "b": t["b"], "c": t["c"], "d": t["d"],
+                "vendor_cat_pct": t["vendor_cat_pct"],
+                "corpus_cat_pct": t["corpus_cat_pct"],
+                "p_value": round(t["p_value"], 8),
+                "raw_significant": t["raw_significant"],
+                "bonferroni_significant": t["bonferroni_significant"],
+            }
+            for t in section_weakness_significance(r)["tests"]
         ],
     }
     json.dump(out, sys.stdout, indent=2)

@@ -56,7 +56,7 @@ The shift of attacker focus toward network edge devices is one of the most docum
 
 ### 2.2 Government Guidance
 
-The Five Eyes intelligence alliance (CISA, NCSC-UK, ASD ACSC, CCCS, NCSC-NZ) published joint edge-device security guidance in February 2025, comprising four documents: "Security Considerations for Edge Devices" (CCCS), "Digital Forensics Monitoring Specifications" (NCSC-UK), and executive and practitioner mitigation strategies (ASD ACSC) [Five Eyes 2025]. The guidance explicitly acknowledges that edge devices cannot run EDR agents, offer limited logging by default, and require downtime to patch -- structural properties that this repository's data reflects in the recurring pattern of pre-patch exploitation across all eleven vendors.
+The Five Eyes intelligence alliance (CISA, NCSC-UK, ASD ACSC, CCCS, NCSC-NZ) published joint edge-device security guidance in February 2025, comprising four documents: "Security Considerations for Edge Devices" (CCCS), "Digital Forensics Monitoring Specifications" (NCSC-UK), and executive and practitioner mitigation strategies (ASD ACSC) [Five Eyes 2025]. The guidance explicitly acknowledges that edge devices cannot run EDR agents, offer limited logging by default, and require downtime to patch -- structural properties that this repository's data reflects in the recurring pattern of pre-patch exploitation across all thirteen vendors.
 
 ### 2.3 Academic Research on Edge/Perimeter Security
 
@@ -76,7 +76,7 @@ The vulnerability lifecycle -- from discovery through disclosure, patch release,
 
 ### 3.2 Time-to-Exploit Acceleration
 
-The most consequential recent finding is the collapse of the defender's patch window. [Mandiant 2025] reported the 2024 average time-to-exploit was five days from disclosure; for the top four exploited vulnerabilities (all edge devices), three were zero-days exploited before any patch existed. This repository's per-vendor analysis corroborates the finding: across the eleven vendors, multiple CVEs (Fortinet CVE-2022-42475, Ivanti CVE-2023-46805/CVE-2024-21887, Palo Alto CVE-2024-3400, Citrix CVE-2023-3519) were exploited days to weeks before patches were available.
+The most consequential recent finding is the collapse of the defender's patch window. [Mandiant 2025] reported the 2024 average time-to-exploit was five days from disclosure; for the top four exploited vulnerabilities (all edge devices), three were zero-days exploited before any patch existed. This repository's per-vendor analysis corroborates the finding: across the thirteen vendors, multiple CVEs (Fortinet CVE-2022-42475, Ivanti CVE-2023-46805/CVE-2024-21887, Palo Alto CVE-2024-3400, Citrix CVE-2023-3519) were exploited days to weeks before patches were available.
 
 [VulnCheck 2026b] quantified this at scale: 28.96% of KEVs in 2025 were exploited on or before CVE publication day, up from 23.6% in 2024 -- an accelerating trend that renders calendar-based patch cycles structurally inadequate for edge devices.
 
@@ -98,7 +98,7 @@ The economics of vulnerability disclosure have been studied formally since [Aror
 
 ### 4.2 Silent Patching and Advisory Manipulation
 
-This repository documents two confirmed instances of silent patching among the eleven vendors:
+This repository documents two confirmed instances of silent patching among the thirteen vendors:
 
 - **Fortinet** (CVE-2023-27997, "XORtigate"): firmware was released 3--4 days before the advisory; researchers discovered the fix by diffing firmware binaries ([watchTowr 2023], [Tenable 2023]).
 - **Zyxel** (CVE-2022-30525): firmware was released without a CVE or advisory; the vulnerability was discovered by Rapid7 only after diffing the update ([Rapid7 2022]).
@@ -160,7 +160,7 @@ This repository occupies a specific gap in the existing landscape:
 
 **This repository contributes:**
 
-1. **Uniform edge-device scoping.** A single, documented include/exclude rule (firewall / SSL-VPN / remote-access gateway) applied identically to all eleven vendors, with the rule itself published as executable code (`build_kev_counts.py`). No existing public dataset applies consistent product-line scoping across vendors.
+1. **Uniform edge-device scoping.** A single, documented include/exclude rule (firewall / SSL-VPN / remote-access gateway) applied identically to all thirteen vendors, with the rule itself published as executable code (`build_kev_counts.py`). No existing public dataset applies consistent product-line scoping across vendors.
 
 2. **Reproducible counts from public data.** Every number in the repository is computable from the public CISA KEV feed plus the documented scope rule. The script, the feed URL, and the rule are all published; anyone can re-run and verify or modify the scope.
 

@@ -1,6 +1,6 @@
 # Threat Actor Attribution: Edge Security CVEs
 
-**Scope:** Known public attribution for CISA KEV-listed CVEs affecting the 11 edge/perimeter vendors tracked in this project (firewalls, SSL-VPNs, remote-access gateways). Attribution covers 2020–2026 based on reporting from Mandiant/GTIG, Volexity, CrowdStrike, Talos, CISA, Sophos, and named academic/industry researchers.
+**Scope:** Known public attribution for CISA KEV-listed CVEs affecting the 13 edge/perimeter vendors tracked in this project (firewalls, SSL-VPNs, remote-access gateways). Attribution covers 2020–2026 based on reporting from Mandiant/GTIG, Volexity, CrowdStrike, Talos, CISA, Sophos, and named academic/industry researchers.
 
 > **Caveat up front:** Attribution in the threat-intelligence industry is probabilistic, not forensic. UNC/UAT/UTA designations are working hypotheses from private-sector analysts, not judicial findings. Government attributions (US, UK, Five Eyes) carry more formal process but remain incomplete. Many CVEs have zero public attribution — absence of a name does not mean absence of a threat actor. Multiple private vendors frequently assign different names to the same cluster of activity. This document reflects the public record as of 2026-06-18 and should be read as an intelligence summary, not ground truth.
 
@@ -97,7 +97,7 @@ China-linked espionage actors — Mandiant's UNC/UTA clusters, Volt Typhoon, APT
 
 Targets documented in public reporting include: telecommunications providers, defense contractors, US federal agencies (Ivanti CISA ED 24-01), nuclear energy suppliers, military hospitals, central government ministries across South Asia (Sophos Pacific Rim), and managed security service providers.
 
-Fortinet FortiOS, Ivanti Connect Secure, Palo Alto PAN-OS, and Sophos Firewall are the primary China-nexus targets in this dataset. The concentration on these vendors aligns with their enterprise market share in the VPN/firewall space, not with any demonstrated weakness differential vs. peers.
+Fortinet FortiOS, Ivanti Connect Secure, Palo Alto PAN-OS, and Sophos Firewall are the primary China-nexus targets in this dataset. Of the 13 tracked vendors, 8 have documented China-nexus exploitation. The concentration on enterprise-focused vendors aligns with their market share in the VPN/firewall space, not with any demonstrated weakness differential vs. peers. WatchGuard and Array Networks have no public nation-state attribution.
 
 **UNC3886's vendor-agnosticism** is notable: the same cluster exploited Fortinet CVE-2022-42475, then returned years later to exploit Juniper CVE-2025-21590 on MX-series routers — targeting core routing infrastructure in addition to VPN gateways. This suggests an interest in network topology and traffic interception beyond simple remote-access.
 
@@ -153,9 +153,9 @@ For the majority of edge CVEs in the CISA KEV catalog — including CVE-2026-248
 
 China-nexus actor clusters frequently share infrastructure, tooling, and targeting mandates. The Sophos Pacific Rim report documented TTP overlap across Volt Typhoon, APT31, and APT41 within a single campaign — the clusters are not cleanly separable. Similarly, ransomware "affiliates" operate across multiple ransomware-as-a-service programs: an Akira affiliate in one operation may be a Fog affiliate in another. The actor names in the matrix are the most specific attributions available in public reporting; they should not be interpreted as clean, mutually exclusive entities.
 
-### 5.5 Absence of Attribution for F5
+### 5.5 Absence of Attribution for F5, WatchGuard, and Array Networks
 
-No major public attribution exists for F5 BIG-IP KEV-listed CVEs (e.g., CVE-2022-1388, CVE-2023-46747). This absence is consistent with the overall pattern: F5 has a smaller edge-appliance footprint than Fortinet, Ivanti, or Cisco in the targeted verticals, making it a lower-priority target for documented nation-state campaigns. It does not indicate those CVEs were not exploited — CISA's KEV listing confirms in-the-wild exploitation. The exploiting actors are simply not named in public reporting.
+No major public attribution exists for F5 BIG-IP KEV-listed CVEs (e.g., CVE-2022-1388, CVE-2023-46747), nor for WatchGuard or Array Networks KEV entries. This absence is consistent with the overall pattern: these vendors have smaller edge-appliance footprints than Fortinet, Ivanti, or Cisco in the targeted verticals, making them lower-priority targets for documented nation-state campaigns. It does not indicate those CVEs were not exploited — CISA's KEV listing confirms in-the-wild exploitation. The exploiting actors are simply not named in public reporting. Array Networks CVE-2023-28461 is CISA-flagged ransomware-associated, indicating criminal (not state) exploitation.
 
 ---
 

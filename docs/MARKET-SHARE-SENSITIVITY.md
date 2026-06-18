@@ -1,7 +1,7 @@
 # Market-Share Sensitivity Analysis
 
 The chi-squared goodness-of-fit test in [STATISTICS.md](./STATISTICS.md) rejects the
-uniform null hypothesis (chi-squared(10) = 21.20, p = 0.020). This document asks: **does
+uniform null hypothesis (chi-squared(12) = 33.652, p = 0.00082). This document asks: **does
 that rejection survive once we account for differences in installed base?** In other
 words, could Fortinet's 18 KEVs vs Check Point's 2 simply reflect ~50% vs ~5% market
 share rather than any difference in code quality?
@@ -54,6 +54,8 @@ but with important caveats:
 | F5 | 2--4% | BIG-IP APM; primarily ADC/load-balancer | F5 SEC filings; IDC ADC tracker |
 | Sophos | 2--4% | SMB/mid-market; Astaro/Cyberoam legacy | Gartner MQ 2024 (Niche); Omdia 2024 |
 | Zyxel | 1--3% | SOHO/SMB; high unit count, low ASP | Omdia 2024; Zyxel IR 2024 |
+| WatchGuard | 1--3% | SMB/mid-market Firebox UTM | Omdia 2024; WatchGuard private-company estimates |
+| Array Networks | <1% | Niche ADC / SSL-VPN; AsiaPac-heavy | No major-analyst tracker; vendor IR estimates |
 
 **Critical caveats:**
 
@@ -76,19 +78,19 @@ but with important caveats:
 
 ### Setup
 
-We have k = 11 vendors with observed KEV counts summing to N = 107:
+We have k = 13 vendors with observed KEV counts summing to N = 115:
 
 ```
 Observed = {
-    "Fortinet": 18, "Ivanti": 13, "Cisco": 13,
-    "Palo Alto": 12, "SonicWall": 12, "Citrix": 11,
-    "Juniper": 8,  "F5": 6,  "Zyxel": 6,
-    "Sophos": 6,   "Check Point": 2
+    "Fortinet": 18, "Cisco": 13, "Citrix": 13, "Ivanti": 13,
+    "Palo Alto": 12, "SonicWall": 12, "Juniper": 8,
+    "F5": 6,  "Sophos": 6,  "Zyxel": 6,
+    "WatchGuard": 4, "Check Point": 2, "Array Networks": 2
 }
 ```
 
-Under the uniform null (STATISTICS.md Section 4a), expected = 107/11 = 9.727 for
-each vendor, and chi-squared = 21.20 with p = 0.020.
+Under the uniform null (STATISTICS.md Section 4a), expected = 115/13 = 8.846 for
+each vendor, and chi-squared = 33.652 with p = 0.00082.
 
 Under a **market-share-adjusted null**, the expected count for vendor i is:
 
@@ -103,8 +105,15 @@ under this adjusted null is:
 chi-squared = sum_i (O_i - E_i)^2 / E_i
 ```
 
-with k - 1 = 10 degrees of freedom. If market share explains the distribution,
+with k - 1 = 12 degrees of freedom. If market share explains the distribution,
 this statistic should be small and the p-value large (fail to reject).
+
+**Caveat on the chi-squared assumption.** Several vendors now have small expected
+counts under both nulls (WatchGuard, Check Point, and Array Networks have expected
+cells well below 5 in the Fortinet-dominant scenarios). The chi-squared
+approximation is unreliable when expected cell counts drop below ~5, so we treat
+the chi-squared p-values as indicative rather than exact and corroborate the
+uniformity rejection with a Monte-Carlo exact test (Section 5).
 
 ### Three scenarios
 
@@ -113,17 +122,19 @@ aggressive assumptions about Fortinet's dominance:
 
 | Vendor | Conservative | Moderate | Aggressive |
 |--------|:-:|:-:|:-:|
-| Fortinet | 0.25 | 0.35 | 0.50 |
+| Fortinet | 0.24 | 0.34 | 0.48 |
 | Palo Alto | 0.18 | 0.18 | 0.15 |
 | Cisco | 0.15 | 0.12 | 0.08 |
 | Check Point | 0.08 | 0.06 | 0.04 |
 | Citrix | 0.08 | 0.06 | 0.05 |
 | SonicWall | 0.07 | 0.06 | 0.05 |
 | Ivanti | 0.05 | 0.05 | 0.04 |
-| Juniper | 0.05 | 0.04 | 0.03 |
+| Juniper | 0.04 | 0.04 | 0.03 |
 | F5 | 0.03 | 0.03 | 0.02 |
-| Sophos | 0.03 | 0.03 | 0.02 |
-| Zyxel | 0.03 | 0.02 | 0.02 |
+| Sophos | 0.03 | 0.02 | 0.02 |
+| Zyxel | 0.02 | 0.02 | 0.02 |
+| WatchGuard | 0.02 | 0.01 | 0.01 |
+| Array Networks | 0.01 | 0.01 | 0.01 |
 
 - **Conservative:** Fortinet at 25% -- lower bound of analyst estimates, other
   shares relatively balanced.
@@ -147,40 +158,45 @@ import math
 
 # --- Observed KEV counts (CISA KEV 2020-2026, edge scope) ---
 observed = {
-    "Fortinet":   18,
-    "Ivanti":     13,
-    "Cisco":      13,
-    "Palo Alto":  12,
-    "SonicWall":  12,
-    "Citrix":     11,
-    "Juniper":     8,
-    "F5":          6,
-    "Zyxel":       6,
-    "Sophos":      6,
-    "Check Point": 2,
+    "Fortinet":      18,
+    "Cisco":         13,
+    "Citrix":        13,
+    "Ivanti":        13,
+    "Palo Alto":     12,
+    "SonicWall":     12,
+    "Juniper":        8,
+    "F5":             6,
+    "Sophos":         6,
+    "Zyxel":          6,
+    "WatchGuard":     4,
+    "Check Point":    2,
+    "Array Networks": 2,
 }
-N = sum(observed.values())  # 107
-k = len(observed)           # 11
+N = sum(observed.values())  # 115
+k = len(observed)           # 13
 
 # --- Three market-share scenarios ---
 scenarios = {
-    "Conservative (Fortinet 25%)": {
-        "Fortinet": 0.25, "Palo Alto": 0.18, "Cisco": 0.15,
+    "Conservative (Fortinet 24%)": {
+        "Fortinet": 0.24, "Palo Alto": 0.18, "Cisco": 0.15,
         "Check Point": 0.08, "Citrix": 0.08, "SonicWall": 0.07,
-        "Ivanti": 0.05, "Juniper": 0.05, "F5": 0.03,
-        "Sophos": 0.03, "Zyxel": 0.03,
+        "Ivanti": 0.05, "Juniper": 0.04, "F5": 0.03,
+        "Sophos": 0.03, "Zyxel": 0.02, "WatchGuard": 0.02,
+        "Array Networks": 0.01,
     },
-    "Moderate (Fortinet 35%)": {
-        "Fortinet": 0.35, "Palo Alto": 0.18, "Cisco": 0.12,
+    "Moderate (Fortinet 34%)": {
+        "Fortinet": 0.34, "Palo Alto": 0.18, "Cisco": 0.12,
         "Check Point": 0.06, "Citrix": 0.06, "SonicWall": 0.06,
         "Ivanti": 0.05, "Juniper": 0.04, "F5": 0.03,
-        "Sophos": 0.03, "Zyxel": 0.02,
+        "Sophos": 0.02, "Zyxel": 0.02, "WatchGuard": 0.01,
+        "Array Networks": 0.01,
     },
-    "Aggressive (Fortinet 50%)": {
-        "Fortinet": 0.50, "Palo Alto": 0.15, "Cisco": 0.08,
+    "Aggressive (Fortinet 48%)": {
+        "Fortinet": 0.48, "Palo Alto": 0.15, "Cisco": 0.08,
         "Check Point": 0.04, "Citrix": 0.05, "SonicWall": 0.05,
         "Ivanti": 0.04, "Juniper": 0.03, "F5": 0.02,
-        "Sophos": 0.02, "Zyxel": 0.02,
+        "Sophos": 0.02, "Zyxel": 0.02, "WatchGuard": 0.01,
+        "Array Networks": 0.01,
     },
 }
 
@@ -225,7 +241,7 @@ for name, shares in scenarios.items():
         resid = o - e
         contrib = (o - e)**2 / e
         print(f"{v:15s} {o:5d} {e:7.2f} {resid:+7.2f} {contrib:8.3f}")
-    print(f"\nchi-squared(10) = {chi2:.3f},  p = {p:.4f}")
+    print(f"\nchi-squared(12) = {chi2:.3f},  p = {p:.4f}")
     if p > 0.05:
         print("=> FAIL TO REJECT H0: market share plausibly explains the distribution")
     else:
@@ -237,63 +253,69 @@ for name, shares in scenarios.items():
 Running the above produces:
 
 ```
-Uniform null                              chi2 =  21.196  p = 0.0200
+Uniform null                              chi2 =  33.652  p = 0.0008
 
 ========================================================================
-Scenario: Conservative (Fortinet 25%)
+Scenario: Conservative (Fortinet 24%)
 Vendor            Obs     Exp   Resid  Contrib
 --------------- ----- ------- ------- --------
-Fortinet           18   26.75   -8.75   2.862
-Ivanti             13    5.35   +7.65  10.939
-Cisco              13   16.05   -3.05    0.580
-Palo Alto          12   19.26   -7.26    2.737
-SonicWall          12    7.49   +4.51    2.716
-Citrix             11    8.56   +2.44    0.696
-Juniper             8    5.35   +2.65    1.313
-F5                  6    3.21   +2.79    2.425
-Zyxel               6    3.21   +2.79    2.425
-Sophos              6    3.21   +2.79    2.425
-Check Point         2    8.56   -6.56    5.027
+Fortinet           18   27.60   -9.60    3.339
+Cisco              13   17.25   -4.25    1.047
+Citrix             13    9.20   +3.80    1.570
+Ivanti             13    5.75   +7.25    9.141
+Palo Alto          12   20.70   -8.70    3.657
+SonicWall          12    8.05   +3.95    1.938
+Juniper             8    4.60   +3.40    2.513
+F5                  6    3.45   +2.55    1.885
+Sophos              6    3.45   +2.55    1.885
+Zyxel               6    2.30   +3.70    5.952
+WatchGuard          4    2.30   +1.70    1.257
+Check Point         2    9.20   -7.20    5.635
+Array Networks      2    1.15   +0.85    0.628
 
-chi-squared(10) = 34.143,  p = 0.0002
+chi-squared(12) = 40.446,  p = 0.0001
 => REJECT H0: distribution differs from market-share expectation
 
 ========================================================================
-Scenario: Moderate (Fortinet 35%)
+Scenario: Moderate (Fortinet 34%)
 Vendor            Obs     Exp   Resid  Contrib
 --------------- ----- ------- ------- --------
-Fortinet           18   37.45  -19.45  10.102
-Ivanti             13    5.35   +7.65  10.939
-Cisco              13   12.84   +0.16    0.002
-Palo Alto          12   19.26   -7.26    2.737
-SonicWall          12    6.42   +5.58    4.850
-Citrix             11    6.42   +4.58    3.267
-Juniper             8    4.28   +3.72    3.233
-F5                  6    3.21   +2.79    2.425
-Zyxel               6    2.14   +3.86    6.962
-Sophos              6    3.21   +2.79    2.425
-Check Point         2    6.42   -4.42    3.043
+Fortinet           18   39.10  -21.10   11.386
+Cisco              13   13.80   -0.80    0.046
+Citrix             13    6.90   +6.10    5.393
+Ivanti             13    5.75   +7.25    9.141
+Palo Alto          12   20.70   -8.70    3.657
+SonicWall          12    6.90   +5.10    3.770
+Juniper             8    4.60   +3.40    2.513
+F5                  6    3.45   +2.55    1.885
+Sophos              6    2.30   +3.70    5.952
+Zyxel               6    2.30   +3.70    5.952
+WatchGuard          4    1.15   +2.85    7.063
+Check Point         2    6.90   -4.90    3.480
+Array Networks      2    1.15   +0.85    0.628
 
-chi-squared(10) = 49.985,  p = 0.0000
+chi-squared(12) = 60.866,  p = 0.0000
 => REJECT H0: distribution differs from market-share expectation
 
 ========================================================================
-Scenario: Aggressive (Fortinet 50%)
+Scenario: Aggressive (Fortinet 48%)
 Vendor            Obs     Exp   Resid  Contrib
 --------------- ----- ------- ------- --------
-Fortinet           18   53.50  -35.50  23.556
-Ivanti             13    4.28   +8.72  17.766
-Cisco              13    8.56   +4.44    2.303
-Palo Alto          12   16.05   -4.05    1.022
-SonicWall          12    5.35   +6.65    8.266
-Citrix             11    5.35   +5.65    5.967
-Juniper             8    3.21   +4.79    7.148
-F5                  6    2.14   +3.86    6.962
-Zyxel               6    2.14   +3.86    6.962
-Sophos              6    2.14   +3.86    6.962
-Check Point         2    4.28   -2.28    1.215
+Fortinet           18   55.20  -37.20   25.070
+Cisco              13    9.20   +3.80    1.570
+Citrix             13    5.75   +7.25    9.141
+Ivanti             13    4.60   +8.40   15.339
+Palo Alto          12   17.25   -5.25    1.598
+SonicWall          12    5.75   +6.25    6.793
+Juniper             8    3.45   +4.55    6.001
+F5                  6    2.30   +3.70    5.952
+Sophos              6    2.30   +3.70    5.952
+Zyxel               6    2.30   +3.70    5.952
+WatchGuard          4    1.15   +2.85    7.063
+Check Point         2    4.60   -2.60    1.470
+Array Networks      2    1.15   +0.85    0.628
 
-chi-squared(10) = 88.129,  p = 0.0000
+chi-squared(12) = 92.529,  p = 0.0000
 => REJECT H0: distribution differs from market-share expectation
 ```
 
@@ -352,16 +374,36 @@ The residual pattern points to two competing effects:
 
 ### Summary table
 
-| Scenario | chi-squared(10) | p-value | Verdict |
+| Scenario | chi-squared(12) | p-value | Verdict |
 |----------|:-:|:-:|---|
-| Uniform (no adjustment) | 21.20 | 0.020 | Reject uniform at alpha=0.05 |
-| Conservative (Fortinet 25%) | 34.14 | 0.0002 | Strongly reject |
-| Moderate (Fortinet 35%) | 49.99 | <0.0001 | Strongly reject |
-| Aggressive (Fortinet 50%) | 88.13 | <0.0001 | Strongly reject |
+| Uniform (no adjustment) | 33.65 | 0.00082 | Reject uniform at alpha=0.05 |
+| Conservative (Fortinet 24%) | 40.45 | 0.0001 | Strongly reject |
+| Moderate (Fortinet 34%) | 60.87 | <0.0001 | Strongly reject |
+| Aggressive (Fortinet 48%) | 92.53 | <0.0001 | Strongly reject |
 
 The more Fortinet-dominant the market-share assumption, the worse the fit --
 because Fortinet's observed 18 falls further below expectation while small
 vendors' residuals grow.
+
+### Monte-Carlo exact test (no large-sample assumption)
+
+Because several vendors now have expected cell counts below 5 (WatchGuard, Check
+Point, and Array Networks under the Fortinet-dominant scenarios), the chi-squared
+*approximation* to the p-value is suspect. To confirm the uniformity rejection
+without relying on that approximation, we run a Monte-Carlo exact test: draw
+200,000 multinomial samples of N = 115 CVEs across k = 13 equally-likely vendors,
+compute the chi-squared statistic for each, and count how often it equals or
+exceeds the observed 33.652.
+
+```
+Monte-Carlo exact uniformity p = 0.00086  (172 / 200,000 simulated tables >= 33.652)
+```
+
+The exact p-value (0.00086) is in close agreement with the Wilson-Hilferty
+approximation (0.00082) and still **strongly rejects uniformity** at alpha = 0.05.
+The small-expected-cell caveat does not change the conclusion: the observed
+distribution is genuinely non-uniform, and adjusting for market share only makes
+the fit worse.
 
 ---
 
@@ -374,17 +416,18 @@ observed shares themselves:
 ```python
 # The "implied market share" if KEVs were purely proportional to install base
 implied = {v: observed[v] / N for v in observed}
-# Fortinet: 18/107 = 16.8%
-# Ivanti:   13/107 = 12.1%
-# Cisco:    13/107 = 12.1%
+# Fortinet: 18/115 = 15.7%
+# Cisco:    13/115 = 11.3%
+# Citrix:   13/115 = 11.3%
+# Ivanti:   13/115 = 11.3%
 # ...
-# Check Point: 2/107 = 1.9%
+# Check Point: 2/115 = 1.7%
 ```
 
-This would require Fortinet's "true" edge-device share to be only 16.8% and
-Ivanti's to be 12.1%. Neither matches any published market estimate. Fortinet's
-actual share is likely 2--3x higher than 16.8%; Ivanti's is likely 2--3x lower
-than 12.1%.
+This would require Fortinet's "true" edge-device share to be only 15.7% and
+Ivanti's to be 11.3%. Neither matches any published market estimate. Fortinet's
+actual share is likely 2--3x higher than 15.7%; Ivanti's is likely 2--3x lower
+than 11.3%.
 
 The gap between implied and estimated shares is the **unexplained residual** --
 the portion of the distribution that cannot be attributed to market share alone.
@@ -432,8 +475,8 @@ uniform chi-squared, and the p-value is smaller. The observed distribution is
 This means:
 
 - **Fortinet's count (18) is high in absolute terms but LOW relative to its
-  market share.** A vendor with 35--50% of deployed edge appliances "should"
-  have 37--54 KEVs if counts were proportional to install base. Fortinet has
+  market share.** A vendor with 34--48% of deployed edge appliances "should"
+  have 39--55 KEVs if counts were proportional to install base. Fortinet has
   only 18 -- roughly one-half to one-third of the market-share expectation.
 
 - **Smaller vendors (Ivanti, SonicWall, Citrix) are overrepresented** relative
@@ -441,12 +484,12 @@ This means:
   campaigns, or the compressive effect of KEV's inclusion criteria.
 
 - **Check Point's count (2) is low even after market-share adjustment.** Under
-  the conservative scenario (8% share), the expected count is ~8.6. Check Point's
+  the conservative scenario (8% share), the expected count is ~9.2. Check Point's
   2 is significantly below expectation, suggesting either genuinely fewer
   exploitable edge bugs, lower researcher/attacker attention, or opacity in
   disclosure (bugs that exist but are not CVE'd/KEV'd).
 
-- **The original chi-squared rejection (p=0.02) understates the deviation.**
+- **The original chi-squared rejection (p=0.00082) understates the deviation.**
   The uniform null was actually the *most favorable* null hypothesis for the
   data. Market-share adjustment reveals that the real deviation is larger:
   the counts are too flat (too uniform) to be explained by market share.

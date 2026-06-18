@@ -1,30 +1,30 @@
 # State of Edge Security 2026: Executive Summary
 
-**Dataset:** 107 CISA KEV-listed CVEs across 11 edge-device vendors (firewalls, SSL-VPNs, remote-access gateways), 2020-01-01 through 2026-06-18. Full data and scripts at [github.com/ericrihm/edge-security-ground-truth](https://github.com/ericrihm/edge-security-ground-truth).
+**Dataset:** 115 CISA KEV-listed CVEs across 13 edge-device vendors (firewalls, SSL-VPNs, remote-access gateways), 2020-01-01 through 2026-06-18. Full data and scripts at [github.com/ericrihm/edge-security-ground-truth](https://github.com/ericrihm/edge-security-ground-truth).
 
 ---
 
 ## Abstract
 
-Internet-facing edge appliances -- firewalls, SSL-VPN gateways, and remote-access concentrators -- are the primary zero-day battleground for both nation-state espionage and ransomware operations in 2024-2026. This dataset tracks 107 CISA KEV-listed CVEs across 11 major edge vendors under a single, reproducible scope rule and finds that no vendor is meaningfully safer than the others: all eleven sit between 2 and 18 exploited edge CVEs over six years, with the spread largely tracking installed base and researcher attention rather than demonstrable code-quality differences. The median time-to-exploit for edge CVEs published since 2024 is **0 days** -- exploitation is effectively simultaneous with disclosure, eliminating the traditional patch window. The controllable variable is not which vendor you deploy, but how fast you respond, whether management planes are internet-exposed, and whether you assume breach the moment a KEV lands.
+Internet-facing edge appliances -- firewalls, SSL-VPN gateways, and remote-access concentrators -- are the primary zero-day battleground for both nation-state espionage and ransomware operations in 2024-2026. This dataset tracks 115 CISA KEV-listed CVEs across 13 major edge vendors under a single, reproducible scope rule and finds that no vendor is meaningfully safer than the others: all thirteen sit between 2 and 18 exploited edge CVEs over six years, with the spread largely tracking installed base and researcher attention rather than demonstrable code-quality differences. The median time-to-exploit for edge CVEs published since 2024 is **0 days** -- exploitation is effectively simultaneous with disclosure, eliminating the traditional patch window. The controllable variable is not which vendor you deploy, but how fast you respond, whether management planes are internet-exposed, and whether you assume breach the moment a KEV lands.
 
 ---
 
 ## Key Findings
 
-- **107 exploited edge CVEs across 11 vendors, range 2-18 per vendor.** The distribution is near-uniform (Gini coefficient 0.246, HHI just 1.20x the equal-share baseline). A chi-squared test rejects uniformity (p=0.02), but the primary confounders -- installed base, researcher attention, disclosure transparency -- are uncontrolled. The spread does not support ranking vendors by security posture.
+- **115 exploited edge CVEs across 13 vendors, range 2-18 per vendor.** The distribution is near-uniform (Gini coefficient 0.302, HHI just 1.29x the equal-share baseline). A chi-squared test rejects uniformity (chi2(12) = 33.652, p = 0.00082), but the primary confounders -- installed base, researcher attention, disclosure transparency -- are uncontrolled. The spread does not support ranking vendors by security posture.
 
-- **36 confirmed zero-days (34% of all edge CVEs).** Ten of eleven vendors have at least one zero-day in the dataset. Citrix (55%), Sophos (50%), and Ivanti (46%) have the highest zero-day rates as a proportion of their KEV entries. Fortinet has the highest raw zero-day count (7 of 18).
+- **38 confirmed zero-days (33% of all edge CVEs).** Eleven of thirteen vendors have at least one zero-day in the dataset (Zyxel and Array Networks have none). Citrix (54%), Sophos (50%), and Ivanti (46%) have the highest zero-day rates as a proportion of their KEV entries. Fortinet has the highest raw zero-day count (7 of 18).
 
 - **Median time-to-exploit has collapsed from years to zero.** Pre-2020 median TTE was measured in years; by 2022 it was 2 days; for CVEs published in 2024 the median is 0 days. Monthly patching cycles are structurally inadequate for internet-facing edge devices.
 
-- **Three weakness classes account for 71% of all exploited edge CVEs.** Authentication/access-control failures (28%), injection (22%), and memory-safety bugs (21%). These are decades-old, well-understood bug classes -- not novel attack techniques. Auth failures are accelerating (12% pre-2019 to 35% in 2024+); memory-safety bugs surged to 30% in 2024+.
+- **Three weakness classes account for 72% of all exploited edge CVEs.** Authentication/access-control failures (27%), memory-safety bugs (23%), and injection (22%). These are decades-old, well-understood bug classes -- not novel attack techniques. Auth failures are accelerating (12% pre-2019 to 35% in 2024+); memory-safety bugs surged to 36% in 2024+.
 
-- **43% of edge CVEs are associated with ransomware campaigns.** 46 of 107 CVEs carry CISA's ransomware flag -- far exceeding the overall KEV rate. Edge devices are the dominant initial-access vector for ransomware operators targeting mid-market organizations.
+- **41% of edge CVEs are associated with ransomware campaigns.** 47 of 115 CVEs carry CISA's ransomware flag -- far exceeding the overall KEV rate. Edge devices are the dominant initial-access vector for ransomware operators targeting mid-market organizations.
 
 - **China-nexus actors dominate the attribution matrix.** At least 6 distinct China-linked clusters (UNC3886, UNC5221, UNC5337, UTA0218, DriftingCloud, Pacific Rim) have exploited edge CVEs across Fortinet, Ivanti, Cisco, Palo Alto, Sophos, and Juniper. Mandiant/GTIG found 44% of 2024 zero-days targeted security/edge appliances. Iran-nexus actors exploited Check Point CVE-2024-24919 at scale.
 
-- **Path traversal (CWE-22) appears in 7 of 11 vendors** -- effectively universal to the industry -- but is declining over time (24% pre-2019 to 5% in 2024+), making it one of the few genuine SDL improvement signals in the dataset.
+- **Path traversal (CWE-22) appears in 7 of 13 vendors** -- effectively universal to the industry -- but is declining over time (24% pre-2019 to 5% in 2024+), making it one of the few genuine SDL improvement signals in the dataset.
 
 ---
 
@@ -42,11 +42,11 @@ The data does not support selecting a firewall vendor based on CVE reputation. E
 
 ### 2. Assume the patch window is zero
 
-For edge CVEs published since 2024, the median time from disclosure to confirmed exploitation is 0 days. If your patching SLA for internet-facing appliances is measured in weeks, it is structurally insufficient. Require emergency-patch capability (hotfix within 24 hours of KEV addition) for all edge devices, and treat any management-plane exposure to the internet as a critical finding -- 7 of the 107 CVEs are "missing authentication for critical function" (CWE-306), meaning the management API was simply unprotected.
+For edge CVEs published since 2024, the median time from disclosure to confirmed exploitation is 0 days. If your patching SLA for internet-facing appliances is measured in weeks, it is structurally insufficient. Require emergency-patch capability (hotfix within 24 hours of KEV addition) for all edge devices, and treat any management-plane exposure to the internet as a critical finding -- 8 of the 115 CVEs are "missing authentication for critical function" (CWE-306), meaning the management API was simply unprotected.
 
 ### 3. Budget for assume-breach hunting, not just prevention
 
-34% of these CVEs were zero-days -- exploited before any patch existed. Prevention alone cannot address this. Fund continuous threat hunting on edge devices: monitor for indicators of compromise published alongside KEV entries, deploy integrity-checking tools (where the vendor supports them), and treat post-exploitation persistence techniques (firmware-surviving symlinks, in-memory implants) as part of the incident-response playbook.
+33% of these CVEs were zero-days -- exploited before any patch existed. Prevention alone cannot address this. Fund continuous threat hunting on edge devices: monitor for indicators of compromise published alongside KEV entries, deploy integrity-checking tools (where the vendor supports them), and treat post-exploitation persistence techniques (firmware-surviving symlinks, in-memory implants) as part of the incident-response playbook.
 
 ---
 
@@ -58,11 +58,11 @@ Six distinct designations (UNC3886, UNC5221, UNC5337, UTA0218, DriftingCloud, Pa
 
 ### 2. Use the CWE weakness fingerprint as a predictive indicator
 
-Each vendor has a distinct CWE concentration: Fortinet skews auth/access-control (8 of 18, 44%), Ivanti skews injection (6 of 13, 46%), Cisco and Citrix concentrate in memory safety (4 each). When a new advisory drops for a vendor, the historical weakness fingerprint predicts the most likely bug class -- use it to prioritize PoC analysis, detection rule development, and intelligence collection on exploit-broker channels.
+Each vendor has a distinct CWE concentration: Fortinet skews auth/access-control (8 of 18, 44%), Ivanti skews injection (6 of 13, 46%), Citrix concentrates in memory safety (6 of 13, 46%), Cisco splits memory safety and injection (4 each). When a new advisory drops for a vendor, the historical weakness fingerprint predicts the most likely bug class -- use it to prioritize PoC analysis, detection rule development, and intelligence collection on exploit-broker channels.
 
 ### 3. Monitor the ransomware-to-edge pipeline as a leading indicator
 
-43% of edge CVEs end up in ransomware campaigns. The typical sequence is: nation-state zero-day exploitation, then public PoC, then ransomware weaponization within days to weeks. When a new edge zero-day is attributed to a state actor, begin ransomware-specific detection engineering immediately -- do not wait for CISA's ransomware flag.
+41% of edge CVEs end up in ransomware campaigns. The typical sequence is: nation-state zero-day exploitation, then public PoC, then ransomware weaponization within days to weeks. When a new edge zero-day is attributed to a state actor, begin ransomware-specific detection engineering immediately -- do not wait for CISA's ransomware flag.
 
 ---
 
@@ -70,11 +70,11 @@ Each vendor has a distinct CWE concentration: Fortinet skews auth/access-control
 
 This dataset enables several lines of research that raw CVE counts or isolated vendor analyses cannot support:
 
-- **Cross-vendor weakness-class comparison.** 107 CVEs across 11 vendors, each tagged with NVD CWE assignments and mapped into 10 meta-categories. The per-vendor "weakness fingerprint" (e.g., Fortinet's auth cluster, Ivanti's injection cluster) is available as structured JSON for programmatic analysis.
+- **Cross-vendor weakness-class comparison.** 115 CVEs across 13 vendors, each tagged with NVD CWE assignments and mapped into 10 meta-categories. The per-vendor "weakness fingerprint" (e.g., Fortinet's auth cluster, Ivanti's injection cluster) is available as structured JSON for programmatic analysis.
 
-- **Time-to-exploit trend modeling.** Full TTE computation (KEV dateAdded minus NVD publishedDate) for all 107 CVEs, with per-year medians showing the monotonic collapse from years to zero. The 36 confirmed zero-days are individually sourced and distinguishable from TTE-only signals.
+- **Time-to-exploit trend modeling.** Full TTE computation (KEV dateAdded minus NVD publishedDate) for all 115 CVEs, with per-year medians showing the monotonic collapse from years to zero. The 38 confirmed zero-days are individually sourced and distinguishable from TTE-only signals.
 
-- **Ransomware initial-access research.** 46 CVEs flagged for ransomware association, cross-referenced with vendor, CWE, TTE, and attribution. The dataset supports analysis of which bug classes and which vendors' devices are most frequently weaponized by ransomware operators.
+- **Ransomware initial-access research.** 47 CVEs flagged for ransomware association, cross-referenced with vendor, CWE, TTE, and attribution. The dataset supports analysis of which bug classes and which vendors' devices are most frequently weaponized by ransomware operators.
 
 - **Attribution network mapping.** A 19-entry attribution matrix linking CVEs to named threat actors (UNC/UAT/UTA designations), with nexus classification (China, Iran, criminal, botnet) and primary sourcing. Useful for studying actor-vendor targeting preferences and operational tempo.
 

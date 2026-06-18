@@ -4,7 +4,7 @@ You think you chose your firewall vendor based on data. You didn't. Here's what 
 
 You sat in a boardroom. Someone pulled up a comparison chart. Numbers were cited. A decision was made. Everyone felt good about it. And nearly every step of that process was contaminated by cognitive biases so deeply embedded in human reasoning that even knowing about them barely helps.
 
-This document uses real exploitation data from the [Edge Security Ground Truth](../README.md) dataset -- 107 CISA KEV-listed CVEs across 11 major edge vendors, 2020-2026 -- to show you exactly how your brain misleads you when you evaluate firewall, VPN, and edge-appliance vendors. Each bias is named, defined, demonstrated with real data, and followed by a question you can use to catch yourself doing it.
+This document uses real exploitation data from the [Edge Security Ground Truth](../README.md) dataset -- 115 CISA KEV-listed CVEs across 13 major edge vendors, 2020-2026 -- to show you exactly how your brain misleads you when you evaluate firewall, VPN, and edge-appliance vendors. Each bias is named, defined, demonstrated with real data, and followed by a question you can use to catch yourself doing it.
 
 The goal is not to tell you which vendor to pick. It is to make you dangerous to your own worst instincts.
 
@@ -20,9 +20,9 @@ Open any vendor comparison and the first number you see is the raw CVE count. Fo
 
 But watch what happens when you look past the anchor.
 
-Check Point's 2 KEV-listed CVEs are *both* confirmed zero-days -- a 100% zero-day rate. Fortinet's 7 zero-days out of 18 total gives them a 39% zero-day rate. If your actual threat model is "how likely am I to be hit before a patch exists," the anchor steered you in the wrong direction. The vendor with the small, reassuring number has the highest proportion of vulnerabilities where no defense existed at the time of exploitation.
+Check Point's 2 KEV-listed CVEs are *both* confirmed zero-days -- a 100% zero-day rate. Fortinet's 7 zero-days out of 18 total gives them a 39% zero-day rate. Citrix has 7 zero-days out of 13 (54%). If your actual threat model is "how likely am I to be hit before a patch exists," the anchor steered you in the wrong direction. The vendor with the small, reassuring number has the highest proportion of vulnerabilities where no defense existed at the time of exploitation.
 
-It gets worse. The statistical analysis shows that Fortinet's confidence interval ([10.66, 28.45]) fully contains the observed counts of 8 other vendors. The Poisson confidence intervals for 54 of 55 vendor pairs overlap. That clean "18 vs 2" your brain anchored on? It is one realization of a process with wide uncertainty bands. In a parallel universe with identical code quality, those numbers could easily be reversed.
+It gets worse. The statistical analysis shows that Fortinet's confidence interval ([10.66, 28.45]) fully contains the observed counts of 10 other vendors. The Poisson confidence intervals for 75 of 78 vendor pairs overlap. That clean "18 vs 2" your brain anchored on? It is one realization of a process with wide uncertainty bands. In a parallel universe with identical code quality, those numbers could easily be reversed.
 
 ### The psychological mechanism
 
@@ -44,7 +44,7 @@ Quick: which edge vendor had the worst security year recently?
 
 If you said Fortinet (FortiBleed, the silent-patch controversy, CVE-2026-24858) or Ivanti (Emergency Directive 24-01, the CISA disconnect order), you are not analyzing data. You are recalling headlines. The availability heuristic has replaced your risk model with your news feed.
 
-The base rate tells a different story. Every single one of the eleven vendors in this dataset has had at least one mass-exploitation event. Citrix had CitrixBleed (CVE-2023-4966), weaponized by LockBit against Boeing, DP World, ICBC, and Allen & Overy. Cisco had ArcaneDoor -- state-sponsored zero-days implanting firmware-surviving backdoors on government firewalls. Palo Alto had CVE-2024-3400, a CVSS 10.0 unauthenticated RCE discovered already under active exploitation, 19 days before the hotfix. SonicWall had a cloud-backup breach that exposed firewall configurations for their entire cloud-backup customer base. Sophos documented a *five-year* nation-state campaign ("Pacific Rim") targeting their edge devices. Zyxel shipped a hardcoded plaintext credential (`zyfwp`) in a security appliance.
+The base rate tells a different story. Every single one of the thirteen vendors in this dataset has had at least one mass-exploitation event. Citrix had CitrixBleed (CVE-2023-4966), weaponized by LockBit against Boeing, DP World, ICBC, and Allen & Overy. Cisco had ArcaneDoor -- state-sponsored zero-days implanting firmware-surviving backdoors on government firewalls. Palo Alto had CVE-2024-3400, a CVSS 10.0 unauthenticated RCE discovered already under active exploitation, 19 days before the hotfix. SonicWall had a cloud-backup breach that exposed firewall configurations for their entire cloud-backup customer base. Sophos documented a *five-year* nation-state campaign ("Pacific Rim") targeting their edge devices. Zyxel shipped a hardcoded plaintext credential (`zyfwp`) in a security appliance.
 
 All of these are severe. Most of them you have already forgotten, because they were not the *last* headline you saw. The availability heuristic ensures that whichever vendor was in the news cycle at the moment you made your decision -- or at the moment your board asked the question -- dominates your assessment.
 
@@ -66,19 +66,19 @@ Availability is a substitution: your brain replaces the hard question ("what is 
 
 Consider a concrete scenario drawn from this dataset's base rates.
 
-Your organization runs an internet-facing edge appliance. The data shows that 43% of exploited edge CVEs (46 of 107) are associated with ransomware campaigns. The median time-to-exploit for CVEs published since 2024 is 0 days -- exploitation is simultaneous with disclosure. Suppose a breach costs your organization $500,000 in incident response, downtime, and recovery.
+Your organization runs an internet-facing edge appliance. The data shows that 41% of exploited edge CVEs (47 of 115) are associated with ransomware campaigns. The median time-to-exploit for CVEs published since 2024 is 0 days -- exploitation is simultaneous with disclosure. Suppose a breach costs your organization $500,000 in incident response, downtime, and recovery.
 
 Under expected value theory, the math is straightforward:
 
-> Expected loss = 0.43 x $500,000 = **$215,000**
+> Expected loss = 0.41 x $500,000 = **$205,000**
 
 That is a clear signal to invest in rapid-patching infrastructure, assume-breach hunting, and management-plane isolation. But prospect theory says your brain does not process it that way. In the loss domain, the value function is concave -- you *underweight* the probability of the bad outcome because all options feel like losses, and losses trigger risk-seeking behavior:
 
-> Prospect theory value ~ -$500,000^0.88 x 0.43^0.65 = roughly **-$89,700**
+> Prospect theory value ~ -$500,000^0.88 x 0.41^0.65 = roughly **-$86,000**
 
 Your perceived risk is less than half the expected value. This is why CISOs gamble on "it won't happen to us" instead of investing $150,000 in a rapid-patching program that would be net-positive under any rational model. The loss domain makes the gamble feel less painful than the certain expenditure.
 
-And here is the cruelest part: 40% of edge CVEs are weaponized within 7 days of disclosure. The median enterprise patch cycle for edge appliances is 30-60 days. You are not gambling on a coin flip. You are gambling on a coin that lands on "breach" four times out of ten, while your patching cadence structurally cannot respond in time.
+And here is the cruelest part: 41% of edge CVEs are weaponized within 7 days of disclosure. The median enterprise patch cycle for edge appliances is 30-60 days. You are not gambling on a coin flip. You are gambling on a coin that lands on "breach" four times out of ten, while your patching cadence structurally cannot respond in time.
 
 ### The psychological mechanism
 
@@ -98,11 +98,11 @@ Loss aversion interacts with the *certainty effect*: people overweight outcomes 
 
 Read these two statements:
 
-> **Frame A:** "6 out of 107 CVEs across the dataset involve memory-safety bugs in Citrix products."
+> **Frame A:** "6 out of 115 CVEs across the dataset involve memory-safety bugs in Citrix products."
 
-> **Frame B:** "Citrix has a 36% memory-safety concentration -- tied for the highest in the dataset, alongside Cisco."
+> **Frame B:** "Citrix has a 46% memory-safety concentration -- the highest of any vendor in the dataset."
 
-Same data. Different reaction. Frame A makes 6 sound small against 107. Frame B makes 36% sound alarming. Neither is wrong. Both are incomplete. And whichever frame you encounter first will shape your evaluation of Citrix as a vendor.
+Same data. Different reaction. Frame A makes 6 sound small against 115. Frame B makes 46% sound alarming. Neither is wrong. Both are incomplete. And whichever frame you encounter first will shape your evaluation of Citrix as a vendor.
 
 Vendors and analysts exploit this constantly. Consider:
 
@@ -114,11 +114,11 @@ Frame C anchors you on the raw count. Frame D invokes Simpson's paradox: the ven
 
 Or consider the zero-day framing:
 
-> **Frame E:** "Only 34% of edge CVEs are zero-days."
+> **Frame E:** "Only 33% of edge CVEs are zero-days."
 
-> **Frame F:** "36 confirmed zero-days across 10 of 11 vendors -- one-third of everything on this list was exploited before any patch existed."
+> **Frame F:** "38 confirmed zero-days across 11 of 13 vendors -- one-third of everything on this list was exploited before any patch existed."
 
-Frame E uses "only" and a percentage. Frame F uses "36 confirmed" and "one-third." The second frame produces urgency. The first produces complacency. The data is identical.
+Frame E uses "only" and a percentage. Frame F uses "38 confirmed" and "one-third." The second frame produces urgency. The first produces complacency. The data is identical.
 
 ### The psychological mechanism
 
@@ -160,18 +160,18 @@ Sunk cost sensitivity is driven by loss aversion (Bias #3) applied to past inves
 
 ### The edge-security trap
 
-You just read that 43% of edge CVEs are associated with ransomware campaigns. You know that the median time-to-exploit for 2024 CVEs is 0 days. You know that 40% of all edge CVEs in this dataset were weaponized within 7 days of disclosure.
+You just read that 41% of edge CVEs are associated with ransomware campaigns. You know that the median time-to-exploit for 2024 CVEs is 0 days. You know that 41% of all edge CVEs in this dataset were weaponized within 7 days of disclosure.
 
 And you think: "That is bad, but my org patches faster than average."
 
 Do you, though?
 
-The data in this repository shows that 37 of 107 edge CVEs (34.6%) landed in KEV within 0-7 days of public disclosure. The typical enterprise patch cycle for network appliances is 30-60 days -- dominated by change-control processes, testing windows, and maintenance schedules. Even organizations with dedicated vulnerability management programs rarely achieve consistent sub-7-day patching for edge devices, because these appliances often require maintenance windows, firmware reboots, and validation of VPN/firewall rule continuity.
+The data in this repository shows that 47 of 115 edge CVEs (40.9%) landed in KEV within 0-7 days of public disclosure. The typical enterprise patch cycle for network appliances is 30-60 days -- dominated by change-control processes, testing windows, and maintenance schedules. Even organizations with dedicated vulnerability management programs rarely achieve consistent sub-7-day patching for edge devices, because these appliances often require maintenance windows, firmware reboots, and validation of VPN/firewall rule continuity.
 
 Optimism bias does not just affect patching speed. It distorts every layer of the assessment:
 
-- "43% ransomware association sounds bad, but we have good backups." (Do your backups cover the firewall configs that a SonicWall-style cloud breach would expose?)
-- "Zero-days are a nation-state problem, not a mid-market problem." (46 of 107 CVEs are ransomware-associated. Ransomware operators do not check your org size before deploying.)
+- "41% ransomware association sounds bad, but we have good backups." (Do your backups cover the firewall configs that a SonicWall-style cloud breach would expose?)
+- "Zero-days are a nation-state problem, not a mid-market problem." (47 of 115 CVEs are ransomware-associated. Ransomware operators do not check your org size before deploying.)
 - "We have compensating controls." (The ArcaneDoor implants on Cisco ASA firewalls survived reboots and persisted in firmware. Your compensating controls assumed a software-layer adversary.)
 
 The dataset's conclusion is blunt: "No major edge vendor is meaningfully safer than the others." Optimism bias is the mechanism by which you read that sentence, agree with it in the abstract, and then exempt your own deployment from it.
@@ -194,7 +194,7 @@ Optimism bias is one of the most robust cognitive biases, documented across cult
 
 Check Point has 2 exploited edge CVEs. Zyxel has 6. This might tempt you to conclude that Check Point's code is three times more secure than Zyxel's. But you are looking at the survivors -- the vulnerabilities that were found, reported, assigned a CVE, confirmed as exploited, and added to the CISA KEV catalog. At every step of that pipeline, there is selection bias.
 
-The statistical analysis in this dataset warns explicitly: "Vendors that are more widely deployed, more transparent in disclosure, and more prominent in breach news will accumulate more KEV entries independent of code quality. This is a form of detection bias or surveillance bias analogous to the well-known problem in epidemiology where diseases screened more frequently appear more prevalent."
+The statistical analysis in this dataset warns explicitly: "Vendors that are more widely deployed, more transparent in disclosure, and more prominent in breach news will accumulate more KEV entries independent of code quality. This is a form of detection bias or surveillance bias analogous to the well-known problem in epidemiology where diseases screened more frequently appear more prevalent." With 13 vendors and counts ranging 2–18, 96% of vendor-pair confidence intervals overlap — meaning the observed ranking is mostly noise.
 
 Consider the chain:
 1. **Researcher attention** is not evenly distributed. Fortinet and Palo Alto, with the largest install bases, attract the most security researchers. More researchers means more bugs found. More bugs found means more CVEs. More CVEs means more KEV entries. None of this requires that the code be worse.
@@ -221,11 +221,11 @@ Before you select or renew an edge-security vendor, ask these five questions. Wr
 
 ### 1. What is my actual patching speed, and does it fit inside the threat window?
 
-Measure your real mean-time-to-patch for edge appliances over the past 12 months. Compare it to the dataset's finding: 40% of edge CVEs are weaponized within 7 days. If your MTTP exceeds 7 days, no vendor choice compensates -- you are structurally exposed regardless of which name is on the box.
+Measure your real mean-time-to-patch for edge appliances over the past 12 months. Compare it to the dataset's finding: 41% of edge CVEs are weaponized within 7 days. If your MTTP exceeds 7 days, no vendor choice compensates -- you are structurally exposed regardless of which name is on the box.
 
 ### 2. Am I comparing per-device risk or per-vendor headlines?
 
-Raw CVE counts penalize market leaders and reward obscurity. Before comparing vendors, ask whether the count difference is explained by installed base, researcher attention, or disclosure practices. The statistical analysis shows that 98% of vendor-pair confidence intervals overlap -- meaning the observed ranking is likely noise, not signal.
+Raw CVE counts penalize market leaders and reward obscurity. Before comparing vendors, ask whether the count difference is explained by installed base, researcher attention, or disclosure practices. The statistical analysis shows that 96% of vendor-pair confidence intervals overlap -- meaning the observed ranking is likely noise, not signal.
 
 ### 3. What is this vendor's weakness fingerprint, and does it match my threat model?
 
@@ -245,7 +245,7 @@ Write down the specific evidence that would cause you to switch vendors or to st
 
 Every bias in this document applies to the authors of this dataset too. We anchored on CISA KEV as the gating framework. We were subject to availability when selecting which vendor narratives to emphasize. We framed data in ways that shaped your reaction. The difference between a biased analysis and a rigorous one is not the absence of bias -- it is the presence of transparency about where bias lives.
 
-The dataset publishes its scope rules, its scripts, its limitations, and its confidence intervals. It explicitly states that the vendor ranking "is a sort, not a verdict." It warns that installed base is uncontrolled and cannot be normalized away. It tells you that 98% of vendor-pair comparisons are statistically indistinguishable.
+The dataset publishes its scope rules, its scripts, its limitations, and its confidence intervals. It explicitly states that the vendor ranking "is a sort, not a verdict." It warns that installed base is uncontrolled and cannot be normalized away. It tells you that 96% of vendor-pair comparisons are statistically indistinguishable.
 
 The data does not tell you which vendor to choose. It tells you that the question itself -- "which vendor is safest?" -- is malformed. The better question is: "Given that all edge vendors are actively targeted, and exploitation timelines have compressed to zero, what response posture minimizes my risk regardless of which name is on the appliance?"
 
@@ -253,4 +253,4 @@ That question is harder. It is also the right one.
 
 ---
 
-*Based on data from the [Edge Security Ground Truth](https://github.com/ericrihm/edge-security-ground-truth) repository: 107 CISA KEV-listed CVEs, 11 vendors, 2020-2026. All statistics reproducible via the scripts in `scripts/`. See [STATISTICS.md](STATISTICS.md), [TIME-TO-EXPLOIT.md](TIME-TO-EXPLOIT.md), [CWE-ANALYSIS.md](CWE-ANALYSIS.md), and [EXECUTIVE-SUMMARY.md](EXECUTIVE-SUMMARY.md) for underlying analyses.*
+*Based on data from the [Edge Security Ground Truth](https://github.com/ericrihm/edge-security-ground-truth) repository: 115 CISA KEV-listed CVEs, 13 vendors, 2020-2026. All statistics reproducible via the scripts in `scripts/`. See [STATISTICS.md](STATISTICS.md), [TIME-TO-EXPLOIT.md](TIME-TO-EXPLOIT.md), [CWE-ANALYSIS.md](CWE-ANALYSIS.md), and [EXECUTIVE-SUMMARY.md](EXECUTIVE-SUMMARY.md) for underlying analyses.*

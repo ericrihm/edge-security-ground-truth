@@ -1,6 +1,6 @@
 # Numbers That Matter
 
-Fifteen statistics from [107 exploited edge-device CVEs](../README.md) across 11 vendors, 2020--2026. Every number is reproducible from CISA KEV data and the scripts in this repository.
+Fifteen statistics from [115 exploited edge-device CVEs](../README.md) across 13 vendors, 2020--2026. Every number is reproducible from CISA KEV data and the scripts in this repository.
 
 ---
 
@@ -12,31 +12,31 @@ For vulnerabilities disclosed in 2024, exploitation was confirmed the same day a
 
 ---
 
-## 43%
+## 41%
 
 **The share of exploited edge CVEs associated with known ransomware campaigns.**
 
-46 of 107 CISA KEV-listed edge CVEs are flagged as used in ransomware operations. Nearly half of all edge exploitation feeds directly into the ransomware economy -- Akira, Fog, LockBit, Helldown, and others. Fortinet alone accounts for 12 of the 46 (26%). ([TIME-TO-EXPLOIT.md](./TIME-TO-EXPLOIT.md), Ransomware Association)
+47 of 115 CISA KEV-listed edge CVEs are flagged as used in ransomware operations. Nearly half of all edge exploitation feeds directly into the ransomware economy -- Akira, Fog, LockBit, Helldown, and others. Fortinet alone accounts for 12 of the 47 (26%). ([TIME-TO-EXPLOIT.md](./TIME-TO-EXPLOIT.md), Ransomware Association)
 
 ---
 
-## 71%
+## 72%
 
-**Three bug classes account for 71% of all exploited edge CVEs.**
+**Three bug classes account for 72% of all exploited edge CVEs.**
 
-Authentication bypass (28%), injection (22%), and memory corruption (21%). These are not exotic zero-days requiring novel research. They are the same weakness families OWASP warned about in 2003 and CISA's Secure-by-Design initiative targets today. They keep shipping in devices whose entire purpose is security. ([CWE-ANALYSIS.md](./CWE-ANALYSIS.md), Executive Summary)
+Authentication bypass (27%), memory corruption (23%), and injection (22%). These are not exotic zero-days requiring novel research. They are the same weakness families OWASP warned about in 2003 and CISA's Secure-by-Design initiative targets today. They keep shipping in devices whose entire purpose is security. ([CWE-ANALYSIS.md](./CWE-ANALYSIS.md), Executive Summary)
 
 ---
 
-## 10 of 11
+## 11 of 13
 
 **Number of vendors with at least one confirmed zero-day.**
 
-Only Zyxel has no confirmed pre-disclosure exploitation. The other ten -- Fortinet, Ivanti, Cisco, Palo Alto, SonicWall, Citrix, Juniper, F5, Sophos, and Check Point -- all have at least one CVE that was exploited before a patch existed. Zero-days are not a Fortinet problem or an Ivanti problem. They are an edge-device problem. ([TIME-TO-EXPLOIT.md](./TIME-TO-EXPLOIT.md), Zero-Days by Vendor)
+Only Zyxel and Array Networks have no confirmed pre-disclosure exploitation. The other eleven -- Fortinet, Ivanti, Cisco, Palo Alto, SonicWall, Citrix, Juniper, F5, Sophos, Check Point, and WatchGuard -- all have at least one CVE that was exploited before a patch existed. Zero-days are not a Fortinet problem or an Ivanti problem. They are an edge-device problem. ([TIME-TO-EXPLOIT.md](./TIME-TO-EXPLOIT.md), Zero-Days by Vendor)
 
 ---
 
-## 7 of 11
+## 7 of 13
 
 **Number of vendors that shipped a path-traversal bug (CWE-22) that was exploited in the wild.**
 
@@ -44,19 +44,19 @@ Citrix, F5, Fortinet, Ivanti, Juniper, SonicWall, and Zyxel all shipped products
 
 ---
 
-## 98%
+## 96%
 
 **Percentage of vendor pairs whose confidence intervals overlap.**
 
-Of 55 possible vendor-pair comparisons, 54 have overlapping Poisson confidence intervals. Only Fortinet vs. Check Point (18 vs. 2) is statistically separable. Every other ranking you have seen -- Cisco vs. Palo Alto, Ivanti vs. SonicWall, Juniper vs. F5 -- is noise at these sample sizes. ([STATISTICS.md](./STATISTICS.md), Section 7: Poisson Confidence Intervals)
+Of 78 possible vendor-pair comparisons, 75 have overlapping Poisson confidence intervals. Only the most extreme outliers (Fortinet vs. Check Point, Fortinet vs. Array Networks) are statistically separable. Every other ranking you have seen -- Cisco vs. Palo Alto, Ivanti vs. SonicWall, Juniper vs. F5 -- is noise at these sample sizes. ([STATISTICS.md](./STATISTICS.md), Section 7: Poisson Confidence Intervals)
 
 ---
 
 ## 2 to 18
 
-**The full range of exploited edge CVEs across all eleven vendors over six years.**
+**The full range of exploited edge CVEs across all thirteen vendors over six years.**
 
-Check Point has 2. Fortinet has 18. Everyone else falls between 6 and 13. Under a consistent scope rule applied identically, no vendor is dramatically cleaner than the others. Anyone selling you "vendor X is secure, vendor Y isn't" on these counts is selling you a confidence interval they haven't computed. ([README.md](../README.md), Main Table)
+Check Point and Array Networks each have 2. Fortinet has 18. Everyone else falls between 4 and 13. Under a consistent scope rule applied identically, no vendor is dramatically cleaner than the others. Anyone selling you "vendor X is secure, vendor Y isn't" on these counts is selling you a confidence interval they haven't computed. ([README.md](../README.md), Main Table)
 
 ---
 
@@ -68,11 +68,11 @@ Auth/access-control bugs went from 12% of exploited CVEs before 2019 to 35% in 2
 
 ---
 
-## 40%
+## 41%
 
 **The proportion of edge CVEs exploited within one week of disclosure.**
 
-43 of 107 CVEs were added to CISA KEV within 7 days of their NVD publication date. This is a conservative measure -- actual exploitation often precedes the KEV listing. Monthly patching cycles are structurally incompatible with this attack tempo. ([TIME-TO-EXPLOIT.md](./TIME-TO-EXPLOIT.md), Histogram)
+47 of 115 CVEs were added to CISA KEV within 7 days of their NVD publication date (including 6 with negative TTE, exploited before NVD publication). This is a conservative measure -- actual exploitation often precedes the KEV listing. Monthly patching cycles are structurally incompatible with this attack tempo. ([TIME-TO-EXPLOIT.md](./TIME-TO-EXPLOIT.md), Histogram)
 
 ---
 

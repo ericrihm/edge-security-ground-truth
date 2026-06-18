@@ -18,4 +18,4 @@ keywords:
   - SSL VPN
   - perimeter security
 date-released: "2026-06-18"
-abstract: "Uniform, reproducible, cited exploitation data for perimeter and edge security vendors — firewalls, SSL-VPN gateways, and remote-access appliances. CISA KEV backbone with per-vendor deep-dive analysis."
+abstract: "Uniform, reproducible, cited exploitation data for perimeter and edge security vendors — firewalls, SSL-VPN gateways, and remote-access appliances. 115 CISA KEV-listed CVEs across 13 vendors (2020–2026). CISA KEV backbone with per-vendor deep-dive analysis."
