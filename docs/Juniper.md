@@ -34,4 +34,4 @@ Juniper's disclosure behavior in 2023 was timely: the out-of-cycle advisory prec
 | Disclosure transparency | Adequate; no documented silent patching |
 | Operator risk driver | End-of-life hardware + J-Web internet exposure + slow patch uptake |
 
-> **Analytical note**: Claims that Juniper has the "worst per-unit KEV density" among perimeter vendors are derived reasoning based on device counts and KEV totals — this is not a published or independently verified statistic. Treat it as a useful analytical lens, not a benchmark figure.
+> **Note:** Within this repo's edge-remote scope, the 2023 J-Web exploitation occurred ~8 days *after* the advisory, so Juniper is recorded with no confirmed pre-patch zero-day. See the [comparison](../README.md) and [methodology](../METHODOLOGY.md).

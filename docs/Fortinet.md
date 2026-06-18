@@ -25,7 +25,7 @@ The common claim that Fortinet is "most transparent" is **false**, directly cont
 
 In June 2023, Fortinet silently pushed firmware updates containing a fix for CVE-2023-27997 — a CVSS 9.8 pre-auth heap overflow — approximately **3–4 days before publishing any advisory**. [watchTowr researchers](https://labs.watchtowr.com/xortigate-or-cve-2023-27997/) reproduced the vulnerability on June 11 by diffing the firmware; [Lexfo Security](https://blog.lexfo.fr/xortigate-cve-2023-27997.html) had independently teased the bug on June 10. The official advisory appeared June 13.
 
-The structural problem: Fortinet does not release discrete security patches. Customers must upgrade entire firmware builds. Without a CVE or advisory, administrators had no basis to assess urgency, and sophisticated adversaries had a reverse-engineering head-start on the same patch delta that defenders were flying blind on. This is the **worst plausible disclosure design** for high-severity vulnerabilities.
+The structural problem: Fortinet does not release discrete security patches. Customers must upgrade entire firmware builds. Without a CVE or advisory, administrators had no basis to assess urgency, while adversaries had a reverse-engineering head-start on the same patch delta defenders couldn't see. For a high-severity vulnerability, that is a poor disclosure design.
 
 ## Post-Exploitation: Patching Is Not Enough
 

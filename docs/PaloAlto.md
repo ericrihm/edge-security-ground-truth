@@ -1,6 +1,6 @@
 # Palo Alto Networks
 
-**Market position:** The largest pure-play cybersecurity company by market cap and the #1 or #2 NGFW vendor globally. Platforms include PAN-OS firewalls, Prisma SASE, Cortex XDR/XSOAR, and the Expedition migration utility. Products sit at the top of most enterprise shortlists, priced to match.
+**Scope in this repo:** PAN-OS firewall (GlobalProtect / NGFW). Palo Alto is a leading enterprise firewall vendor; its broader platform (Prisma, Cortex) and the Expedition migration utility fall outside the edge-appliance scope and are noted separately where relevant.
 
 ---
 
@@ -31,7 +31,7 @@ Expedition is an optional, often-overlooked migration utility — not the firewa
 
 ## The Standout: CVE-2024-3400
 
-[CVE-2024-3400](https://www.cisa.gov/news-events/alerts/2024/04/12/palo-alto-networks-releases-guidance-vulnerability-pan-os-cve-2024-3400) is the clearest single data point against the premium-security narrative. CVSS 10.0. Unauthenticated. Root on the firewall. Discovered in active exploitation — not reported by the vendor — by Volexity on approximately April 10, 2024, before any patch existed. The campaign, dubbed **Operation MidnightEclipse**, is attributed to a suspected state-nexus actor (UTA0218) who deployed the UPSTYLE backdoor and moved laterally into victim environments. CISA issued an emergency alert within two days; [patches shipped April 14](https://security.paloaltonetworks.com/CVE-2024-3400). Thousands of internet-exposed GlobalProtect instances were subsequently mass-scanned once public proof-of-concept code dropped.
+[CVE-2024-3400](https://www.cisa.gov/news-events/alerts/2024/04/12/palo-alto-networks-releases-guidance-vulnerability-pan-os-cve-2024-3400) is the most severe PAN-OS entry in the window. CVSS 10.0. Unauthenticated. Root on the firewall. Discovered in active exploitation — not reported by the vendor — by Volexity on approximately April 10, 2024, before any patch existed. The campaign, dubbed **Operation MidnightEclipse**, is attributed to a suspected state-nexus actor (UTA0218) who deployed the UPSTYLE backdoor and moved laterally into victim environments. CISA issued an emergency alert within two days; [patches shipped April 14](https://security.paloaltonetworks.com/CVE-2024-3400). Thousands of internet-exposed GlobalProtect instances were subsequently mass-scanned once public proof-of-concept code dropped.
 
 Days-to-mass-exploitation: zero (pre-patch zero-day). That is not a market-share artifact.
 
@@ -55,6 +55,6 @@ Palo Alto does not have a documented pattern of silent patching (unlike [Fortine
 
 ---
 
-## The "Premium Price" Lens
+## Note on raw counts
 
-Seven KEV entries from one vendor in one calendar year is a notable concentration. Market incumbents do attract proportionally more researcher and adversary attention, and that inflates raw counts. But three of Palo Alto's 2024 entries were pre-patch or near-zero-day — a metric market share does not explain. The honest framing: **premium pricing buys best-in-class feature sets and support. It has not, in 2024, correlated with a lower probability of being compromised through the perimeter device you bought for protection.**
+Seven KEV entries in one calendar year is a notable concentration, but market incumbents attract proportionally more researcher and adversary attention, which inflates raw counts (see the repo [methodology](../METHODOLOGY.md)). The signal that attention does *not* explain: three of the 2024 entries were pre-patch or near-zero-day exploitation. Weigh that against your own deployment and patch cadence.
