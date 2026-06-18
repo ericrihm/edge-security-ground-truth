@@ -32,7 +32,7 @@ A navigational guide to all research, analysis, and reference material in this r
 | [CWE Analysis](CWE-ANALYSIS.md) | Which weakness classes keep appearing in exploited edge devices, and why they persist |
 | [Time-to-Exploit](TIME-TO-EXPLOIT.md) | Measured lag between CVE disclosure and in-the-wild exploitation across vendors |
 | [Cross-Vendor Patterns](ANALYSIS.md) | Structural patterns in vulnerability classes, disclosure behavior, and exploitation timelines |
-| [Vendor Matrix](VENDOR-MATRIX.md) | Side-by-side comparison of all 11 vendors across KEV count, CVSS, CWE class, and patch lag |
+| [Vendor Matrix](VENDOR-MATRIX.md) | Side-by-side comparison of all 13 vendors across KEV count, CVSS, CWE class, and patch lag |
 
 ---
 
@@ -72,14 +72,16 @@ Each profile covers KEV-listed CVEs in full, exploitation timeline, patch behavi
 | Fortinet (FortiGate) | 18 | [Fortinet.md](Fortinet.md) |
 | Ivanti (Connect Secure / Pulse) | 13 | [Ivanti.md](Ivanti.md) |
 | Cisco (ASA / FTD) | 13 | [Cisco.md](Cisco.md) |
-| Citrix (NetScaler ADC / Gateway) | 11 | [Citrix.md](Citrix.md) |
+| Citrix (NetScaler ADC / Gateway) | 13 | [Citrix.md](Citrix.md) |
 | Palo Alto Networks | 12 | [PaloAlto.md](PaloAlto.md) |
 | SonicWall | 12 | [SonicWall.md](SonicWall.md) |
+| Juniper Networks | 8 | [Juniper.md](Juniper.md) |
 | F5 (BIG-IP) | 6 | [F5.md](F5.md) |
 | Sophos Firewall | 6 | [Sophos.md](Sophos.md) |
 | Zyxel | 6 | [Zyxel.md](Zyxel.md) |
-| Juniper Networks | 4 | [Juniper.md](Juniper.md) |
+| WatchGuard (Firebox / Fireware) | 4 | [WatchGuard.md](WatchGuard.md) |
 | Check Point | 2 | [CheckPoint.md](CheckPoint.md) |
+| Array Networks (AG / vxAG) | 2 | [ArrayNetworks.md](ArrayNetworks.md) |
 
 ---
 
@@ -92,3 +94,4 @@ Standalone HTML files — open in any browser, no server required.
 | [edge-kev-chart.html](../assets/edge-kev-chart.html) | KEV counts by vendor over time, interactive bar/timeline chart |
 | [cwe-heatmap.html](../assets/cwe-heatmap.html) | CWE weakness-class heatmap across vendors and years |
 | [tte-explorer.html](../assets/tte-explorer.html) | Time-to-exploit explorer: disclosure-to-exploitation lag by CVE |
+| [ransomware-explorer.html](../assets/ransomware-explorer.html) | Ransomware-associated edge CVEs: which vendors and CVEs carry CISA's ransomware flag |

@@ -23,11 +23,11 @@ This project is structured to answer three empirical questions using the methods
 
 | RQ | Null hypothesis (H₀) |
 |----|----------------------|
-| RQ1 | Vendor KEV counts do not differ from a uniform distribution across the eleven vendors (i.e., expected count = total / 11 for each vendor). |
+| RQ1 | Vendor KEV counts do not differ from a uniform distribution across the thirteen vendors (i.e., expected count = total / 13 for each vendor). |
 | RQ2 | CWE assignments are distributed uniformly across vendors; no vendor shows a statistically anomalous concentration of a particular weakness class. |
 | RQ3 | Median TTE for edge appliances in this dataset does not differ from the Mandiant industry-wide median TTE; vendor-level TTE distributions are drawn from the same underlying population. |
 
-All three null hypotheses are tested at α = 0.05. Given n = 11 vendors and the confounds described in §4, results are treated as descriptive findings rather than definitive causal conclusions.
+All three null hypotheses are tested at α = 0.05. Given n = 13 vendors and the confounds described in §4, results are treated as descriptive findings rather than definitive causal conclusions.
 
 ---
 
@@ -150,7 +150,7 @@ These works are discussed in detail in [docs/RELATED-WORK.md](./docs/RELATED-WOR
 
 **Why not narrower (firewall only)?** SSL-VPN gateways and remote-access appliances share the same structural properties as firewalls in terms of internet exposure, pre-authentication attack surface, and exploitation dynamics. In many product lines they run on the same operating system (e.g., FortiOS serves both firewall and SSL-VPN functions; PAN-OS serves both firewall and GlobalProtect VPN). Excluding VPN gateways would omit the majority of the highest-impact exploitation events in the 2020-2026 window (the Ivanti/Pulse Secure VPN chains, the Fortinet SSL-VPN series, CitrixBleed).
 
-**Why these eleven vendors?** The eleven vendors in scope (Check Point, Cisco, Citrix, F5 Networks, Fortinet, Ivanti, Juniper Networks, Palo Alto Networks, SonicWall, Sophos, Zyxel) represent the major commercial edge appliance vendors that appear in the CISA KEV catalog within the scope window. No vendor with qualifying KEV entries was excluded. The dataset is extensible: adding a vendor requires adding a scope rule to `SCOPE` in `build_kev_counts.py` and re-running.
+**Why these thirteen vendors?** The thirteen vendors in scope (Array Networks, Check Point, Cisco, Citrix, F5 Networks, Fortinet, Ivanti, Juniper Networks, Palo Alto Networks, SonicWall, Sophos, WatchGuard, Zyxel) represent the major commercial edge appliance vendors that appear in the CISA KEV catalog within the scope window. No vendor with qualifying KEV entries is excluded — WatchGuard (Firebox/Fireware, 4 entries) and Array Networks (ArrayOS AG/vxAG, 2 entries) were added in the 2026-06 expansion after an audit found qualifying entries that earlier versions had missed. The dataset is extensible: adding a vendor requires adding a scope rule to `SCOPE` in `build_kev_counts.py` and re-running.
 
 ### 2.3 Inclusion and Exclusion Logic
 
@@ -169,11 +169,13 @@ The exact regexes are defined in the `SCOPE` dictionary in [`scripts/build_kev_c
 | Palo Alto Networks | `PAN-OS` | `Expedition` | PAN-OS is the firewall/VPN OS. Expedition (migration tool) is excluded. |
 | SonicWall | `SonicOS\|SMA\|SSLVPN\|SSL[- ]?VPN\|Secure Remote Access\|SRA` | `Email Security` | SonicOS (firewall) and SMA/SRA (remote access) are both in scope. Email security is excluded. |
 | Check Point | `Quantum\|CloudGuard\|Security Gateway\|Gaia` | `Endpoint\|Harmony\|SmartConsole\|ZoneAlarm` | Quantum Security Gateway / Gaia is the firewall platform. Endpoint, Harmony (consumer), management console, and ZoneAlarm are excluded. |
-| Citrix | `NetScaler ADC\|NetScaler Gateway\|Citrix ADC\|Citrix Gateway\|Application Delivery Controller` | `Workspace\|XenApp\|XenDesktop\|ShareFile\|Endpoint Management` | NetScaler ADC/Gateway is the SSL-VPN/load balancer with gateway function. Virtualization and SaaS products are excluded. |
+| Citrix | `NetScaler ADC\|NetScaler Gateway\|Citrix ADC\|Citrix Gateway\|Application Delivery Controller\|^NetScaler$` | `Workspace\|XenApp\|XenDesktop\|ShareFile\|Endpoint Management` | NetScaler ADC/Gateway is the SSL-VPN/load balancer with gateway function. The anchored `^NetScaler$` term captures KEV entries CISA labels with the bare product string "NetScaler" (e.g. CVE-2025-7775, CVE-2026-3055). Virtualization and SaaS products are excluded. |
 | F5 | `BIG-IP` | `BIG-IQ\|NGINX` | BIG-IP serves APM (SSL-VPN), LTM (load balancing), and firewall functions. BIG-IQ (management) and NGINX are excluded. |
 | Zyxel | `Multiple Firewalls\|USG\|ATP\|ZyWALL\|VPN\|FLEX` | `NAS\|Network-Attached Storage\|Router\|CPE\|DSL\|Access Point` | USG/ATP/FLEX/VPN/ZyWALL are the firewall product lines. NAS, routers, CPE devices, and access points are excluded. |
 | Juniper | `Junos OS\|ScreenOS` | *(none)* | Junos OS (J-Web) and ScreenOS are the firewall/VPN operating systems. No exclusion needed because Juniper's non-firewall KEV entries appear under different product names. |
 | Sophos | `Firewall\|XG Firewall\|SG UTM\|SFOS\|CyberoamOS` | `Web Appliance\|Intercept X\|Central\|Endpoint\|Email` | Sophos Firewall (SFOS), XG Firewall, SG UTM, and CyberoamOS (legacy) are in scope. Endpoint, email, web appliance, and management (Central) are excluded. |
+| WatchGuard | `Firebox\|XTM\|Fireware` | `AuthPoint` | Firebox / XTM appliances running Fireware OS are the UTM firewall + Mobile VPN line. AuthPoint (cloud MFA) is excluded. |
+| Array Networks | `ArrayOS\|vxAG` | *(none)* | AG / vxAG appliances running ArrayOS are the SSL-VPN / secure-access gateway line. |
 
 ### 2.4 Special Cases
 
@@ -216,7 +218,7 @@ The `--as-of` flag allows a user to reproduce historical snapshots by capping `d
 
 ### 3.3 Vendor Name Matching
 
-Vendor matching uses exact case-insensitive string comparison against the KEV `vendorProject` field. This field is controlled by CISA and is generally consistent within a vendor, but it can vary: e.g., "Palo Alto Networks" (with "Networks") vs. a hypothetical "Palo Alto" (without). The current regexes assume CISA's established naming conventions. If CISA introduces a variant, the script must be updated.
+Vendor matching uses case-insensitive, whitespace-trimmed string comparison against the KEV `vendorProject` field (the live feed ships some values with stray trailing whitespace — e.g. `"Array Networks "` — so the comparison `.strip()`s both sides). This field is controlled by CISA and is generally consistent within a vendor, but it can vary: e.g., "Palo Alto Networks" (with "Networks") vs. a hypothetical "Palo Alto" (without). The current regexes assume CISA's established naming conventions. If CISA introduces a variant, the script must be updated.
 
 ### 3.4 Edge Cases and Resolution
 
@@ -286,7 +288,7 @@ The KEV catalog also reflects CISA's operational priorities. Vulnerabilities aff
 
 2. **Identification of exploitation patterns.** Which CWE categories recur? Which vendors have zero-day entries? What is the distribution of time-to-exploit? What fraction is ransomware-associated?
 
-3. **Framing of relative exposure.** The spread of the data (2-18 across eleven vendors) is itself a finding: no vendor is dramatically cleaner than the others, and no vendor is immune.
+3. **Framing of relative exposure.** The spread of the data (2-18 across thirteen vendors) is itself a finding: no vendor is dramatically cleaner than the others, and no vendor is immune.
 
 ### 5.2 What It CANNOT Answer
 
@@ -413,7 +415,7 @@ All statistical computations are implemented from first principles using Python'
 - **Poisson regression** models the expected count under various assumptions.
 - **Confidence intervals** via bootstrap or normal approximation where applicable.
 
-**Small-sample caveat.** All tests are conducted with n=11 vendors. This is below the sample size at which most asymptotic statistical tests achieve reliable coverage. Results should be interpreted as descriptive summaries, not as definitive hypothesis tests. The chi-squared test result (p approximately 0.02 in the current dataset) suggests counts differ from uniform, but the uncontrolled confounders (installed base, researcher attention) make causal interpretation hazardous.
+**Small-sample caveat.** All tests are conducted with n=13 vendors. This is below the sample size at which most asymptotic statistical tests achieve reliable coverage. Results should be interpreted as descriptive summaries, not as definitive hypothesis tests. The chi-squared test result (p approximately 0.0008 in the current dataset) suggests counts differ from uniform, but the uncontrolled confounders (installed base, researcher attention) make causal interpretation hazardous.
 
 ---
 
@@ -492,13 +494,13 @@ This section consolidates all known limitations, including those discussed above
 
 10. **Edge-only scope.** The methodology intentionally excludes endpoint, management, email, WAF, and infrastructure products. A vendor's total security posture includes these; the edge-only scope captures one (important) dimension.
 
-11. **Eleven vendors.** The dataset covers the major commercial edge vendors in the CISA KEV catalog. Smaller vendors (e.g., WatchGuard, Barracuda, pfSense/Netgate) are not included because they have few or no qualifying KEV entries in the scope window, not because they are more secure.
+11. **Thirteen vendors.** The dataset covers the major commercial edge vendors in the CISA KEV catalog, including WatchGuard (Firebox/Fireware) and Array Networks (ArrayOS) added in the 2026-06 expansion. Vendors still excluded (e.g., Barracuda's email-security gateway, pfSense/Netgate) have few or no *qualifying edge* KEV entries in the scope window, not because they are more secure.
 
 12. **Bounded temporal window.** The 2020-2026 window captures a specific period. Pre-2020 exploitation (e.g., early Pulse Secure campaigns) is excluded. Post-window exploitation will require re-running the pipeline.
 
 ### 9.4 Statistical Limitations
 
-13. **Small sample size.** With n=11 vendors, most statistical tests have limited power. The chi-squared test, HHI, and Gini coefficient are descriptive summaries, not definitive tests.
+13. **Small sample size.** With n=13 vendors, most statistical tests have limited power. The chi-squared test, HHI, and Gini coefficient are descriptive summaries, not definitive tests.
 
 14. **No causal inference.** The observational design supports description and correlation only. No causal claims (e.g., "vendor X has worse code than vendor Y") are supported by this methodology.
 
