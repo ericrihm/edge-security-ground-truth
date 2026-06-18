@@ -15,20 +15,172 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Compile check
-        run: python3 -m py_compile scripts/build_kev_counts.py
+      # ------------------------------------------------------------------
+      # Compile-check every Python script in scripts/
+      # ------------------------------------------------------------------
+      - name: Compile-check all scripts
+        run: |
+          for f in scripts/*.py; do
+            echo "Checking $f ..."
+            python3 -m py_compile "$f"
+          done
 
-      - name: Run with --as-of 2026-06-18
+      # ------------------------------------------------------------------
+      # Build the baseline counts (network-required; also validates the
+      # KEV feed is reachable and the CVE lists parse cleanly).
+      # ------------------------------------------------------------------
+      - name: Run build_kev_counts.py
         run: python3 scripts/build_kev_counts.py --format json --as-of 2026-06-18
 
+      # ------------------------------------------------------------------
+      # Run analysis scripts.
+      # analyze_patterns.py and analyze_tte.py hit the live CISA KEV feed;
+      # analyze_statistics.py does an optional best-effort KEV merge.
+      # All failures are tolerated so transient network errors don't block
+      # PRs — a non-zero exit means a code/logic regression, not a 503.
+      # ------------------------------------------------------------------
+      - name: Run analyze_cwe.py --format json
+        run: |
+          python3 scripts/analyze_cwe.py --format json > /dev/null \
+            && echo "analyze_cwe: OK" \
+            || { echo "analyze_cwe: FAILED (see above)"; exit 1; }
+
+      - name: Run analyze_statistics.py --format json
+        run: |
+          # Network merge is best-effort inside the script; a fetch failure
+          # prints a warning but does not exit non-zero.
+          python3 scripts/analyze_statistics.py --format json > /dev/null \
+            && echo "analyze_statistics: OK" \
+            || { echo "analyze_statistics: FAILED (see above)"; exit 1; }
+
+      - name: Run analyze_tte.py --format json --no-fetch
+        run: |
+          # --no-fetch avoids the live KEV network call; TTE data comes
+          # from kev_edge_enriched.json which is committed to the repo.
+          python3 scripts/analyze_tte.py --format json --no-fetch > /dev/null \
+            && echo "analyze_tte: OK" \
+            || { echo "analyze_tte: FAILED (see above)"; exit 1; }
+
+      - name: Run analyze_patterns.py --format json (network optional)
+        run: |
+          # analyze_patterns.py always fetches the live KEV feed; allow
+          # failure so transient CISA outages don't block merges.
+          python3 scripts/analyze_patterns.py --format json > /dev/null \
+            && echo "analyze_patterns: OK" \
+            || echo "analyze_patterns: WARNING (network fetch may have failed — non-blocking)"
+
+      # ------------------------------------------------------------------
+      # Validate kev_edge_enriched.json structure
+      # ------------------------------------------------------------------
+      - name: Validate kev_edge_enriched.json
+        run: |
+          python3 - <<'EOF'
+          import json, sys, os
+
+          path = "scripts/kev_edge_enriched.json"
+          if not os.path.isfile(path):
+              print(f"ERROR: {path} not found")
+              sys.exit(1)
+
+          try:
+              with open(path) as f:
+                  data = json.load(f)
+          except json.JSONDecodeError as e:
+              print(f"ERROR: {path} is not valid JSON: {e}")
+              sys.exit(1)
+
+          # Must have _metadata key
+          if "_metadata" not in data:
+              print(f"ERROR: missing '_metadata' key in {path}")
+              sys.exit(1)
+
+          meta = data["_metadata"]
+          required_meta_keys = {"generated_at", "total_cves"}
+          missing_meta = required_meta_keys - set(meta.keys())
+          if missing_meta:
+              print(f"ERROR: _metadata missing keys: {missing_meta}")
+              sys.exit(1)
+
+          # Must have at least one vendor with CVEs
+          vendors = [k for k in data if not k.startswith("_")]
+          if not vendors:
+              print("ERROR: no vendor entries found in enriched JSON")
+              sys.exit(1)
+
+          # Each vendor value must be a dict of CVE-ID -> dict
+          errors = []
+          for vendor in vendors:
+              cves = data[vendor]
+              if not isinstance(cves, dict):
+                  errors.append(f"{vendor}: expected dict of CVEs, got {type(cves).__name__}")
+                  continue
+              for cve_id, cve_data in cves.items():
+                  if not cve_id.startswith("CVE-"):
+                      errors.append(f"{vendor}/{cve_id}: CVE-ID does not start with 'CVE-'")
+                  if not isinstance(cve_data, dict):
+                      errors.append(f"{vendor}/{cve_id}: expected dict, got {type(cve_data).__name__}")
+
+          if errors:
+              for e in errors:
+                  print(f"ERROR: {e}")
+              sys.exit(1)
+
+          total = sum(len(v) for v in data.values() if isinstance(v, dict))
+          print(f"kev_edge_enriched.json OK — {len(vendors)} vendors, {total} CVE entries")
+          EOF
+
+      # ------------------------------------------------------------------
+      # Verify all docs referenced in README.md exist
+      # ------------------------------------------------------------------
+      - name: Check README.md doc references
+        run: |
+          python3 - <<'EOF'
+          import re, os, sys
+
+          readme = "README.md"
+          with open(readme) as f:
+              content = f.read()
+
+          # Extract all relative file paths from markdown links: [text](path)
+          # Exclude URLs (http/https) and anchors (#...)
+          pattern = re.compile(r'\(([^)]+)\)')
+          missing = []
+          checked = []
+
+          for m in pattern.finditer(content):
+              ref = m.group(1).strip()
+              # Skip external URLs, anchors, and empty refs
+              if ref.startswith(("http://", "https://", "#", "mailto:")) or not ref:
+                  continue
+              # Strip anchor fragment if present (e.g. file.md#section)
+              path = ref.split("#")[0]
+              if not path:
+                  continue
+              # Normalise: README.md lives at repo root
+              norm = os.path.normpath(path)
+              checked.append(norm)
+              if not os.path.exists(norm):
+                  missing.append(f"  {ref} -> {norm}")
+
+          if missing:
+              print(f"README.md references {len(missing)} missing file(s):")
+              for m in missing:
+                  print(m)
+              sys.exit(1)
+
+          print(f"All {len(checked)} file references in README.md exist.")
+          EOF
+
+      # ------------------------------------------------------------------
+      # Verify all vendor docs exist (cross-check counts JSON vs docs/)
+      # ------------------------------------------------------------------
       - name: Verify all vendors have docs
         run: |
-          python3 -c "
+          python3 - <<'EOF'
           import json, sys, os
           with open('scripts/kev_edge_counts.json') as f:
               data = json.load(f)
           vendors = [k for k in data if k != '_metadata']
-          # Map vendor names to expected doc filenames
           name_map = {
               'Palo Alto Networks': 'PaloAlto.md',
               'Check Point': 'CheckPoint.md',
@@ -45,4 +197,4 @@ jobs:
                   print(f'  {m}')
               sys.exit(1)
           print(f'All {len(vendors)} vendors have docs.')
-          "
+          EOF

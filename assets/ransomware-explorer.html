@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edge Security Ground Truth -- Ransomware Explorer</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --border: #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-red: #f85149;
+    --accent-orange: #d29922;
+    --accent-green: #3fb950;
+    --accent-blue: #58a6ff;
+    --accent-purple: #bc8cff;
+    --accent-pink: #f778ba;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  header h1 span { color: var(--accent-red); }
+  header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px 32px;
+  }
+
+  /* Stat cards row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .stat-card.highlight {
+    border-color: var(--accent-red);
+    background: linear-gradient(135deg, rgba(248,81,73,0.08), var(--bg-secondary));
+  }
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .stat-value.danger { color: var(--accent-red); }
+  .stat-value.warn { color: var(--accent-orange); }
+  .stat-value.info { color: var(--accent-blue); }
+  .stat-value.ok { color: var(--accent-green); }
+  .stat-value.purple { color: var(--accent-purple); }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 4px;
+  }
+
+  /* Section headers */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-number {
+    background: var(--accent-red);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .section-subtitle {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-left: auto;
+  }
+
+  /* Panels */
+  .panel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+  .panel-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  /* Overview panel - two column */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* Donut container */
+  .donut-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .donut-wrap {
+    width: 180px;
+    height: 180px;
+    position: relative;
+  }
+  .donut-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .donut-center .big {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent-red);
+    line-height: 1;
+  }
+  .donut-center .small {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Groups list */
+  .groups-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .group-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  .group-tag .icon {
+    font-size: 16px;
+  }
+  .group-tag .name {
+    font-weight: 600;
+    color: var(--accent-red);
+  }
+  .group-tag .detail {
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+
+  /* Chart containers */
+  .chart-wrapper {
+    position: relative;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .chart-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .chart-tall { height: 500px; }
+  .chart-medium { height: 400px; }
+
+  /* Bar chart vendor labels */
+  .vendor-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .vendor-bar-label {
+    width: 150px;
+    text-align: right;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .vendor-bar-track {
+    flex: 1;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    height: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .vendor-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    min-width: 50px;
+    transition: width 0.6s ease;
+  }
+  .vendor-bar-count {
+    width: 80px;
+    text-align: left;
+    color: var(--text-secondary);
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Pipeline */
+  .pipeline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .pipeline-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 20px 0;
+  }
+  .pipeline-stage {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 180px;
+    position: relative;
+  }
+  .pipeline-stage.stage-discovery {
+    border-color: var(--accent-blue);
+    background: rgba(88,166,255,0.08);
+  }
+  .pipeline-stage.stage-poc {
+    border-color: var(--accent-orange);
+    background: rgba(210,153,34,0.08);
+  }
+  .pipeline-stage.stage-ransomware {
+    border-color: var(--accent-red);
+    background: rgba(248,81,73,0.12);
+  }
+  .pipeline-stage .stage-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+  .pipeline-stage .stage-label {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .pipeline-stage .stage-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+  .pipeline-arrow {
+    font-size: 28px;
+    color: var(--text-muted);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+  /* Case study cards */
+  .case-studies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 16px;
+  }
+  .case-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    border-left: 4px solid var(--accent-red);
+  }
+  .case-card .case-cve {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-red);
+  }
+  .case-card .case-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 2px;
+  }
+  .case-card .case-timeline {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .case-card .tl-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .case-card .tl-entry .tl-marker {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .case-card .tl-entry .tl-date {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: var(--text-muted);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+  .case-card .tl-groups {
+    margin-top: 8px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .case-card .group-badge {
+    background: rgba(248,81,73,0.15);
+    color: var(--accent-red);
+    border: 1px solid rgba(248,81,73,0.3);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Legend */
+  .legend-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .legend-tri {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid var(--accent-red);
+    display: inline-block;
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+  footer a {
+    color: var(--accent-blue);
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+
+  /* Tabs for timeline */
+  .tab-bar {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+  }
+  .tab-btn {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px 6px 0 0;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab-btn.active {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-bottom-color: var(--bg-secondary);
+  }
+  .tab-btn:hover:not(.active) {
+    background: var(--border);
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 900px) {
+    .container { padding: 16px; }
+    .overview-grid { grid-template-columns: 1fr; }
+    .case-studies { grid-template-columns: 1fr; }
+    .pipeline-flow { flex-direction: column; }
+    .pipeline-arrow { transform: rotate(90deg); }
+    header { padding: 16px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span>Ransomware Explorer</span> -- Edge Security Ground Truth</h1>
+  <p>43% of edge/perimeter CVEs in CISA KEV are ransomware-associated. This is the weaponization pipeline.</p>
+</header>
+
+<div class="container">
+
+  <!-- STAT CARDS -->
+  <div class="stats-row">
+    <div class="stat-card highlight">
+      <div class="stat-value danger">46</div>
+      <div class="stat-label">Ransomware CVEs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value info">107</div>
+      <div class="stat-label">Total Edge CVEs</div>
+    </div>
+    <div class="stat-card highlight">
+      <div class="stat-value danger">43%</div>
+      <div class="stat-label">Ransomware Rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value warn">9</div>
+      <div class="stat-label">Vendors Affected</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value purple">9.3</div>
+      <div class="stat-label">Median CVSS (Ransomware)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value ok">0 days</div>
+      <div class="stat-label">Median TTE (Ransomware)</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: OVERVIEW -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div class="section-title">Ransomware Overview</div>
+      <div class="section-subtitle">46 of 107 edge CVEs weaponized by ransomware groups</div>
+    </div>
+    <div class="overview-grid">
+      <div class="panel">
+        <div class="panel-title">Ransomware vs Non-Ransomware</div>
+        <div class="donut-container">
+          <div class="donut-wrap">
+            <canvas id="donutChart"></canvas>
+            <div class="donut-center">
+              <div class="big">43%</div>
+              <div class="small">Ransomware</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Named Ransomware Groups Observed</div>
+        <div class="groups-panel">
+          <div class="group-tag"><span class="name">LockBit</span><span class="detail">-- CitrixBleed (Boeing, ICBC), Fortinet, SonicWall, F5 campaigns</span></div>
+          <div class="group-tag"><span class="name">Akira</span><span class="detail">-- SonicWall SSLVPN (30+ intrusions via CVE-2024-40766)</span></div>
+          <div class="group-tag"><span class="name">Fog</span><span class="detail">-- SonicWall SSLVPN (documented alongside Akira campaigns)</span></div>
+          <div class="group-tag"><span class="name">Helldown</span><span class="detail">-- Zyxel firewall path traversal (CVE-2024-11667)</span></div>
+          <div class="group-tag"><span class="name">RagnarLocker</span><span class="detail">-- Citrix ADC, Fortinet VPN initial access</span></div>
+          <div class="group-tag"><span class="name">Conti / Ryuk</span><span class="detail">-- Fortinet FortiGate, Citrix, Pulse Secure</span></div>
+          <div class="group-tag"><span class="name">BlackCat (ALPHV)</span><span class="detail">-- Cisco ASA, Fortinet campaigns</span></div>
+          <div class="group-tag"><span class="name">Cactus</span><span class="detail">-- Citrix NetScaler exploitation</span></div>
+          <div class="group-tag"><span class="name">INC Ransom</span><span class="detail">-- Citrix NetScaler gateway targeting</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: VENDOR RANSOMWARE RATE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <div class="section-title">Vendor Ransomware Rate</div>
+      <div class="section-subtitle">Percentage of each vendor's KEV CVEs with known ransomware association</div>
+    </div>
+    <div class="panel">
+      <div id="vendorBars"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: TIMELINE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <div class="section-title">Ransomware Timeline</div>
+      <div class="section-subtitle">Ransomware-associated CVEs by publication date and vendor</div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="setTimelineMode('all')">All CVEs (ransomware highlighted)</button>
+      <button class="tab-btn" onclick="setTimelineMode('ransomware')">Ransomware Only</button>
+    </div>
+    <div class="chart-wrapper chart-tall">
+      <canvas id="timelineChart"></canvas>
+    </div>
+    <div class="legend-bar">
+      <div class="legend-item"><span class="legend-tri"></span> Ransomware-associated</div>
+      <div class="legend-item"><span class="legend-dot" style="background: var(--text-muted); opacity:0.5;"></span> Not ransomware-associated</div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: THE PIPELINE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <div class="section-title">The Weaponization Pipeline</div>
+      <div class="section-subtitle">From zero-day to ransomware deployment -- real cases from the dataset</div>
+    </div>
+    <div class="panel pipeline-container">
+      <div class="pipeline-flow">
+        <div class="pipeline-stage stage-discovery">
+          <div class="stage-icon">&#128269;</div>
+          <div class="stage-label">Zero-Day Discovery</div>
+          <div class="stage-sub">Vulnerability found in edge device</div>
+        </div>
+        <div class="pipeline-arrow">&#10132;</div>
+        <div class="pipeline-stage stage-poc">
+          <div class="stage-icon">&#9888;&#65039;</div>
+          <div class="stage-label">Public PoC / Advisory</div>
+          <div class="stage-sub">Exploit code becomes available</div>
+        </div>
+        <div class="pipeline-arrow">&#10132;</div>
+        <div class="pipeline-stage stage-ransomware">
+          <div class="stage-icon">&#128274;</div>
+          <div class="stage-label">Ransomware Weaponization</div>
+          <div class="stage-sub">Integrated into ransomware playbooks</div>
+        </div>
+      </div>
+
+      <div class="case-studies">
+        <div class="case-card">
+          <div class="case-cve">CVE-2023-4966</div>
+          <div class="case-name">CitrixBleed -- Citrix NetScaler</div>
+          <div class="case-timeline">
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-blue);"></div>
+              <div class="tl-date">Oct 10</div>
+              <div>Citrix publishes advisory for session token leak (CVSS 9.4)</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-orange);"></div>
+              <div class="tl-date">Oct 18</div>
+              <div>CISA adds to KEV -- only 8 days after disclosure</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-red);"></div>
+              <div class="tl-date">Nov</div>
+              <div>LockBit hits Boeing and ICBC using CitrixBleed within weeks</div>
+            </div>
+          </div>
+          <div class="tl-groups">
+            <span class="group-badge">LockBit</span>
+            <span class="group-badge">Medusa</span>
+            <span class="group-badge">INC Ransom</span>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-cve">CVE-2024-40766</div>
+          <div class="case-name">SonicWall SSLVPN Access Control</div>
+          <div class="case-timeline">
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-blue);"></div>
+              <div class="tl-date">Aug 23</div>
+              <div>SonicWall publishes advisory for access control flaw (CVSS 9.3)</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-orange);"></div>
+              <div class="tl-date">Sep 09</div>
+              <div>CISA adds to KEV after active exploitation confirmed</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-red);"></div>
+              <div class="tl-date">Sep-Oct</div>
+              <div>Arctic Wolf documents 30+ Akira and Fog ransomware intrusions via SSLVPN</div>
+            </div>
+          </div>
+          <div class="tl-groups">
+            <span class="group-badge">Akira</span>
+            <span class="group-badge">Fog</span>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-cve">CVE-2024-55591</div>
+          <div class="case-name">Fortinet FortiOS Auth Bypass</div>
+          <div class="case-timeline">
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-red);"></div>
+              <div class="tl-date">~Jan 01</div>
+              <div>Ransomware operator already exploiting ~2 weeks before advisory</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-blue);"></div>
+              <div class="tl-date">Jan 14</div>
+              <div>Fortinet publishes advisory (CVSS 9.6) -- same-day KEV addition</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-orange);"></div>
+              <div class="tl-date">Jan 14</div>
+              <div>Arctic Wolf reports super_admin creation on exposed FortiGate devices</div>
+            </div>
+          </div>
+          <div class="tl-groups">
+            <span class="group-badge">Unattributed Operator</span>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-cve">CVE-2024-3400</div>
+          <div class="case-name">PAN-OS Command Injection (Operation MidnightEclipse)</div>
+          <div class="case-timeline">
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-blue);"></div>
+              <div class="tl-date">Apr 12</div>
+              <div>Palo Alto publishes advisory for GlobalProtect flaw (CVSS 10.0)</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-orange);"></div>
+              <div class="tl-date">Apr 12</div>
+              <div>Same-day KEV -- zero days between disclosure and exploitation</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-red);"></div>
+              <div class="tl-date">Apr-May</div>
+              <div>State-sponsored + ransomware operators weaponize; EPSS hits 0.99999</div>
+            </div>
+          </div>
+          <div class="tl-groups">
+            <span class="group-badge">UTA0218</span>
+            <span class="group-badge">Multiple Groups</span>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-cve">CVE-2024-11667</div>
+          <div class="case-name">Zyxel Firewall Path Traversal</div>
+          <div class="case-timeline">
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-blue);"></div>
+              <div class="tl-date">Nov 27</div>
+              <div>Zyxel discloses directory traversal in firewall firmware (CVSS 7.5)</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-orange);"></div>
+              <div class="tl-date">Dec 03</div>
+              <div>CISA adds to KEV -- 6 days to exploitation</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-red);"></div>
+              <div class="tl-date">Dec</div>
+              <div>Helldown ransomware group targets Zyxel firewalls at scale</div>
+            </div>
+          </div>
+          <div class="tl-groups">
+            <span class="group-badge">Helldown</span>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-cve">CVE-2023-46805 + CVE-2024-21887</div>
+          <div class="case-name">Ivanti Connect Secure Chain</div>
+          <div class="case-timeline">
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-red);"></div>
+              <div class="tl-date">Jan 10</div>
+              <div>KEV added BEFORE NVD publication -- active zero-day exploitation</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-blue);"></div>
+              <div class="tl-date">Jan 12</div>
+              <div>NVD publishes (CVSS 8.2 + 9.1) -- TTE is negative 2 days</div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-marker" style="background: var(--accent-orange);"></div>
+              <div class="tl-date">Jan-Feb</div>
+              <div>CISA Emergency Directive ED 24-01; mass exploitation across government</div>
+            </div>
+          </div>
+          <div class="tl-groups">
+            <span class="group-badge">UNC5221</span>
+            <span class="group-badge">Multiple APTs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Data: CISA KEV + NVD + FIRST EPSS | Source: <a href="https://github.com/ericrihm/edge-security-ground-truth" target="_blank">edge-security-ground-truth</a> | 107 CVEs across 9 edge vendors | 46 ransomware-associated
+</footer>
+
+<script>
+// ========== DATA ==========
+const VENDOR_COLORS = {
+  'Check Point':        '#ffd33d',
+  'Fortinet':           '#3fb950',
+  'Ivanti':             '#bc8cff',
+  'SonicWall':          '#79c0ff',
+  'F5':                 '#ff7b72',
+  'Palo Alto Networks': '#58a6ff',
+  'Citrix':             '#f778ba',
+  'Cisco':              '#f0883e',
+  'Zyxel':              '#d2a8ff',
+  'Sophos':             '#7ee787',
+  'Juniper':            '#56d4dd'
+};
+
+const VENDOR_STATS = [
+  { vendor: 'Check Point',        ransomware: 2,  total: 2,  rate: 100 },
+  { vendor: 'Fortinet',           ransomware: 12, total: 18, rate: 67  },
+  { vendor: 'Ivanti',             ransomware: 8,  total: 13, rate: 62  },
+  { vendor: 'SonicWall',          ransomware: 7,  total: 12, rate: 58  },
+  { vendor: 'F5',                 ransomware: 3,  total: 6,  rate: 50  },
+  { vendor: 'Palo Alto Networks', ransomware: 5,  total: 12, rate: 42  },
+  { vendor: 'Citrix',             ransomware: 4,  total: 11, rate: 36  },
+  { vendor: 'Cisco',              ransomware: 3,  total: 13, rate: 23  },
+  { vendor: 'Zyxel',              ransomware: 1,  total: 6,  rate: 17  },
+  { vendor: 'Sophos',             ransomware: 1,  total: 6,  rate: 17  },
+  { vendor: 'Juniper',            ransomware: 0,  total: 8,  rate: 0   }
+];
+
+// All CVEs for the timeline
+const ALL_CVES = [
+  {cve:"CVE-2019-7481",vendor:"SonicWall",published:"2019-12-17",ransomware:"Known",cvss:7.5,kev:"2021-11-03"},
+  {cve:"CVE-2021-20016",vendor:"SonicWall",published:"2021-02-03",ransomware:"Known",cvss:9.8,kev:"2021-11-03"},
+  {cve:"CVE-2021-20038",vendor:"SonicWall",published:"2021-12-08",ransomware:"Known",cvss:9.8,kev:"2022-01-28"},
+  {cve:"CVE-2020-5135",vendor:"SonicWall",published:"2020-10-12",ransomware:"Unknown",cvss:9.8,kev:"2022-03-15"},
+  {cve:"CVE-2021-20028",vendor:"SonicWall",published:"2021-08-04",ransomware:"Known",cvss:9.8,kev:"2022-03-28"},
+  {cve:"CVE-2019-7483",vendor:"SonicWall",published:"2019-12-19",ransomware:"Unknown",cvss:7.5,kev:"2022-03-28"},
+  {cve:"CVE-2024-40766",vendor:"SonicWall",published:"2024-08-23",ransomware:"Known",cvss:9.3,kev:"2024-09-09"},
+  {cve:"CVE-2025-23006",vendor:"SonicWall",published:"2025-01-23",ransomware:"Known",cvss:9.8,kev:"2025-01-24"},
+  {cve:"CVE-2024-53704",vendor:"SonicWall",published:"2025-01-09",ransomware:"Known",cvss:8.2,kev:"2025-02-18"},
+  {cve:"CVE-2021-20035",vendor:"SonicWall",published:"2021-09-27",ransomware:"Unknown",cvss:6.5,kev:"2025-04-16"},
+  {cve:"CVE-2023-44221",vendor:"SonicWall",published:"2023-12-05",ransomware:"Unknown",cvss:7.2,kev:"2025-05-01"},
+  {cve:"CVE-2025-40602",vendor:"SonicWall",published:"2025-12-18",ransomware:"Unknown",cvss:6.6,kev:"2025-12-17"},
+  {cve:"CVE-2021-22893",vendor:"Ivanti",published:"2021-04-23",ransomware:"Known",cvss:10,kev:"2021-11-03"},
+  {cve:"CVE-2020-8243",vendor:"Ivanti",published:"2020-09-29",ransomware:"Unknown",cvss:7.2,kev:"2021-11-03"},
+  {cve:"CVE-2021-22900",vendor:"Ivanti",published:"2021-05-27",ransomware:"Unknown",cvss:7.2,kev:"2021-11-03"},
+  {cve:"CVE-2021-22894",vendor:"Ivanti",published:"2021-05-27",ransomware:"Unknown",cvss:8.8,kev:"2021-11-03"},
+  {cve:"CVE-2020-8260",vendor:"Ivanti",published:"2020-10-28",ransomware:"Unknown",cvss:7.2,kev:"2021-11-03"},
+  {cve:"CVE-2021-22899",vendor:"Ivanti",published:"2021-05-27",ransomware:"Unknown",cvss:8.8,kev:"2021-11-03"},
+  {cve:"CVE-2019-11510",vendor:"Ivanti",published:"2019-05-08",ransomware:"Known",cvss:9.9,kev:"2021-11-03"},
+  {cve:"CVE-2019-11539",vendor:"Ivanti",published:"2019-04-26",ransomware:"Known",cvss:8,kev:"2021-11-03"},
+  {cve:"CVE-2023-46805",vendor:"Ivanti",published:"2024-01-12",ransomware:"Known",cvss:8.2,kev:"2024-01-10"},
+  {cve:"CVE-2024-21887",vendor:"Ivanti",published:"2024-01-12",ransomware:"Known",cvss:9.1,kev:"2024-01-10"},
+  {cve:"CVE-2024-21893",vendor:"Ivanti",published:"2024-01-31",ransomware:"Known",cvss:8.2,kev:"2024-01-31"},
+  {cve:"CVE-2025-0282",vendor:"Ivanti",published:"2025-01-08",ransomware:"Known",cvss:9,kev:"2025-01-08"},
+  {cve:"CVE-2025-22457",vendor:"Ivanti",published:"2025-04-03",ransomware:"Known",cvss:9,kev:"2025-04-04"},
+  {cve:"CVE-2020-1631",vendor:"Juniper",published:"2020-05-04",ransomware:"Unknown",cvss:8.8,kev:"2022-03-25"},
+  {cve:"CVE-2023-36844",vendor:"Juniper",published:"2023-08-17",ransomware:"Unknown",cvss:5.3,kev:"2023-11-13"},
+  {cve:"CVE-2023-36845",vendor:"Juniper",published:"2023-08-17",ransomware:"Unknown",cvss:9.8,kev:"2023-11-13"},
+  {cve:"CVE-2023-36846",vendor:"Juniper",published:"2023-08-17",ransomware:"Unknown",cvss:5.3,kev:"2023-11-13"},
+  {cve:"CVE-2023-36847",vendor:"Juniper",published:"2023-08-17",ransomware:"Unknown",cvss:5.3,kev:"2023-11-13"},
+  {cve:"CVE-2023-36851",vendor:"Juniper",published:"2023-09-26",ransomware:"Unknown",cvss:5.3,kev:"2023-11-13"},
+  {cve:"CVE-2025-21590",vendor:"Juniper",published:"2025-03-12",ransomware:"Unknown",cvss:4.4,kev:"2025-03-13"},
+  {cve:"CVE-2015-7755",vendor:"Juniper",published:"2015-12-19",ransomware:"Unknown",cvss:9.8,kev:"2025-10-02"},
+  {cve:"CVE-2020-3452",vendor:"Cisco",published:"2020-07-22",ransomware:"Unknown",cvss:7.5,kev:"2021-11-03"},
+  {cve:"CVE-2020-3580",vendor:"Cisco",published:"2020-10-21",ransomware:"Known",cvss:6.1,kev:"2021-11-03"},
+  {cve:"CVE-2018-0296",vendor:"Cisco",published:"2018-06-07",ransomware:"Unknown",cvss:7.5,kev:"2021-11-03"},
+  {cve:"CVE-2016-6366",vendor:"Cisco",published:"2016-08-18",ransomware:"Unknown",cvss:8.8,kev:"2022-05-24"},
+  {cve:"CVE-2016-6367",vendor:"Cisco",published:"2016-08-18",ransomware:"Unknown",cvss:7.8,kev:"2022-05-24"},
+  {cve:"CVE-2023-20269",vendor:"Cisco",published:"2023-09-06",ransomware:"Known",cvss:5,kev:"2023-09-13"},
+  {cve:"CVE-2020-3259",vendor:"Cisco",published:"2020-05-06",ransomware:"Known",cvss:7.5,kev:"2024-02-15"},
+  {cve:"CVE-2024-20359",vendor:"Cisco",published:"2024-04-24",ransomware:"Unknown",cvss:6,kev:"2024-04-24"},
+  {cve:"CVE-2024-20353",vendor:"Cisco",published:"2024-04-24",ransomware:"Unknown",cvss:8.6,kev:"2024-04-24"},
+  {cve:"CVE-2024-20481",vendor:"Cisco",published:"2024-10-23",ransomware:"Unknown",cvss:5.8,kev:"2024-10-24"},
+  {cve:"CVE-2014-2120",vendor:"Cisco",published:"2014-03-19",ransomware:"Unknown",cvss:5.4,kev:"2024-11-12"},
+  {cve:"CVE-2025-20362",vendor:"Cisco",published:"2025-09-25",ransomware:"Unknown",cvss:6.5,kev:"2025-09-25"},
+  {cve:"CVE-2025-20333",vendor:"Cisco",published:"2025-09-25",ransomware:"Unknown",cvss:9.9,kev:"2025-09-25"},
+  {cve:"CVE-2019-1579",vendor:"Palo Alto Networks",published:"2019-07-19",ransomware:"Known",cvss:8.1,kev:"2022-01-10"},
+  {cve:"CVE-2020-2021",vendor:"Palo Alto Networks",published:"2020-06-29",ransomware:"Known",cvss:10,kev:"2022-03-25"},
+  {cve:"CVE-2017-15944",vendor:"Palo Alto Networks",published:"2017-12-11",ransomware:"Unknown",cvss:9.8,kev:"2022-08-18"},
+  {cve:"CVE-2022-0028",vendor:"Palo Alto Networks",published:"2022-08-10",ransomware:"Unknown",cvss:8.6,kev:"2022-08-22"},
+  {cve:"CVE-2024-3400",vendor:"Palo Alto Networks",published:"2024-04-12",ransomware:"Known",cvss:10,kev:"2024-04-12"},
+  {cve:"CVE-2024-9474",vendor:"Palo Alto Networks",published:"2024-11-18",ransomware:"Known",cvss:7.2,kev:"2024-11-18"},
+  {cve:"CVE-2024-0012",vendor:"Palo Alto Networks",published:"2024-11-18",ransomware:"Known",cvss:9.3,kev:"2024-11-18"},
+  {cve:"CVE-2024-3393",vendor:"Palo Alto Networks",published:"2024-12-27",ransomware:"Unknown",cvss:8.7,kev:"2024-12-30"},
+  {cve:"CVE-2025-0108",vendor:"Palo Alto Networks",published:"2025-02-12",ransomware:"Unknown",cvss:8.8,kev:"2025-02-18"},
+  {cve:"CVE-2025-0111",vendor:"Palo Alto Networks",published:"2025-02-12",ransomware:"Unknown",cvss:7.1,kev:"2025-02-20"},
+  {cve:"CVE-2026-0300",vendor:"Palo Alto Networks",published:"2026-05-06",ransomware:"Unknown",cvss:null,kev:"2026-05-06"},
+  {cve:"CVE-2026-0257",vendor:"Palo Alto Networks",published:"2026-05-13",ransomware:"Unknown",cvss:null,kev:"2026-05-29"},
+  {cve:"CVE-2024-24919",vendor:"Check Point",published:"2024-05-28",ransomware:"Known",cvss:8.6,kev:"2024-05-30"},
+  {cve:"CVE-2026-50751",vendor:"Check Point",published:"2026-06-08",ransomware:"Known",cvss:9.3,kev:"2026-06-08"},
+  {cve:"CVE-2019-5591",vendor:"Fortinet",published:"2020-08-14",ransomware:"Unknown",cvss:6.5,kev:"2021-11-03"},
+  {cve:"CVE-2020-12812",vendor:"Fortinet",published:"2020-07-24",ransomware:"Known",cvss:9.8,kev:"2021-11-03"},
+  {cve:"CVE-2018-13379",vendor:"Fortinet",published:"2019-06-04",ransomware:"Known",cvss:9.1,kev:"2021-11-03"},
+  {cve:"CVE-2021-44168",vendor:"Fortinet",published:"2022-01-04",ransomware:"Unknown",cvss:3.3,kev:"2021-12-10"},
+  {cve:"CVE-2018-13382",vendor:"Fortinet",published:"2019-06-04",ransomware:"Known",cvss:9.1,kev:"2022-01-10"},
+  {cve:"CVE-2018-13383",vendor:"Fortinet",published:"2019-05-29",ransomware:"Known",cvss:4.3,kev:"2022-01-10"},
+  {cve:"CVE-2018-13374",vendor:"Fortinet",published:"2019-01-22",ransomware:"Known",cvss:4.3,kev:"2022-09-08"},
+  {cve:"CVE-2022-40684",vendor:"Fortinet",published:"2022-10-18",ransomware:"Known",cvss:9.8,kev:"2022-10-11"},
+  {cve:"CVE-2022-42475",vendor:"Fortinet",published:"2023-01-02",ransomware:"Known",cvss:9.3,kev:"2022-12-13"},
+  {cve:"CVE-2022-41328",vendor:"Fortinet",published:"2023-03-07",ransomware:"Unknown",cvss:6.5,kev:"2023-03-14"},
+  {cve:"CVE-2023-27997",vendor:"Fortinet",published:"2023-06-13",ransomware:"Known",cvss:9.2,kev:"2023-06-13"},
+  {cve:"CVE-2024-21762",vendor:"Fortinet",published:"2024-02-09",ransomware:"Known",cvss:9.6,kev:"2024-02-09"},
+  {cve:"CVE-2024-23113",vendor:"Fortinet",published:"2024-02-15",ransomware:"Unknown",cvss:9.8,kev:"2024-10-09"},
+  {cve:"CVE-2024-55591",vendor:"Fortinet",published:"2025-01-14",ransomware:"Known",cvss:9.6,kev:"2025-01-14"},
+  {cve:"CVE-2025-24472",vendor:"Fortinet",published:"2025-02-11",ransomware:"Known",cvss:8.1,kev:"2025-03-18"},
+  {cve:"CVE-2019-6693",vendor:"Fortinet",published:"2019-11-21",ransomware:"Known",cvss:6.5,kev:"2025-06-25"},
+  {cve:"CVE-2025-59718",vendor:"Fortinet",published:"2025-12-09",ransomware:"Unknown",cvss:9.1,kev:"2025-12-16"},
+  {cve:"CVE-2026-24858",vendor:"Fortinet",published:"2026-01-27",ransomware:"Unknown",cvss:9.4,kev:"2026-01-27"},
+  {cve:"CVE-2020-8193",vendor:"Citrix",published:"2020-07-10",ransomware:"Unknown",cvss:6.5,kev:"2021-11-03"},
+  {cve:"CVE-2020-8195",vendor:"Citrix",published:"2020-07-10",ransomware:"Unknown",cvss:6.5,kev:"2021-11-03"},
+  {cve:"CVE-2020-8196",vendor:"Citrix",published:"2020-07-10",ransomware:"Unknown",cvss:4.3,kev:"2021-11-03"},
+  {cve:"CVE-2019-19781",vendor:"Citrix",published:"2019-12-27",ransomware:"Known",cvss:9.8,kev:"2021-11-03"},
+  {cve:"CVE-2022-27518",vendor:"Citrix",published:"2022-12-13",ransomware:"Unknown",cvss:9.8,kev:"2022-12-13"},
+  {cve:"CVE-2023-3519",vendor:"Citrix",published:"2023-07-19",ransomware:"Known",cvss:9.8,kev:"2023-07-19"},
+  {cve:"CVE-2023-4966",vendor:"Citrix",published:"2023-10-10",ransomware:"Known",cvss:9.4,kev:"2023-10-18"},
+  {cve:"CVE-2023-6549",vendor:"Citrix",published:"2024-01-17",ransomware:"Unknown",cvss:8.2,kev:"2024-01-17"},
+  {cve:"CVE-2023-6548",vendor:"Citrix",published:"2024-01-17",ransomware:"Unknown",cvss:5.5,kev:"2024-01-17"},
+  {cve:"CVE-2025-6543",vendor:"Citrix",published:"2025-06-25",ransomware:"Unknown",cvss:null,kev:"2025-06-30"},
+  {cve:"CVE-2025-5777",vendor:"Citrix",published:"2025-06-17",ransomware:"Known",cvss:null,kev:"2025-07-10"},
+  {cve:"CVE-2020-5902",vendor:"F5",published:"2020-07-01",ransomware:"Known",cvss:9.8,kev:"2021-11-03"},
+  {cve:"CVE-2021-22991",vendor:"F5",published:"2021-03-31",ransomware:"Unknown",cvss:9.8,kev:"2022-01-18"},
+  {cve:"CVE-2022-1388",vendor:"F5",published:"2022-05-05",ransomware:"Known",cvss:9.8,kev:"2022-05-10"},
+  {cve:"CVE-2023-46748",vendor:"F5",published:"2023-10-26",ransomware:"Unknown",cvss:8.8,kev:"2023-10-31"},
+  {cve:"CVE-2023-46747",vendor:"F5",published:"2023-10-26",ransomware:"Known",cvss:9.8,kev:"2023-10-31"},
+  {cve:"CVE-2025-53521",vendor:"F5",published:"2025-10-15",ransomware:"Unknown",cvss:9.8,kev:"2026-03-27"},
+  {cve:"CVE-2020-29583",vendor:"Zyxel",published:"2020-12-22",ransomware:"Unknown",cvss:9.8,kev:"2021-11-03"},
+  {cve:"CVE-2022-30525",vendor:"Zyxel",published:"2022-05-12",ransomware:"Unknown",cvss:9.8,kev:"2022-05-16"},
+  {cve:"CVE-2023-28771",vendor:"Zyxel",published:"2023-04-25",ransomware:"Unknown",cvss:9.8,kev:"2023-05-31"},
+  {cve:"CVE-2023-33009",vendor:"Zyxel",published:"2023-05-24",ransomware:"Unknown",cvss:9.8,kev:"2023-06-05"},
+  {cve:"CVE-2023-33010",vendor:"Zyxel",published:"2023-05-24",ransomware:"Unknown",cvss:9.8,kev:"2023-06-05"},
+  {cve:"CVE-2024-11667",vendor:"Zyxel",published:"2024-11-27",ransomware:"Known",cvss:7.5,kev:"2024-12-03"},
+  {cve:"CVE-2020-12271",vendor:"Sophos",published:"2020-04-27",ransomware:"Known",cvss:10,kev:"2021-11-03"},
+  {cve:"CVE-2020-25223",vendor:"Sophos",published:"2020-09-25",ransomware:"Unknown",cvss:9.8,kev:"2022-03-25"},
+  {cve:"CVE-2022-1040",vendor:"Sophos",published:"2022-03-25",ransomware:"Unknown",cvss:9.8,kev:"2022-03-31"},
+  {cve:"CVE-2022-3236",vendor:"Sophos",published:"2022-09-23",ransomware:"Unknown",cvss:9.8,kev:"2022-09-23"},
+  {cve:"CVE-2020-15069",vendor:"Sophos",published:"2020-06-29",ransomware:"Unknown",cvss:9.8,kev:"2025-02-06"},
+  {cve:"CVE-2020-29574",vendor:"Sophos",published:"2020-12-11",ransomware:"Unknown",cvss:9.8,kev:"2025-02-06"}
+];
+
+// Vendor index for y-axis
+const VENDORS_ORDERED = [
+  'Check Point', 'Fortinet', 'Ivanti', 'SonicWall', 'F5',
+  'Palo Alto Networks', 'Citrix', 'Cisco', 'Zyxel', 'Sophos', 'Juniper'
+];
+
+// ========== DONUT CHART ==========
+const donutCtx = document.getElementById('donutChart').getContext('2d');
+new Chart(donutCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Ransomware-Associated', 'Not Ransomware-Associated'],
+    datasets: [{
+      data: [46, 61],
+      backgroundColor: ['#f85149', '#21262d'],
+      borderColor: ['#f85149', '#30363d'],
+      borderWidth: 2,
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    cutout: '70%',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(22,27,34,0.95)',
+        borderColor: '#30363d',
+        borderWidth: 1,
+        titleColor: '#e6edf3',
+        bodyColor: '#8b949e',
+        callbacks: {
+          label: function(ctx) {
+            return ctx.label + ': ' + ctx.raw + ' CVEs (' + Math.round(ctx.raw/107*100) + '%)';
+          }
+        }
+      }
+    }
+  }
+});
+
+// ========== VENDOR BARS (DOM-based for clean rendering) ==========
+(function renderVendorBars() {
+  const container = document.getElementById('vendorBars');
+  VENDOR_STATS.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'vendor-bar-row';
+
+    const label = document.createElement('div');
+    label.className = 'vendor-bar-label';
+    label.textContent = s.vendor;
+
+    const track = document.createElement('div');
+    track.className = 'vendor-bar-track';
+
+    const fill = document.createElement('div');
+    fill.className = 'vendor-bar-fill';
+    fill.style.width = Math.max(s.rate, 4) + '%';
+    fill.style.background = s.rate > 0
+      ? `linear-gradient(90deg, ${VENDOR_COLORS[s.vendor]}CC, ${VENDOR_COLORS[s.vendor]})`
+      : 'var(--bg-tertiary)';
+    fill.textContent = s.rate + '%';
+    if (s.rate === 0) {
+      fill.style.color = 'var(--text-muted)';
+      fill.style.justifyContent = 'center';
+    }
+    track.appendChild(fill);
+
+    const count = document.createElement('div');
+    count.className = 'vendor-bar-count';
+    count.textContent = s.ransomware + ' of ' + s.total + ' CVEs';
+
+    row.appendChild(label);
+    row.appendChild(track);
+    row.appendChild(count);
+    container.appendChild(row);
+  });
+})();
+
+// ========== TIMELINE CHART ==========
+let timelineChart = null;
+let timelineMode = 'all';
+
+function buildTimelineDatasets(mode) {
+  const datasets = [];
+
+  if (mode === 'all') {
+    // Non-ransomware (dim circles)
+    const nonRansomware = ALL_CVES.filter(d => d.ransomware !== 'Known');
+    datasets.push({
+      label: 'Not Ransomware-Associated',
+      data: nonRansomware.map(d => ({
+        x: d.published,
+        y: VENDORS_ORDERED.indexOf(d.vendor),
+        cve: d.cve,
+        vendor: d.vendor,
+        cvss: d.cvss,
+        ransomware: d.ransomware,
+        kev: d.kev
+      })),
+      backgroundColor: 'rgba(110,118,129,0.3)',
+      borderColor: 'rgba(110,118,129,0.4)',
+      borderWidth: 1,
+      pointRadius: 4,
+      pointHoverRadius: 7,
+      pointStyle: 'circle'
+    });
+  }
+
+  // Ransomware CVEs - one dataset per vendor for color coding
+  VENDORS_ORDERED.forEach(vendor => {
+    const vendorCves = ALL_CVES.filter(d => d.vendor === vendor && d.ransomware === 'Known');
+    if (vendorCves.length === 0) return;
+    datasets.push({
+      label: vendor + ' (ransomware)',
+      data: vendorCves.map(d => ({
+        x: d.published,
+        y: VENDORS_ORDERED.indexOf(d.vendor),
+        cve: d.cve,
+        vendor: d.vendor,
+        cvss: d.cvss,
+        ransomware: d.ransomware,
+        kev: d.kev
+      })),
+      backgroundColor: VENDOR_COLORS[vendor] + 'DD',
+      borderColor: VENDOR_COLORS[vendor],
+      borderWidth: 2,
+      pointRadius: 7,
+      pointHoverRadius: 11,
+      pointStyle: 'triangle'
+    });
+  });
+
+  return datasets;
+}
+
+function createTimelineChart() {
+  const ctx = document.getElementById('timelineChart').getContext('2d');
+  timelineChart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: buildTimelineDatasets(timelineMode) },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'nearest', intersect: true },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(22,27,34,0.95)',
+          borderColor: '#30363d',
+          borderWidth: 1,
+          titleColor: '#e6edf3',
+          bodyColor: '#8b949e',
+          titleFont: { size: 13, weight: 'bold' },
+          bodyFont: { size: 12 },
+          padding: 12,
+          cornerRadius: 6,
+          callbacks: {
+            title: function(items) {
+              if (!items.length) return '';
+              return items[0].raw.cve;
+            },
+            label: function(item) {
+              const d = item.raw;
+              return [
+                'Vendor: ' + d.vendor,
+                'Published: ' + d.x,
+                'KEV Added: ' + d.kev,
+                'CVSS: ' + (d.cvss !== null ? d.cvss : 'N/A'),
+                'Ransomware: ' + d.ransomware + (d.ransomware === 'Known' ? ' [WEAPONIZED]' : '')
+              ];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            parser: 'yyyy-MM-dd',
+            unit: 'year',
+            displayFormats: { year: 'yyyy', month: 'MMM yyyy' }
+          },
+          title: { display: true, text: 'Published Date', color: '#8b949e', font: { size: 13 } },
+          grid: { color: 'rgba(48,54,61,0.6)' },
+          ticks: { color: '#8b949e' }
+        },
+        y: {
+          type: 'linear',
+          min: -0.5,
+          max: VENDORS_ORDERED.length - 0.5,
+          reverse: false,
+          title: { display: false },
+          grid: { color: 'rgba(48,54,61,0.3)' },
+          ticks: {
+            color: '#8b949e',
+            stepSize: 1,
+            callback: function(value) {
+              return VENDORS_ORDERED[value] || '';
+            },
+            font: { size: 11 }
+          }
+        }
+      }
+    }
+  });
+}
+
+function setTimelineMode(mode) {
+  timelineMode = mode;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(mode === 'all' ? 'all' : 'only'));
+  });
+  timelineChart.data.datasets = buildTimelineDatasets(mode);
+  timelineChart.update();
+}
+
+// ========== INIT ==========
+createTimelineChart();
+
+// Animate vendor bars on load
+setTimeout(() => {
+  document.querySelectorAll('.vendor-bar-fill').forEach(el => {
+    el.style.transition = 'width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+  });
+}, 100);
+</script>
+</body>
+</html>

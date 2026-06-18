@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edge Security Ground Truth — CWE Weakness Heatmap</title>
+<style>
+  :root {
+    --bg:       #0d1117;
+    --surface:  #161b22;
+    --border:   #30363d;
+    --text:     #e6edf3;
+    --muted:    #8b949e;
+    --accent:   #58a6ff;
+    --red-deep: #da3633;
+    --red-hi:   #ff6e6e;
+    --gold:     #e3b341;
+    --green:    #3fb950;
+    --cell-min: #0d1117;
+    --hot-border: #f0a818;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    padding: 32px 24px 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header { margin-bottom: 32px; }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .header h1 span { color: var(--accent); }
+  .header .sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* ── Section titles ── */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+
+  /* ── Legend bar ── */
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .legend-label { font-size: 12px; color: var(--muted); }
+  .legend-gradient {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .grad-bar {
+    width: 160px;
+    height: 12px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #1a1f2e, #7a1010, #da3633, #ff6e6e);
+    border: 1px solid var(--border);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend-swatch {
+    width: 14px; height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .swatch-hot  { background: transparent; border: 2px solid var(--hot-border); }
+  .swatch-zero { background: #1a1f2e; border: 1px solid var(--border); }
+  .swatch-max  { background: var(--red-hi); }
+
+  /* ── Heatmap table ── */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+  }
+
+  thead th {
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  thead th:first-child { text-align: left; min-width: 148px; }
+
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+
+  /* vendor name column */
+  .vendor-cell {
+    background: var(--surface);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 9px 14px;
+    color: var(--text);
+    white-space: nowrap;
+    border-right: 1px solid var(--border);
+  }
+
+  /* data cells */
+  .heat-cell {
+    text-align: center;
+    padding: 0;
+    position: relative;
+    cursor: default;
+    transition: filter 0.15s ease;
+  }
+  .heat-cell:hover { filter: brightness(1.35); }
+  .heat-cell .cell-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 44px;
+    font-size: 14px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+  .heat-cell.hot {
+    box-shadow: inset 0 0 0 2px var(--hot-border);
+  }
+  .heat-cell .zero-text { color: #3a4050; font-weight: 400; font-size: 13px; }
+
+  /* total cells */
+  .total-cell {
+    text-align: center;
+    padding: 9px 12px;
+    font-weight: 700;
+    font-size: 14px;
+    border-left: 1px solid var(--border);
+    background: #111820;
+    color: var(--accent);
+  }
+  .col-total-row {
+    background: #111820;
+    border-top: 2px solid var(--border);
+  }
+  .col-total-row .vendor-cell {
+    background: #111820;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .col-total-row .heat-cell {
+    background: #111820 !important;
+  }
+  .col-total-row .heat-cell .cell-inner {
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .grand-total {
+    background: #111820;
+    color: var(--gold);
+    font-size: 16px;
+    font-weight: 700;
+    border-left: 1px solid var(--border);
+    text-align: center;
+    padding: 9px 12px;
+  }
+
+  /* ── Tooltip ── */
+  .tooltip {
+    position: fixed;
+    background: #1c2130;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 13px;
+    font-size: 13px;
+    line-height: 1.55;
+    pointer-events: none;
+    z-index: 9999;
+    max-width: 280px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    display: none;
+  }
+  .tooltip strong { color: var(--accent); display: block; margin-bottom: 3px; }
+  .tooltip .tt-pct { color: var(--gold); font-weight: 600; }
+  .tooltip .tt-note { color: var(--muted); font-size: 11.5px; margin-top: 5px; }
+  .tooltip .tt-hot { color: var(--hot-border); font-size: 11.5px; margin-top: 4px; font-weight: 600; }
+
+  /* ── Fingerprint section ── */
+  .fingerprint-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .fp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px 12px;
+  }
+  .fp-card:hover { border-color: #484f58; }
+
+  .fp-vendor-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .fp-vendor-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .fp-bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    gap: 7px;
+  }
+  .fp-cat-label {
+    font-size: 10.5px;
+    color: var(--muted);
+    width: 100px;
+    flex-shrink: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .fp-bar-track {
+    flex: 1;
+    height: 8px;
+    background: #1e2530;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .fp-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+  .fp-bar-count {
+    font-size: 10.5px;
+    font-weight: 700;
+    width: 18px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .fp-dominant {
+    font-size: 10.5px;
+    margin-top: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #1a1f2e;
+    color: var(--muted);
+  }
+  .fp-dominant span { color: var(--gold); font-weight: 600; }
+
+  /* ── Stat bar at bottom ── */
+  .stats-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 12px 18px;
+    flex: 1;
+    min-width: 140px;
+  }
+  .stat-val { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 4px; }
+  .stat-val.red  { color: var(--red-hi); }
+  .stat-val.gold { color: var(--gold); }
+  .stat-val.blue { color: var(--accent); }
+  .stat-val.green { color: var(--green); }
+  .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  footer {
+    color: #3a4050;
+    font-size: 11px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Edge Security Ground Truth — <span>CWE Weakness Heatmap</span></h1>
+  <div class="sub">
+    107 CISA KEV CVEs across 11 edge-device vendors · 105/107 (98%) NVD CWE assignments · Recurring weakness threshold: 3+ CVEs in same category
+  </div>
+</div>
+
+<!-- Stats row -->
+<div class="stats-row">
+  <div class="stat-box"><div class="stat-val blue">107</div><div class="stat-lbl">Total CVEs</div></div>
+  <div class="stat-box"><div class="stat-val red">30</div><div class="stat-lbl">Auth / Access (28%)</div></div>
+  <div class="stat-box"><div class="stat-val red">24</div><div class="stat-lbl">Injection (22%)</div></div>
+  <div class="stat-box"><div class="stat-val red">22</div><div class="stat-lbl">Memory Safety (21%)</div></div>
+  <div class="stat-box"><div class="stat-val gold">71%</div><div class="stat-lbl">Top 3 categories</div></div>
+  <div class="stat-box"><div class="stat-val green">10</div><div class="stat-lbl">Recurring weakness signals</div></div>
+</div>
+
+<div class="section-title">Vendor × CWE Category Heatmap</div>
+
+<div class="legend">
+  <div class="legend-gradient">
+    <span class="legend-label">0</span>
+    <div class="grad-bar"></div>
+    <span class="legend-label">8+</span>
+  </div>
+  <div class="legend-item"><div class="legend-swatch swatch-zero"></div> 0 CVEs</div>
+  <div class="legend-item"><div class="legend-swatch swatch-max"></div> High count</div>
+  <div class="legend-item"><div class="legend-swatch swatch-hot"></div> Recurring weakness (3+)</div>
+</div>
+
+<div class="table-wrap">
+  <table id="heatmap-table">
+    <thead>
+      <tr>
+        <th>Vendor</th>
+        <th>Auth / Access</th>
+        <th>Injection</th>
+        <th>Memory Safety</th>
+        <th>Path Traversal</th>
+        <th>Input Validation</th>
+        <th>Info Exposure</th>
+        <th>Other</th>
+        <th style="border-left:1px solid var(--border)">Total</th>
+      </tr>
+    </thead>
+    <tbody id="heatmap-body"></tbody>
+  </table>
+</div>
+
+<div class="section-title">Per-Vendor Weakness Fingerprint</div>
+<div class="fingerprint-grid" id="fingerprint-grid"></div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<footer>
+  Data: CISA KEV + NVD CWE assignments · Analysis: <code>scripts/analyze_cwe.py</code> · github.com/ericrihm/edge-security-ground-truth
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA — embedded from docs/CWE-ANALYSIS.md
+// Columns: Auth/Access, Injection, Memory, PathTrav, InputVal, InfoExp, Other
+// ═══════════════════════════════════════════════════════
+const CATEGORIES = [
+  'Auth / Access',
+  'Injection',
+  'Memory Safety',
+  'Path Traversal',
+  'Input Validation',
+  'Info Exposure',
+  'Other'
+];
+
+const CAT_COLORS = [
+  '#2563eb', // Auth/Access — blue
+  '#dc2626', // Injection — red
+  '#9333ea', // Memory Safety — purple
+  '#d97706', // Path Traversal — amber
+  '#16a34a', // Input Validation — green
+  '#0891b2', // Info Exposure — cyan
+  '#6b7280', // Other — gray
+];
+
+// [Auth, Injection, Memory, PathTrav, InputVal, InfoExp, Other, Total]
+// InfoExp column not in the MD table — derived as (Total - sum of others)
+// The MD "Other" already bundles Web/Session, Deserialization, Credential Mgmt etc.
+// We reproduce the exact table from the doc (section b), plus add InfoExp=0 for all
+// since none of the vendor rows call out Info Exposure specifically.
+// Total n comes from the rightmost column in the MD.
+const VENDORS = [
+  { name: 'Check Point',        data: [1, 0, 0, 0, 0, 0, 1],  total: 2  },
+  { name: 'Cisco',              data: [2, 2, 4, 0, 2, 0, 3],  total: 13 },
+  { name: 'Citrix',             data: [2, 2, 4, 1, 1, 0, 1],  total: 11 },
+  { name: 'F5',                 data: [2, 1, 2, 1, 0, 0, 0],  total: 6  },
+  { name: 'Fortinet',           data: [8, 0, 4, 2, 1, 0, 3],  total: 18 },
+  { name: 'Ivanti',             data: [1, 6, 2, 2, 0, 0, 2],  total: 13 },
+  { name: 'Juniper',            data: [7, 0, 0, 1, 0, 0, 0],  total: 8  },
+  { name: 'Palo Alto Networks', data: [4, 2, 1, 1, 2, 0, 2],  total: 12 },
+  { name: 'SonicWall',          data: [3, 5, 2, 1, 0, 0, 1],  total: 12 },
+  { name: 'Sophos',             data: [0, 4, 1, 0, 0, 0, 1],  total: 6  },
+  { name: 'Zyxel',              data: [0, 2, 2, 1, 0, 0, 1],  total: 6  },
+];
+
+// Notable signal annotations (vendor, catIndex, note)
+const SIGNALS = {
+  'Fortinet:0':           'Severe — systemic auth failure across FortiOS/FortiProxy/FortiManager',
+  'Fortinet:2':           'High — SSL-VPN engine C/C++ memory bugs',
+  'Juniper:0':            'Severe — J-Web PHP chain (2023) + ScreenOS backdoor (2015)',
+  'Ivanti:1':             'Severe — template-engine code injection in Pulse/Connect Secure',
+  'SonicWall:1':          'High — SQL injection cluster in SMA appliance line (2019-2023)',
+  'SonicWall:0':          'Moderate — auth bypass recurring pattern',
+  'Cisco:2':              'High — legacy C codebase in ASA (2016-2024)',
+  'Citrix:2':             'High — NetScaler C/C++ buffer overflows',
+  'Palo Alto Networks:0': 'High — PAN-OS management-plane auth gaps',
+  'Sophos:1':             'High — XG Firewall incl. CVE-2020-12271 (APT SQL injection)',
+};
+
+// ═══════════════════════════════════════════════════════
+// COLOUR MAPPING
+// ═══════════════════════════════════════════════════════
+const MAX_VAL = 8; // Fortinet auth
+
+function heatColor(val) {
+  if (val === 0) return '#111825';
+  const t = Math.min(val / MAX_VAL, 1);
+  // Interpolate: #1a2035 → #7a1010 → #da3633 → #ff6e6e
+  if (t < 0.25) {
+    const u = t / 0.25;
+    return lerpColor('#1a2035', '#4a1515', u);
+  } else if (t < 0.5) {
+    const u = (t - 0.25) / 0.25;
+    return lerpColor('#4a1515', '#7a1010', u);
+  } else if (t < 0.75) {
+    const u = (t - 0.5) / 0.25;
+    return lerpColor('#7a1010', '#da3633', u);
+  } else {
+    const u = (t - 0.75) / 0.25;
+    return lerpColor('#da3633', '#ff6e6e', u);
+  }
+}
+
+function textColor(val) {
+  if (val === 0) return null; // use zero-text class
+  const t = val / MAX_VAL;
+  return t < 0.35 ? '#c9797a' : '#fff';
+}
+
+function lerpColor(hex1, hex2, t) {
+  const [r1,g1,b1] = hexToRgb(hex1);
+  const [r2,g2,b2] = hexToRgb(hex2);
+  const r = Math.round(r1 + (r2-r1)*t);
+  const g = Math.round(g1 + (g2-g1)*t);
+  const b = Math.round(b1 + (b2-b1)*t);
+  return `rgb(${r},${g},${b})`;
+}
+
+function hexToRgb(hex) {
+  const h = hex.replace('#','');
+  return [
+    parseInt(h.slice(0,2),16),
+    parseInt(h.slice(2,4),16),
+    parseInt(h.slice(4,6),16)
+  ];
+}
+
+// ═══════════════════════════════════════════════════════
+// COLUMN TOTALS
+// ═══════════════════════════════════════════════════════
+const colTotals = Array(CATEGORIES.length).fill(0);
+VENDORS.forEach(v => v.data.forEach((n,i) => { colTotals[i] += n; }));
+const grandTotal = VENDORS.reduce((s,v) => s + v.total, 0);
+
+// ═══════════════════════════════════════════════════════
+// BUILD HEATMAP TABLE
+// ═══════════════════════════════════════════════════════
+const tbody = document.getElementById('heatmap-body');
+
+VENDORS.forEach(vendor => {
+  const tr = document.createElement('tr');
+
+  // Vendor name cell
+  const tdName = document.createElement('td');
+  tdName.className = 'vendor-cell';
+  tdName.textContent = vendor.name;
+  tr.appendChild(tdName);
+
+  // Data cells
+  vendor.data.forEach((val, ci) => {
+    const td = document.createElement('td');
+    td.className = 'heat-cell' + (val >= 3 ? ' hot' : '');
+    td.style.background = heatColor(val);
+
+    const inner = document.createElement('div');
+    inner.className = 'cell-inner';
+    if (val === 0) {
+      inner.innerHTML = '<span class="zero-text">·</span>';
+    } else {
+      inner.textContent = val;
+      const tc = textColor(val);
+      if (tc) inner.style.color = tc;
+    }
+    td.appendChild(inner);
+
+    // Tooltip data
+    const pct = vendor.total > 0 ? ((val / vendor.total) * 100).toFixed(0) : 0;
+    const key = `${vendor.name}:${ci}`;
+    const sig = SIGNALS[key] || null;
+    td.dataset.vendor = vendor.name;
+    td.dataset.cat = CATEGORIES[ci];
+    td.dataset.count = val;
+    td.dataset.total = vendor.total;
+    td.dataset.pct = pct;
+    td.dataset.sig = sig || '';
+
+    tr.appendChild(td);
+  });
+
+  // Row total
+  const tdTotal = document.createElement('td');
+  tdTotal.className = 'total-cell';
+  tdTotal.textContent = vendor.total;
+  tr.appendChild(tdTotal);
+
+  tbody.appendChild(tr);
+});
+
+// Column totals row
+const trTotals = document.createElement('tr');
+trTotals.className = 'col-total-row';
+
+const tdTotalLabel = document.createElement('td');
+tdTotalLabel.className = 'vendor-cell';
+tdTotalLabel.textContent = 'Column Total';
+trTotals.appendChild(tdTotalLabel);
+
+colTotals.forEach((ct, ci) => {
+  const td = document.createElement('td');
+  td.className = 'heat-cell';
+  td.style.background = '#111820';
+  const inner = document.createElement('div');
+  inner.className = 'cell-inner';
+  inner.textContent = ct;
+  td.appendChild(inner);
+  trTotals.appendChild(td);
+});
+
+const tdGrand = document.createElement('td');
+tdGrand.className = 'grand-total';
+tdGrand.textContent = grandTotal;
+trTotals.appendChild(tdGrand);
+tbody.appendChild(trTotals);
+
+// ═══════════════════════════════════════════════════════
+// TOOLTIP
+// ═══════════════════════════════════════════════════════
+const tooltip = document.getElementById('tooltip');
+
+document.querySelectorAll('.heat-cell[data-vendor]').forEach(cell => {
+  cell.addEventListener('mouseenter', e => {
+    const { vendor, cat, count, total, pct, sig } = cell.dataset;
+    const cnt = parseInt(count);
+    let html = `<strong>${vendor}</strong>`;
+    html += `<div>${cnt === 0 ? 'No CVEs' : `<span class="tt-pct">${count} CVE${cnt !== 1 ? 's' : ''}</span>`} in <em>${cat}</em></div>`;
+    if (cnt > 0 && total > 0) {
+      html += `<div style="color:var(--muted);font-size:12px;margin-top:3px;">${pct}% of this vendor's ${total} total CVEs</div>`;
+    }
+    if (cnt >= 3) {
+      html += `<div class="tt-hot">⚠ Recurring weakness (${count}+)</div>`;
+    }
+    if (sig) {
+      html += `<div class="tt-note">${sig}</div>`;
+    }
+    tooltip.innerHTML = html;
+    tooltip.style.display = 'block';
+    positionTooltip(e);
+  });
+
+  cell.addEventListener('mousemove', positionTooltip);
+
+  cell.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+  });
+});
+
+function positionTooltip(e) {
+  const pad = 14;
+  let x = e.clientX + pad;
+  let y = e.clientY + pad;
+  const tw = tooltip.offsetWidth || 240;
+  const th = tooltip.offsetHeight || 100;
+  if (x + tw > window.innerWidth - 8) x = e.clientX - tw - pad;
+  if (y + th > window.innerHeight - 8) y = e.clientY - th - pad;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top  = y + 'px';
+}
+
+// ═══════════════════════════════════════════════════════
+// FINGERPRINT MINI BAR CHARTS
+// ═══════════════════════════════════════════════════════
+const fpGrid = document.getElementById('fingerprint-grid');
+const maxColTotal = Math.max(...colTotals);
+
+VENDORS.forEach(vendor => {
+  const card = document.createElement('div');
+  card.className = 'fp-card';
+
+  const nameEl = document.createElement('div');
+  nameEl.className = 'fp-vendor-name';
+  nameEl.textContent = vendor.name;
+  card.appendChild(nameEl);
+
+  const metaEl = document.createElement('div');
+  metaEl.className = 'fp-vendor-meta';
+  metaEl.textContent = `${vendor.total} CVE${vendor.total !== 1 ? 's' : ''} total`;
+  card.appendChild(metaEl);
+
+  // Find dominant category
+  let maxVal = 0, maxCat = '', maxCatIdx = 0;
+  vendor.data.forEach((v, i) => {
+    if (v > maxVal) { maxVal = v; maxCat = CATEGORIES[i]; maxCatIdx = i; }
+  });
+
+  // Bar rows — only render categories with >0 OR show all as tiny
+  const maxBar = Math.max(...vendor.data, 1);
+
+  CATEGORIES.forEach((cat, ci) => {
+    const val = vendor.data[ci];
+    const row = document.createElement('div');
+    row.className = 'fp-bar-row';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'fp-cat-label';
+    lbl.textContent = cat;
+    lbl.title = cat;
+
+    const track = document.createElement('div');
+    track.className = 'fp-bar-track';
+
+    const fill = document.createElement('div');
+    fill.className = 'fp-bar-fill';
+    const pct = vendor.total > 0 ? (val / maxBar) * 100 : 0;
+    fill.style.width = pct + '%';
+    fill.style.background = val >= 3
+      ? `linear-gradient(90deg, ${CAT_COLORS[ci]}, ${CAT_COLORS[ci]}cc)`
+      : `${CAT_COLORS[ci]}66`;
+
+    track.appendChild(fill);
+
+    const cnt = document.createElement('div');
+    cnt.className = 'fp-bar-count';
+    cnt.style.color = val >= 3 ? CAT_COLORS[ci] : (val > 0 ? '#8b949e' : '#3a4050');
+    cnt.textContent = val;
+
+    row.appendChild(lbl);
+    row.appendChild(track);
+    row.appendChild(cnt);
+    card.appendChild(row);
+  });
+
+  if (maxVal >= 3) {
+    const dom = document.createElement('div');
+    dom.className = 'fp-dominant';
+    const pct2 = vendor.total > 0 ? Math.round((maxVal / vendor.total) * 100) : 0;
+    dom.innerHTML = `Dominant: <span>${maxCat} (${maxVal} CVEs, ${pct2}%)</span> — recurring weakness`;
+    card.appendChild(dom);
+  } else if (maxVal > 0) {
+    const dom = document.createElement('div');
+    dom.className = 'fp-dominant';
+    const pct2 = vendor.total > 0 ? Math.round((maxVal / vendor.total) * 100) : 0;
+    dom.innerHTML = `Highest: <span>${maxCat} (${maxVal} CVEs, ${pct2}%)</span>`;
+    card.appendChild(dom);
+  }
+
+  fpGrid.appendChild(card);
+});
+</script>
+</body>
+</html>

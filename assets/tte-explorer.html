@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edge Security Ground Truth -- Time-to-Exploit Explorer</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --border: #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-red: #f85149;
+    --accent-orange: #d29922;
+    --accent-green: #3fb950;
+    --accent-blue: #58a6ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  header h1 span { color: var(--accent-blue); }
+  header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px 32px;
+  }
+  .controls-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .panel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .panel-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .vendor-filters {
+    flex: 1;
+    min-width: 300px;
+  }
+  .vendor-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+  .vendor-grid label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .vendor-grid label:hover { color: #fff; }
+  .vendor-grid input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .vendor-grid input[type="checkbox"]:checked {
+    border-color: transparent;
+  }
+  .vendor-grid input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 1px; left: 1px;
+    width: 8px; height: 8px;
+    border-radius: 1px;
+  }
+  .vendor-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .filter-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+  }
+  .filter-actions button {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-actions button:hover {
+    background: var(--border);
+    color: var(--text-primary);
+  }
+  .stats-panel {
+    min-width: 320px;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .stat-card {
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .stat-value.danger { color: var(--accent-red); }
+  .stat-value.warn { color: var(--accent-orange); }
+  .stat-value.info { color: var(--accent-blue); }
+  .stat-value.ok { color: var(--accent-green); }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 2px;
+  }
+  .chart-wrapper {
+    position: relative;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    height: 600px;
+  }
+  .chart-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .legend-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .legend-line {
+    width: 20px;
+    height: 2px;
+    display: inline-block;
+  }
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+  footer a {
+    color: var(--accent-blue);
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+  .y-axis-toggle {
+    min-width: 180px;
+  }
+  .y-axis-toggle label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 6px;
+  }
+  .y-axis-toggle input[type="radio"] {
+    accent-color: var(--accent-blue);
+  }
+  @media (max-width: 900px) {
+    .container { padding: 16px; }
+    .controls-row { flex-direction: column; }
+    .chart-wrapper { height: 450px; }
+    header { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span>Edge Security Ground Truth</span> -- Time-to-Exploit Explorer</h1>
+  <p>Interactive scatter plot of CISA KEV vulnerabilities across 11 edge/perimeter vendors. TTE = days from NVD publication to KEV addition.</p>
+</header>
+
+<div class="container">
+  <div class="controls-row">
+    <div class="panel vendor-filters">
+      <div class="panel-title">Vendor Filter</div>
+      <div class="vendor-grid" id="vendorGrid"></div>
+      <div class="filter-actions">
+        <button onclick="toggleAll(true)">Select All</button>
+        <button onclick="toggleAll(false)">Deselect All</button>
+      </div>
+    </div>
+
+    <div class="panel y-axis-toggle">
+      <div class="panel-title">Y-Axis Scale</div>
+      <label><input type="radio" name="yScale" value="linear" checked onchange="updateYScale()"> Linear</label>
+      <label><input type="radio" name="yScale" value="log" onchange="updateYScale()"> Logarithmic</label>
+      <label><input type="radio" name="yScale" value="capped" onchange="updateYScale()"> Capped (0-365)</label>
+    </div>
+
+    <div class="panel stats-panel">
+      <div class="panel-title">Summary Statistics (Visible CVEs)</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value info" id="statCount">--</div>
+          <div class="stat-label">Total CVEs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value warn" id="statMedian">--</div>
+          <div class="stat-label">Median TTE (days)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value danger" id="statZeroDay">--</div>
+          <div class="stat-label">Zero-Days (TTE &le; 0)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value ok" id="statRansomware">--</div>
+          <div class="stat-label">Ransomware Known</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-wrapper">
+    <canvas id="tteChart"></canvas>
+  </div>
+
+  <div class="legend-bar">
+    <div class="legend-item"><span class="legend-line" style="background: #f85149;"></span> 7-day weaponization threshold</div>
+    <div class="legend-item" style="margin-left: 16px;"><span class="legend-line" style="background: #d29922;"></span> 30-day typical patch cycle</div>
+    <div class="legend-item" style="margin-left: 16px;"><span class="legend-line" style="background: rgba(110,118,129,0.4); border-top: 2px dashed rgba(110,118,129,0.6); height:0;"></span> Zero line (TTE=0)</div>
+  </div>
+</div>
+
+<footer>
+  Data: CISA KEV + NVD + FIRST EPSS | Source: <a href="https://github.com/ericrihm/edge-security-ground-truth" target="_blank">edge-security-ground-truth</a> | 107 CVEs across 11 edge vendors
+</footer>
+
+<script>
+const CVE_DATA = [{"cve":"CVE-2019-7481","vendor":"SonicWall","published":"2019-12-17","kev_date":"2021-11-03","tte":687,"cvss":7.5,"epss":0.99906,"cwe":"CWE-89","cwe_name":"Improper Neutralization of Special Elements used in an SQL Command","ransomware":"Known"},{"cve":"CVE-2021-20016","vendor":"SonicWall","published":"2021-02-03","kev_date":"2021-11-03","tte":273,"cvss":9.8,"epss":0.40038,"cwe":"CWE-89","cwe_name":"Improper Neutralization of Special Elements used in an SQL Command","ransomware":"Known"},{"cve":"CVE-2021-20038","vendor":"SonicWall","published":"2021-12-08","kev_date":"2022-01-28","tte":51,"cvss":9.8,"epss":0.99912,"cwe":"CWE-121","cwe_name":"Stack-based Buffer Overflow","ransomware":"Known"},{"cve":"CVE-2020-5135","vendor":"SonicWall","published":"2020-10-12","kev_date":"2022-03-15","tte":519,"cvss":9.8,"epss":0.26869,"cwe":"CWE-120","cwe_name":"Buffer Copy without Checking Size of Input","ransomware":"Unknown"},{"cve":"CVE-2021-20028","vendor":"SonicWall","published":"2021-08-04","kev_date":"2022-03-28","tte":236,"cvss":9.8,"epss":0.30084,"cwe":"CWE-89","cwe_name":"Improper Neutralization of Special Elements used in an SQL Command","ransomware":"Known"},{"cve":"CVE-2019-7483","vendor":"SonicWall","published":"2019-12-19","kev_date":"2022-03-28","tte":830,"cvss":7.5,"epss":0.03977,"cwe":"CWE-22","cwe_name":"Path Traversal","ransomware":"Unknown"},{"cve":"CVE-2024-40766","vendor":"SonicWall","published":"2024-08-23","kev_date":"2024-09-09","tte":17,"cvss":9.3,"epss":0.15694,"cwe":"CWE-284","cwe_name":"Improper Access Control","ransomware":"Known"},{"cve":"CVE-2025-23006","vendor":"SonicWall","published":"2025-01-23","kev_date":"2025-01-24","tte":1,"cvss":9.8,"epss":0.22252,"cwe":"CWE-502","cwe_name":"Deserialization of Untrusted Data","ransomware":"Known"},{"cve":"CVE-2024-53704","vendor":"SonicWall","published":"2025-01-09","kev_date":"2025-02-18","tte":40,"cvss":8.2,"epss":0.95132,"cwe":"CWE-287","cwe_name":"Improper Authentication","ransomware":"Known"},{"cve":"CVE-2021-20035","vendor":"SonicWall","published":"2021-09-27","kev_date":"2025-04-16","tte":1297,"cvss":6.5,"epss":0.0389,"cwe":"CWE-78","cwe_name":"Improper Neutralization of Special Elements used in an OS Command","ransomware":"Unknown"},{"cve":"CVE-2023-44221","vendor":"SonicWall","published":"2023-12-05","kev_date":"2025-05-01","tte":513,"cvss":7.2,"epss":0.75103,"cwe":"CWE-78","cwe_name":"Improper Neutralization of Special Elements used in an OS Command","ransomware":"Unknown"},{"cve":"CVE-2025-40602","vendor":"SonicWall","published":"2025-12-18","kev_date":"2025-12-17","tte":-1,"cvss":6.6,"epss":0.0191,"cwe":"CWE-862","cwe_name":"Missing Authorization","ransomware":"Unknown"},{"cve":"CVE-2021-22893","vendor":"Ivanti","published":"2021-04-23","kev_date":"2021-11-03","tte":194,"cvss":10,"epss":0.47172,"cwe":"CWE-287","cwe_name":"Improper Authentication","ransomware":"Known"},{"cve":"CVE-2020-8243","vendor":"Ivanti","published":"2020-09-29","kev_date":"2021-11-03","tte":400,"cvss":7.2,"epss":0.90759,"cwe":"CWE-94","cwe_name":"Improper Control of Generation of Code","ransomware":"Unknown"},{"cve":"CVE-2021-22900","vendor":"Ivanti","published":"2021-05-27","kev_date":"2021-11-03","tte":160,"cvss":7.2,"epss":0.14146,"cwe":"CWE-94","cwe_name":"Improper Control of Generation of Code","ransomware":"Unknown"},{"cve":"CVE-2021-22894","vendor":"Ivanti","published":"2021-05-27","kev_date":"2021-11-03","tte":160,"cvss":8.8,"epss":0.41284,"cwe":"CWE-94","cwe_name":"Improper Control of Generation of Code","ransomware":"Unknown"},{"cve":"CVE-2020-8260","vendor":"Ivanti","published":"2020-10-28","kev_date":"2021-11-03","tte":371,"cvss":7.2,"epss":0.9648,"cwe":"CWE-434","cwe_name":"Unrestricted Upload of File with Dangerous Type","ransomware":"Unknown"},{"cve":"CVE-2021-22899","vendor":"Ivanti","published":"2021-05-27","kev_date":"2021-11-03","tte":160,"cvss":8.8,"epss":0.22343,"cwe":"CWE-77","cwe_name":"Improper Neutralization of Special Elements used in a Command","ransomware":"Unknown"},{"cve":"CVE-2019-11510","vendor":"Ivanti","published":"2019-05-08","kev_date":"2021-11-03","tte":910,"cvss":9.9,"epss":0.99999,"cwe":"CWE-22","cwe_name":"Path Traversal","ransomware":"Known"},{"cve":"CVE-2019-11539","vendor":"Ivanti","published":"2019-04-26","kev_date":"2021-11-03","tte":922,"cvss":8,"epss":0.98617,"cwe":"CWE-78","cwe_name":"Improper Neutralization of Special Elements used in an OS Command","ransomware":"Known"},{"cve":"CVE-2023-46805","vendor":"Ivanti","published":"2024-01-12","kev_date":"2024-01-10","tte":-2,"cvss":8.2,"epss":0.99986,"cwe":"N/A","cwe_name":"N/A","ransomware":"Known"},{"cve":"CVE-2024-21887","vendor":"Ivanti","published":"2024-01-12","kev_date":"2024-01-10","tte":-2,"cvss":9.1,"epss":0.99999,"cwe":"CWE-77","cwe_name":"Improper Neutralization of Special Elements used in a Command","ransomware":"Known"},{"cve":"CVE-2024-21893","vendor":"Ivanti","published":"2024-01-31","kev_date":"2024-01-31","tte":0,"cvss":8.2,"epss":0.99999,"cwe":"CWE-918","cwe_name":"Server-Side Request Forgery (SSRF)","ransomware":"Known"},{"cve":"CVE-2025-0282","vendor":"Ivanti","published":"2025-01-08","kev_date":"2025-01-08","tte":0,"cvss":9,"epss":0.99971,"cwe":"CWE-121","cwe_name":"Stack-based Buffer Overflow","ransomware":"Known"},{"cve":"CVE-2025-22457","vendor":"Ivanti","published":"2025-04-03","kev_date":"2025-04-04","tte":1,"cvss":9,"epss":0.99961,"cwe":"CWE-121","cwe_name":"Stack-based Buffer Overflow","ransomware":"Known"},{"cve":"CVE-2020-1631","vendor":"Juniper","published":"2020-05-04","kev_date":"2022-03-25","tte":690,"cvss":8.8,"epss":0.04725,"cwe":"CWE-22","cwe_name":"Path Traversal","ransomware":"Unknown"},{"cve":"CVE-2023-36844","vendor":"Juniper","published":"2023-08-17","kev_date":"2023-11-13","tte":88,"cvss":5.3,"epss":0.89628,"cwe":"CWE-473","cwe_name":"PHP External Variable Modification","ransomware":"Unknown"},{"cve":"CVE-2023-36845","vendor":"Juniper","published":"2023-08-17","kev_date":"2023-11-13","tte":88,"cvss":9.8,"epss":0.93546,"cwe":"CWE-473","cwe_name":"PHP External Variable Modification","ransomware":"Unknown"},{"cve":"CVE-2023-36846","vendor":"Juniper","published":"2023-08-17","kev_date":"2023-11-13","tte":88,"cvss":5.3,"epss":0.94205,"cwe":"CWE-306","cwe_name":"Missing Authentication for Critical Function","ransomware":"Unknown"},{"cve":"CVE-2023-36847","vendor":"Juniper","published":"2023-08-17","kev_date":"2023-11-13","tte":88,"cvss":5.3,"epss":0.84692,"cwe":"CWE-306","cwe_name":"Missing Authentication for Critical Function","ransomware":"Unknown"},{"cve":"CVE-2023-36851","vendor":"Juniper","published":"2023-09-26","kev_date":"2023-11-13","tte":48,"cvss":5.3,"epss":0.011,"cwe":"CWE-306","cwe_name":"Missing Authentication for Critical Function","ransomware":"Unknown"},{"cve":"CVE-2025-21590","vendor":"Juniper","published":"2025-03-12","kev_date":"2025-03-13","tte":1,"cvss":4.4,"epss":0.01657,"cwe":"CWE-653","cwe_name":"Insufficient Compartmentalization","ransomware":"Unknown"},{"cve":"CVE-2015-7755","vendor":"Juniper","published":"2015-12-19","kev_date":"2025-10-02","tte":3575,"cvss":9.8,"epss":0.614,"cwe":"CWE-287","cwe_name":"Improper Authentication","ransomware":"Unknown"},{"cve":"CVE-2020-3452","vendor":"Cisco","published":"2020-07-22","kev_date":"2021-11-03","tte":469,"cvss":7.5,"epss":0.99992,"cwe":"CWE-20","cwe_name":"Improper Input Validation","ransomware":"Unknown"},{"cve":"CVE-2020-3580","vendor":"Cisco","published":"2020-10-21","kev_date":"2021-11-03","tte":378,"cvss":6.1,"epss":0.85439,"cwe":"CWE-79","cwe_name":"Improper Neutralization of Input During Web Page Generation","ransomware":"Known"},{"cve":"CVE-2018-0296","vendor":"Cisco","published":"2018-06-07","kev_date":"2021-11-03","tte":1245,"cvss":7.5,"epss":0.99903,"cwe":"CWE-20","cwe_name":"Improper Input Validation","ransomware":"Unknown"},{"cve":"CVE-2016-6366","vendor":"Cisco","published":"2016-08-18","kev_date":"2022-05-24","tte":2105,"cvss":8.8,"epss":0.87503,"cwe":"CWE-120","cwe_name":"Buffer Copy without Checking Size of Input","ransomware":"Unknown"},{"cve":"CVE-2016-6367","vendor":"Cisco","published":"2016-08-18","kev_date":"2022-05-24","tte":2105,"cvss":7.8,"epss":0.22583,"cwe":"CWE-77","cwe_name":"Improper Neutralization of Special Elements used in a Command","ransomware":"Unknown"},{"cve":"CVE-2023-20269","vendor":"Cisco","published":"2023-09-06","kev_date":"2023-09-13","tte":7,"cvss":5,"epss":0.21583,"cwe":"CWE-288","cwe_name":"Authentication Bypass Using an Alternate Path or Channel","ransomware":"Known"},{"cve":"CVE-2020-3259","vendor":"Cisco","published":"2020-05-06","kev_date":"2024-02-15","tte":1380,"cvss":7.5,"epss":0.71789,"cwe":"CWE-200","cwe_name":"Exposure of Sensitive Information to an Unauthorized Actor","ransomware":"Known"},{"cve":"CVE-2024-20359","vendor":"Cisco","published":"2024-04-24","kev_date":"2024-04-24","tte":0,"cvss":6,"epss":0.16863,"cwe":"CWE-94","cwe_name":"Improper Control of Generation of Code","ransomware":"Unknown"},{"cve":"CVE-2024-20353","vendor":"Cisco","published":"2024-04-24","kev_date":"2024-04-24","tte":0,"cvss":8.6,"epss":0.63272,"cwe":"CWE-835","cwe_name":"Loop with Unreachable Exit Condition (Infinite Loop)","ransomware":"Unknown"},{"cve":"CVE-2024-20481","vendor":"Cisco","published":"2024-10-23","kev_date":"2024-10-24","tte":1,"cvss":5.8,"epss":0.15953,"cwe":"CWE-772","cwe_name":"Missing Release of Resource after Effective Lifetime","ransomware":"Unknown"},{"cve":"CVE-2014-2120","vendor":"Cisco","published":"2014-03-19","kev_date":"2024-11-12","tte":3891,"cvss":5.4,"epss":0.14029,"cwe":"CWE-79","cwe_name":"Improper Neutralization of Input During Web Page Generation","ransomware":"Unknown"},{"cve":"CVE-2025-20362","vendor":"Cisco","published":"2025-09-25","kev_date":"2025-09-25","tte":0,"cvss":6.5,"epss":0.83681,"cwe":"CWE-862","cwe_name":"Missing Authorization","ransomware":"Unknown"},{"cve":"CVE-2025-20333","vendor":"Cisco","published":"2025-09-25","kev_date":"2025-09-25","tte":0,"cvss":9.9,"epss":0.29197,"cwe":"CWE-120","cwe_name":"Buffer Copy without Checking Size of Input","ransomware":"Unknown"},{"cve":"CVE-2019-1579","vendor":"Palo Alto Networks","published":"2019-07-19","kev_date":"2022-01-10","tte":906,"cvss":8.1,"epss":0.39317,"cwe":"CWE-134","cwe_name":"Use of Externally-Controlled Format String","ransomware":"Known"},{"cve":"CVE-2020-2021","vendor":"Palo Alto Networks","published":"2020-06-29","kev_date":"2022-03-25","tte":634,"cvss":10,"epss":0.03994,"cwe":"CWE-347","cwe_name":"Improper Verification of Cryptographic Signature","ransomware":"Known"},{"cve":"CVE-2017-15944","vendor":"Palo Alto Networks","published":"2017-12-11","kev_date":"2022-08-18","tte":1711,"cvss":9.8,"epss":0.9834,"cwe":"CWE-20","cwe_name":"Improper Input Validation","ransomware":"Unknown"},{"cve":"CVE-2022-0028","vendor":"Palo Alto Networks","published":"2022-08-10","kev_date":"2022-08-22","tte":12,"cvss":8.6,"epss":0.02025,"cwe":"CWE-406","cwe_name":"Insufficient Control of Network Message Volume","ransomware":"Unknown"},{"cve":"CVE-2024-3400","vendor":"Palo Alto Networks","published":"2024-04-12","kev_date":"2024-04-12","tte":0,"cvss":10,"epss":0.99999,"cwe":"CWE-77","cwe_name":"Improper Neutralization of Special Elements used in a Command","ransomware":"Known"},{"cve":"CVE-2024-9474","vendor":"Palo Alto Networks","published":"2024-11-18","kev_date":"2024-11-18","tte":0,"cvss":7.2,"epss":0.94766,"cwe":"CWE-78","cwe_name":"Improper Neutralization of Special Elements used in an OS Command","ransomware":"Known"},{"cve":"CVE-2024-0012","vendor":"Palo Alto Networks","published":"2024-11-18","kev_date":"2024-11-18","tte":0,"cvss":9.3,"epss":0.99698,"cwe":"CWE-306","cwe_name":"Missing Authentication for Critical Function","ransomware":"Known"},{"cve":"CVE-2024-3393","vendor":"Palo Alto Networks","published":"2024-12-27","kev_date":"2024-12-30","tte":3,"cvss":8.7,"epss":0.26636,"cwe":"CWE-754","cwe_name":"Improper Check for Unusual or Exceptional Conditions","ransomware":"Unknown"},{"cve":"CVE-2025-0108","vendor":"Palo Alto Networks","published":"2025-02-12","kev_date":"2025-02-18","tte":6,"cvss":8.8,"epss":0.98338,"cwe":"CWE-306","cwe_name":"Missing Authentication for Critical Function","ransomware":"Unknown"},{"cve":"CVE-2025-0111","vendor":"Palo Alto Networks","published":"2025-02-12","kev_date":"2025-02-20","tte":8,"cvss":7.1,"epss":0.01862,"cwe":"CWE-73","cwe_name":"External Control of File Name or Path","ransomware":"Unknown"},{"cve":"CVE-2026-0300","vendor":"Palo Alto Networks","published":"2026-05-06","kev_date":"2026-05-06","tte":0,"cvss":null,"epss":0.3176,"cwe":"CWE-787","cwe_name":"Out-of-bounds Write","ransomware":"Unknown"},{"cve":"CVE-2026-0257","vendor":"Palo Alto Networks","published":"2026-05-13","kev_date":"2026-05-29","tte":16,"cvss":null,"epss":0.18583,"cwe":"CWE-565","cwe_name":"Reliance on Cookies without Validation and Integrity Checking","ransomware":"Unknown"},{"cve":"CVE-2019-5591","vendor":"Fortinet","published":"2020-08-14","kev_date":"2021-11-03","tte":446,"cvss":6.5,"epss":0.18566,"cwe":"CWE-306","cwe_name":"Missing Authentication for Critical Function","ransomware":"Unknown"},{"cve":"CVE-2020-12812","vendor":"Fortinet","published":"2020-07-24","kev_date":"2021-11-03","tte":467,"cvss":9.8,"epss":0.49344,"cwe":"CWE-287","cwe_name":"Improper Authentication","ransomware":"Known"},{"cve":"CVE-2018-13379","vendor":"Fortinet","published":"2019-06-04","kev_date":"2021-11-03","tte":883,"cvss":9.1,"epss":0.99999,"cwe":"CWE-22","cwe_name":"Path Traversal","ransomware":"Known"},{"cve":"CVE-2021-44168","vendor":"Fortinet","published":"2022-01-04","kev_date":"2021-12-10","tte":-25,"cvss":3.3,"epss":0.00865,"cwe":"CWE-494","cwe_name":"Download of Code Without Integrity Check","ransomware":"Unknown"},{"cve":"CVE-2018-13382","vendor":"Fortinet","published":"2019-06-04","kev_date":"2022-01-10","tte":951,"cvss":9.1,"epss":0.81691,"cwe":"CWE-863","cwe_name":"Incorrect Authorization","ransomware":"Known"},{"cve":"CVE-2018-13383","vendor":"Fortinet","published":"2019-05-29","kev_date":"2022-01-10","tte":957,"cvss":4.3,"epss":0.33647,"cwe":"CWE-787","cwe_name":"Out-of-bounds Write","ransomware":"Known"},{"cve":"CVE-2018-13374","vendor":"Fortinet","published":"2019-01-22","kev_date":"2022-09-08","tte":1325,"cvss":4.3,"epss":0.38088,"cwe":"CWE-732","cwe_name":"Incorrect Permission Assignment for Critical Resource","ransomware":"Known"},{"cve":"CVE-2022-40684","vendor":"Fortinet","published":"2022-10-18","kev_date":"2022-10-11","tte":-7,"cvss":9.8,"epss":0.99984,"cwe":"CWE-287","cwe_name":"Improper Authentication","ransomware":"Known"},{"cve":"CVE-2022-42475","vendor":"Fortinet","published":"2023-01-02","kev_date":"2022-12-13","tte":-20,"cvss":9.3,"epss":0.99474,"cwe":"CWE-197","cwe_name":"Numeric Truncation Error","ransomware":"Known"},{"cve":"CVE-2022-41328","vendor":"Fortinet","published":"2023-03-07","kev_date":"2023-03-14","tte":7,"cvss":6.5,"epss":0.12316,"cwe":"CWE-22","cwe_name":"Path Traversal","ransomware":"Unknown"},{"cve":"CVE-2023-27997","vendor":"Fortinet","published":"2023-06-13","kev_date":"2023-06-13","tte":0,"cvss":9.2,"epss":0.85689,"cwe":"CWE-122","cwe_name":"Heap-based Buffer Overflow","ransomware":"Known"},{"cve":"CVE-2024-21762","vendor":"Fortinet","published":"2024-02-09","kev_date":"2024-02-09","tte":0,"cvss":9.6,"epss":0.80835,"cwe":"CWE-787","cwe_name":"Out-of-bounds Write","ransomware":"Known"},{"cve":"CVE-2024-23113","vendor":"Fortinet","published":"2024-02-15","kev_date":"2024-10-09","tte":237,"cvss":9.8,"epss":0.61725,"cwe":"CWE-134","cwe_name":"Use of Externally-Controlled Format String","ransomware":"Unknown"},{"cve":"CVE-2024-55591","vendor":"Fortinet","published":"2025-01-14","kev_date":"2025-01-14","tte":0,"cvss":9.6,"epss":0.98239,"cwe":"CWE-288","cwe_name":"Authentication Bypass Using an Alternate Path or Channel","ransomware":"Known"},{"cve":"CVE-2025-24472","vendor":"Fortinet","published":"2025-02-11","kev_date":"2025-03-18","tte":35,"cvss":8.1,"epss":0.02988,"cwe":"CWE-288","cwe_name":"Authentication Bypass Using an Alternate Path or Channel","ransomware":"Known"},{"cve":"CVE-2019-6693","vendor":"Fortinet","published":"2019-11-21","kev_date":"2025-06-25","tte":2043,"cvss":6.5,"epss":0.05352,"cwe":"CWE-798","cwe_name":"Use of Hard-coded Credentials","ransomware":"Known"},{"cve":"CVE-2025-59718","vendor":"Fortinet","published":"2025-12-09","kev_date":"2025-12-16","tte":7,"cvss":9.1,"epss":0.63476,"cwe":"CWE-347","cwe_name":"Improper Verification of Cryptographic Signature","ransomware":"Unknown"},{"cve":"CVE-2026-24858","vendor":"Fortinet","published":"2026-01-27","kev_date":"2026-01-27","tte":0,"cvss":9.4,"epss":0.55125,"cwe":"CWE-288","cwe_name":"Authentication Bypass Using an Alternate Path or Channel","ransomware":"Unknown"},{"cve":"CVE-2024-24919","vendor":"Check Point","published":"2024-05-28","kev_date":"2024-05-30","tte":2,"cvss":8.6,"epss":0.99978,"cwe":"CWE-200","cwe_name":"Exposure of Sensitive Information to an Unauthorized Actor","ransomware":"Known"},{"cve":"CVE-2026-50751","vendor":"Check Point","published":"2026-06-08","kev_date":"2026-06-08","tte":0,"cvss":9.3,"epss":0.41152,"cwe":"CWE-287","cwe_name":"Improper Authentication","ransomware":"Known"},{"cve":"CVE-2020-8193","vendor":"Citrix","published":"2020-07-10","kev_date":"2021-11-03","tte":481,"cvss":6.5,"epss":0.88411,"cwe":"CWE-284","cwe_name":"Improper Access Control","ransomware":"Unknown"},{"cve":"CVE-2020-8195","vendor":"Citrix","published":"2020-07-10","kev_date":"2021-11-03","tte":481,"cvss":6.5,"epss":0.33263,"cwe":"CWE-20","cwe_name":"Improper Input Validation","ransomware":"Unknown"},{"cve":"CVE-2020-8196","vendor":"Citrix","published":"2020-07-10","kev_date":"2021-11-03","tte":481,"cvss":4.3,"epss":0.26333,"cwe":"CWE-284","cwe_name":"Improper Access Control","ransomware":"Unknown"},{"cve":"CVE-2019-19781","vendor":"Citrix","published":"2019-12-27","kev_date":"2021-11-03","tte":677,"cvss":9.8,"epss":0.99999,"cwe":"CWE-22","cwe_name":"Path Traversal","ransomware":"Known"},{"cve":"CVE-2022-27518","vendor":"Citrix","published":"2022-12-13","kev_date":"2022-12-13","tte":0,"cvss":9.8,"epss":0.06931,"cwe":"CWE-664","cwe_name":"Improper Control of a Resource Through its Lifetime","ransomware":"Unknown"},{"cve":"CVE-2023-3519","vendor":"Citrix","published":"2023-07-19","kev_date":"2023-07-19","tte":0,"cvss":9.8,"epss":0.99343,"cwe":"CWE-94","cwe_name":"Improper Control of Generation of Code","ransomware":"Known"},{"cve":"CVE-2023-4966","vendor":"Citrix","published":"2023-10-10","kev_date":"2023-10-18","tte":8,"cvss":9.4,"epss":0.99999,"cwe":"CWE-119","cwe_name":"Improper Restriction of Operations within the Bounds of a Memory Buffer","ransomware":"Known"},{"cve":"CVE-2023-6549","vendor":"Citrix","published":"2024-01-17","kev_date":"2024-01-17","tte":0,"cvss":8.2,"epss":0.57633,"cwe":"CWE-119","cwe_name":"Improper Restriction of Operations within the Bounds of a Memory Buffer","ransomware":"Unknown"},{"cve":"CVE-2023-6548","vendor":"Citrix","published":"2024-01-17","kev_date":"2024-01-17","tte":0,"cvss":5.5,"epss":0.03191,"cwe":"CWE-94","cwe_name":"Improper Control of Generation of Code","ransomware":"Unknown"},{"cve":"CVE-2025-6543","vendor":"Citrix","published":"2025-06-25","kev_date":"2025-06-30","tte":5,"cvss":null,"epss":0.09756,"cwe":"CWE-119","cwe_name":"Improper Restriction of Operations within the Bounds of a Memory Buffer","ransomware":"Unknown"},{"cve":"CVE-2025-5777","vendor":"Citrix","published":"2025-06-17","kev_date":"2025-07-10","tte":23,"cvss":null,"epss":0.99897,"cwe":"CWE-125","cwe_name":"Out-of-bounds Read","ransomware":"Known"},{"cve":"CVE-2020-5902","vendor":"F5","published":"2020-07-01","kev_date":"2021-11-03","tte":490,"cvss":9.8,"epss":0.99999,"cwe":"CWE-22","cwe_name":"Path Traversal","ransomware":"Known"},{"cve":"CVE-2021-22991","vendor":"F5","published":"2021-03-31","kev_date":"2022-01-18","tte":293,"cvss":9.8,"epss":0.61064,"cwe":"CWE-119","cwe_name":"Improper Restriction of Operations within the Bounds of a Memory Buffer","ransomware":"Unknown"},{"cve":"CVE-2022-1388","vendor":"F5","published":"2022-05-05","kev_date":"2022-05-10","tte":5,"cvss":9.8,"epss":0.99956,"cwe":"CWE-306","cwe_name":"Missing Authentication for Critical Function","ransomware":"Known"},{"cve":"CVE-2023-46748","vendor":"F5","published":"2023-10-26","kev_date":"2023-10-31","tte":5,"cvss":8.8,"epss":0.04468,"cwe":"CWE-89","cwe_name":"Improper Neutralization of Special Elements used in an SQL Command","ransomware":"Unknown"},{"cve":"CVE-2023-46747","vendor":"F5","published":"2023-10-26","kev_date":"2023-10-31","tte":5,"cvss":9.8,"epss":0.96515,"cwe":"CWE-288","cwe_name":"Authentication Bypass Using an Alternate Path or Channel","ransomware":"Known"},{"cve":"CVE-2025-53521","vendor":"F5","published":"2025-10-15","kev_date":"2026-03-27","tte":163,"cvss":9.8,"epss":0.02246,"cwe":"CWE-121","cwe_name":"Stack-based Buffer Overflow","ransomware":"Unknown"},{"cve":"CVE-2020-29583","vendor":"Zyxel","published":"2020-12-22","kev_date":"2021-11-03","tte":316,"cvss":9.8,"epss":0.90049,"cwe":"CWE-522","cwe_name":"Insufficiently Protected Credentials","ransomware":"Unknown"},{"cve":"CVE-2022-30525","vendor":"Zyxel","published":"2022-05-12","kev_date":"2022-05-16","tte":4,"cvss":9.8,"epss":0.9994,"cwe":"CWE-78","cwe_name":"Improper Neutralization of Special Elements used in an OS Command","ransomware":"Unknown"},{"cve":"CVE-2023-28771","vendor":"Zyxel","published":"2023-04-25","kev_date":"2023-05-31","tte":36,"cvss":9.8,"epss":0.99284,"cwe":"CWE-78","cwe_name":"Improper Neutralization of Special Elements used in an OS Command","ransomware":"Unknown"},{"cve":"CVE-2023-33009","vendor":"Zyxel","published":"2023-05-24","kev_date":"2023-06-05","tte":12,"cvss":9.8,"epss":0.28144,"cwe":"CWE-120","cwe_name":"Buffer Copy without Checking Size of Input","ransomware":"Unknown"},{"cve":"CVE-2023-33010","vendor":"Zyxel","published":"2023-05-24","kev_date":"2023-06-05","tte":12,"cvss":9.8,"epss":0.28813,"cwe":"CWE-120","cwe_name":"Buffer Copy without Checking Size of Input","ransomware":"Unknown"},{"cve":"CVE-2024-11667","vendor":"Zyxel","published":"2024-11-27","kev_date":"2024-12-03","tte":6,"cvss":7.5,"epss":0.02958,"cwe":"CWE-22","cwe_name":"Path Traversal","ransomware":"Known"},{"cve":"CVE-2020-12271","vendor":"Sophos","published":"2020-04-27","kev_date":"2021-11-03","tte":555,"cvss":10,"epss":0.43062,"cwe":"CWE-89","cwe_name":"Improper Neutralization of Special Elements used in an SQL Command","ransomware":"Known"},{"cve":"CVE-2020-25223","vendor":"Sophos","published":"2020-09-25","kev_date":"2022-03-25","tte":546,"cvss":9.8,"epss":0.96693,"cwe":"CWE-78","cwe_name":"Improper Neutralization of Special Elements used in an OS Command","ransomware":"Unknown"},{"cve":"CVE-2022-1040","vendor":"Sophos","published":"2022-03-25","kev_date":"2022-03-31","tte":6,"cvss":9.8,"epss":0.99796,"cwe":"N/A","cwe_name":"N/A","ransomware":"Unknown"},{"cve":"CVE-2022-3236","vendor":"Sophos","published":"2022-09-23","kev_date":"2022-09-23","tte":0,"cvss":9.8,"epss":0.98905,"cwe":"CWE-94","cwe_name":"Improper Control of Generation of Code","ransomware":"Unknown"},{"cve":"CVE-2020-15069","vendor":"Sophos","published":"2020-06-29","kev_date":"2025-02-06","tte":1683,"cvss":9.8,"epss":0.10674,"cwe":"CWE-120","cwe_name":"Buffer Copy without Checking Size of Input","ransomware":"Unknown"},{"cve":"CVE-2020-29574","vendor":"Sophos","published":"2020-12-11","kev_date":"2025-02-06","tte":1518,"cvss":9.8,"epss":0.04729,"cwe":"CWE-89","cwe_name":"Improper Neutralization of Special Elements used in an SQL Command","ransomware":"Unknown"}];
+
+const VENDOR_COLORS = {
+  'Palo Alto Networks': '#58a6ff',
+  'Fortinet':           '#3fb950',
+  'Cisco':              '#f0883e',
+  'Ivanti':             '#bc8cff',
+  'Citrix':             '#f778ba',
+  'SonicWall':          '#79c0ff',
+  'Check Point':        '#ffd33d',
+  'F5':                 '#ff7b72',
+  'Juniper':            '#56d4dd',
+  'Zyxel':              '#d2a8ff',
+  'Sophos':             '#7ee787'
+};
+
+const VENDORS = Object.keys(VENDOR_COLORS);
+const activeVendors = new Set(VENDORS);
+let chart = null;
+let currentYMode = 'linear';
+
+// Build vendor filter checkboxes
+const grid = document.getElementById('vendorGrid');
+VENDORS.forEach(v => {
+  const label = document.createElement('label');
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.checked = true;
+  cb.dataset.vendor = v;
+  cb.style.borderColor = VENDOR_COLORS[v];
+  cb.addEventListener('change', () => {
+    if (cb.checked) activeVendors.add(v); else activeVendors.delete(v);
+    updateChart();
+  });
+  // Style the checked state color
+  const style = document.createElement('style');
+  style.textContent = `input[data-vendor="${v}"]:checked { background: ${VENDOR_COLORS[v]}; } input[data-vendor="${v}"]:checked::after { background: ${VENDOR_COLORS[v]}; }`;
+  document.head.appendChild(style);
+
+  const swatch = document.createElement('span');
+  swatch.className = 'vendor-swatch';
+  swatch.style.backgroundColor = VENDOR_COLORS[v];
+
+  label.appendChild(cb);
+  label.appendChild(swatch);
+  label.appendChild(document.createTextNode(' ' + v));
+  grid.appendChild(label);
+});
+
+function toggleAll(state) {
+  document.querySelectorAll('.vendor-grid input[type="checkbox"]').forEach(cb => {
+    cb.checked = state;
+    if (state) activeVendors.add(cb.dataset.vendor);
+    else activeVendors.delete(cb.dataset.vendor);
+  });
+  updateChart();
+}
+
+function getVisibleData() {
+  return CVE_DATA.filter(d => activeVendors.has(d.vendor));
+}
+
+function median(arr) {
+  if (!arr.length) return 0;
+  const s = [...arr].sort((a, b) => a - b);
+  const mid = Math.floor(s.length / 2);
+  return s.length % 2 ? s[mid] : Math.round((s[mid - 1] + s[mid]) / 2);
+}
+
+function updateStats() {
+  const visible = getVisibleData();
+  const ttes = visible.map(d => d.tte);
+  document.getElementById('statCount').textContent = visible.length;
+  document.getElementById('statMedian').textContent = visible.length ? median(ttes) : '--';
+  document.getElementById('statZeroDay').textContent = ttes.filter(t => t <= 0).length;
+  document.getElementById('statRansomware').textContent = visible.filter(d => d.ransomware === 'Known').length;
+}
+
+function buildDatasets() {
+  const datasets = [];
+  VENDORS.forEach(vendor => {
+    if (!activeVendors.has(vendor)) return;
+    const points = CVE_DATA.filter(d => d.vendor === vendor).map(d => ({
+      x: d.published,
+      y: d.tte,
+      cve: d.cve,
+      vendor: d.vendor,
+      cvss: d.cvss,
+      epss: d.epss,
+      cwe: d.cwe,
+      cwe_name: d.cwe_name,
+      ransomware: d.ransomware,
+      kev_date: d.kev_date
+    }));
+    datasets.push({
+      label: vendor,
+      data: points,
+      backgroundColor: VENDOR_COLORS[vendor] + 'CC',
+      borderColor: VENDOR_COLORS[vendor],
+      borderWidth: 1.5,
+      pointRadius: function(ctx) {
+        const d = ctx.raw;
+        if (!d) return 5;
+        return d.ransomware === 'Known' ? 7 : 5;
+      },
+      pointHoverRadius: 10,
+      pointStyle: function(ctx) {
+        const d = ctx.raw;
+        if (!d) return 'circle';
+        return d.ransomware === 'Known' ? 'triangle' : 'circle';
+      }
+    });
+  });
+  return datasets;
+}
+
+function getYScaleConfig() {
+  if (currentYMode === 'log') {
+    return {
+      type: 'logarithmic',
+      title: { display: true, text: 'Time to Exploit (days) -- log scale', color: '#8b949e', font: { size: 13 } },
+      grid: { color: 'rgba(48,54,61,0.6)' },
+      ticks: { color: '#8b949e' },
+      min: undefined,
+      max: undefined
+    };
+  }
+  if (currentYMode === 'capped') {
+    return {
+      type: 'linear',
+      title: { display: true, text: 'Time to Exploit (days) -- capped 0-365', color: '#8b949e', font: { size: 13 } },
+      grid: { color: 'rgba(48,54,61,0.6)' },
+      ticks: { color: '#8b949e' },
+      min: -30,
+      max: 365
+    };
+  }
+  return {
+    type: 'linear',
+    title: { display: true, text: 'Time to Exploit (days)', color: '#8b949e', font: { size: 13 } },
+    grid: { color: 'rgba(48,54,61,0.6)' },
+    ticks: { color: '#8b949e' },
+    min: undefined,
+    max: undefined
+  };
+}
+
+function createChart() {
+  const ctx = document.getElementById('tteChart').getContext('2d');
+
+  // Annotation plugin (inline)
+  const annotationPlugin = {
+    id: 'horizontalLines',
+    afterDraw(chart) {
+      const { ctx, chartArea, scales } = chart;
+      if (!chartArea) return;
+      const yScale = scales.y;
+      const xLeft = chartArea.left;
+      const xRight = chartArea.right;
+
+      // Helper to draw a line if in view
+      function drawLine(yVal, color, label, dashPattern) {
+        const yPx = yScale.getPixelForValue(yVal);
+        if (yPx < chartArea.top || yPx > chartArea.bottom) return;
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash(dashPattern || []);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        ctx.moveTo(xLeft, yPx);
+        ctx.lineTo(xRight, yPx);
+        ctx.stroke();
+        // Label
+        ctx.fillStyle = color;
+        ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(label, xRight - 8, yPx - 6);
+        ctx.restore();
+      }
+
+      drawLine(7, '#f85149', '7-day weaponization threshold', [6, 3]);
+      drawLine(30, '#d29922', 'Typical 30-day patch cycle', [6, 3]);
+      drawLine(0, 'rgba(110,118,129,0.5)', 'Zero-day line (TTE=0)', [3, 3]);
+    }
+  };
+
+  // Danger zone shading plugin
+  const dangerZonePlugin = {
+    id: 'dangerZone',
+    beforeDraw(chart) {
+      const { ctx, chartArea, scales } = chart;
+      if (!chartArea) return;
+      const yScale = scales.y;
+      const y7 = yScale.getPixelForValue(7);
+      const yBottom = chartArea.bottom;
+      const yTop = chartArea.top;
+      // Shade from y=7 down to bottom of chart (or min)
+      const top = Math.max(yTop, Math.min(y7, yBottom));
+      const bottom = yBottom;
+      if (top < bottom) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(248, 81, 73, 0.06)';
+        ctx.fillRect(chartArea.left, top, chartArea.right - chartArea.left, bottom - top);
+        ctx.restore();
+      }
+    }
+  };
+
+  chart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: buildDatasets() },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        mode: 'nearest',
+        intersect: true
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(22, 27, 34, 0.95)',
+          borderColor: '#30363d',
+          borderWidth: 1,
+          titleColor: '#e6edf3',
+          bodyColor: '#8b949e',
+          titleFont: { size: 13, weight: 'bold' },
+          bodyFont: { size: 12 },
+          padding: 12,
+          cornerRadius: 6,
+          displayColors: true,
+          callbacks: {
+            title: function(items) {
+              if (!items.length) return '';
+              const d = items[0].raw;
+              return d.cve;
+            },
+            label: function(item) {
+              const d = item.raw;
+              const lines = [
+                'Vendor: ' + d.vendor,
+                'TTE: ' + d.tte + ' days' + (d.tte <= 0 ? ' (ZERO-DAY)' : ''),
+                'Published: ' + d.x,
+                'KEV Added: ' + d.kev_date,
+                'CVSS: ' + (d.cvss !== null ? d.cvss : 'N/A'),
+                'EPSS: ' + (d.epss !== null ? (d.epss * 100).toFixed(1) + '%' : 'N/A'),
+                'CWE: ' + d.cwe + (d.cwe_name !== 'N/A' ? ' (' + d.cwe_name + ')' : ''),
+                'Ransomware: ' + d.ransomware + (d.ransomware === 'Known' ? ' [!]' : '')
+              ];
+              return lines;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            parser: 'yyyy-MM-dd',
+            unit: 'year',
+            displayFormats: { year: 'yyyy', month: 'MMM yyyy' }
+          },
+          title: { display: true, text: 'NVD Published Date', color: '#8b949e', font: { size: 13 } },
+          grid: { color: 'rgba(48,54,61,0.6)' },
+          ticks: { color: '#8b949e' }
+        },
+        y: getYScaleConfig()
+      }
+    },
+    plugins: [annotationPlugin, dangerZonePlugin]
+  });
+}
+
+function updateChart() {
+  chart.data.datasets = buildDatasets();
+  chart.update();
+  updateStats();
+}
+
+function updateYScale() {
+  const selected = document.querySelector('input[name="yScale"]:checked').value;
+  currentYMode = selected;
+  const cfg = getYScaleConfig();
+  chart.options.scales.y.type = cfg.type;
+  chart.options.scales.y.title = cfg.title;
+  chart.options.scales.y.min = cfg.min;
+  chart.options.scales.y.max = cfg.max;
+  chart.update();
+}
+
+// Initialize
+createChart();
+updateStats();
+</script>
+</body>
+</html>

@@ -105,6 +105,22 @@ Beyond counts and per-vendor narratives, this repository includes structured ana
 | [Market-Share Sensitivity](docs/MARKET-SHARE-SENSITIVITY.md) | Does installed base explain the KEV distribution? Bracketed scenarios under 3 market-share assumptions |
 | [Cross-Vendor Patterns](docs/ANALYSIS.md) | EPSS distributions, severity clustering, vendor comparison |
 
+### Psychology, education & decision-making
+
+| Document | Key finding |
+|----------|-------------|
+| [Cognitive Biases in Vendor Selection](docs/COGNITIVE-BIASES.md) | Seven biases (anchoring, availability, loss aversion λ=2.25, framing, sunk cost, optimism, survivorship) that distort edge-vendor decisions — with data examples and debiasing questions |
+| [Numbers That Matter](docs/THE-NUMBERS.md) | 15 statistics that should change how you think about edge security — the screenshot-ready stat cards |
+| [What-If Scenario Analysis](docs/WHAT-IF-SCENARIOS.md) | "What if you deployed Fortinet in 2020?" Five counterfactual scenarios with specific CVEs and dates |
+| [20 Vendor Questions](docs/VENDOR-QUESTIONS.md) | Data-grounded procurement checklist: what to ask, what a good answer looks like, what a red flag sounds like |
+
+### Interactive visualizations
+
+| Visualization | Description |
+|---------------|-------------|
+| [Time-to-Exploit Explorer](assets/tte-explorer.html) | Interactive Chart.js scatter plot: all 107 CVEs by publish date vs TTE, vendor filtering, summary stats, dark theme |
+| [CWE Weakness Heatmap](assets/cwe-heatmap.html) | Interactive vendor × CWE category heatmap with tooltips, recurring-weakness highlighting, per-vendor fingerprint charts |
+
 ### Analysis tools (stdlib-only Python, no pip dependencies)
 
 ```bash
@@ -199,3 +215,7 @@ All scripts are stdlib-only Python with no dependencies.
 | [STATISTICS.md](docs/STATISTICS.md) | Statistical rigor: can we distinguish vendors from noise? |
 | [RELATED-WORK.md](docs/RELATED-WORK.md) | Literature review and academic positioning |
 | [ANALYSIS.md](docs/ANALYSIS.md) | Cross-vendor pattern analysis snapshot |
+| [COGNITIVE-BIASES.md](docs/COGNITIVE-BIASES.md) | How anchoring, loss aversion, and 5 other biases distort vendor decisions |
+| [THE-NUMBERS.md](docs/THE-NUMBERS.md) | 15 statistics that should change how you think about edge security |
+| [WHAT-IF-SCENARIOS.md](docs/WHAT-IF-SCENARIOS.md) | Five counterfactual deployment scenarios with real CVE timelines |
+| [VENDOR-QUESTIONS.md](docs/VENDOR-QUESTIONS.md) | 20 data-grounded questions for vendor procurement and renewal |

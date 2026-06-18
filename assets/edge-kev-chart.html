@@ -2,65 +2,546 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edge Security Ground Truth — Exploited CVEs by Vendor</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
-  :root{
-    --bg0:#090d18; --bg1:#0d1426; --ink:#e9eef9; --mut:#9aabc6; --faint:#5d6f90;
-    --line:rgba(140,165,210,.13); --bar:#37a6bd; --barlo:#2a6f86; --track:rgba(120,150,195,.12);
+  :root {
+    --bg-primary:   #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary:  #21262d;
+    --border:       #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted:   #6e7681;
+    --accent-red:   #f85149;
+    --accent-blue:  #58a6ff;
+    --accent-green: #3fb950;
+    --accent-orange: #d29922;
+    --accent-purple: #bc8cff;
+    --bar-ransom:   rgba(248, 81, 73, 0.85);
+    --bar-ransom-border: #f85149;
+    --bar-unknown:  rgba(88, 166, 255, 0.75);
+    --bar-unknown-border: #58a6ff;
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{width:1200px;font-family:-apple-system,"SF Pro Display","Inter",Segoe UI,system-ui,sans-serif;
-    color:var(--ink);background:linear-gradient(168deg,#0f1830 0%,var(--bg1) 48%,var(--bg0) 100%);-webkit-font-smoothing:antialiased}
-  .wrap{padding:54px 60px 40px}
-  .eyebrow{font-size:13px;letter-spacing:.17em;font-weight:700;color:var(--faint);text-transform:uppercase}
-  h1{font-size:50px;line-height:1.05;font-weight:840;letter-spacing:-.02em;margin:14px 0 0}
-  .sub{font-size:18px;line-height:1.5;color:var(--mut);max-width:1000px;margin-top:16px;font-weight:440}
-  .sub b{color:var(--ink);font-weight:680}
 
-  .chart{margin:38px 0 8px}
-  .row{display:grid;grid-template-columns:210px 1fr 52px;align-items:center;gap:20px;margin-bottom:15px}
-  .name{font-size:19px;font-weight:680;text-align:right}
-  .name span{display:block;font-size:12px;font-weight:500;color:var(--faint);margin-top:2px}
-  .track{height:34px;background:var(--track);border-radius:7px;overflow:hidden}
-  .bar{height:100%;border-radius:7px;background:linear-gradient(90deg,var(--barlo),var(--bar))}
-  .val{font-size:24px;font-weight:820;color:var(--ink);letter-spacing:-.02em}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .band{margin-top:22px;padding:16px 22px;border:1px solid var(--line);border-left:3px solid var(--bar);
-    border-radius:12px;background:rgba(20,31,55,.5);font-size:17px;line-height:1.5;color:var(--ink);max-width:1000px}
-  .band b{color:var(--bar)}
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
 
-  .foot{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
-    display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
-  .foot .m{font-size:14px;line-height:1.5;color:var(--mut);max-width:660px}
-  .foot .src{font-size:12px;color:var(--faint);text-align:right;line-height:1.7;white-space:nowrap}
-  .foot .src b{color:var(--mut)}
+  header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  header h1 span { color: var(--accent-blue); }
+  header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 32px;
+  }
+
+  /* ── Context panel + legend row ── */
+  .top-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .context-panel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    flex: 1;
+    min-width: 260px;
+  }
+  .panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .stat-card {
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .stat-value.blue   { color: var(--accent-blue); }
+  .stat-value.red    { color: var(--accent-red); }
+  .stat-value.orange { color: var(--accent-orange); }
+  .stat-value.green  { color: var(--accent-green); }
+  .stat-label {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 2px;
+  }
+
+  .legend-panel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    min-width: 220px;
+  }
+  .legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .legend-diamond {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    transform: rotate(45deg);
+    border: 2px solid var(--accent-orange);
+    background: transparent;
+  }
+  .legend-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    line-height: 1.5;
+  }
+
+  /* ── Chart wrapper ── */
+  .chart-wrapper {
+    position: relative;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 20px 16px;
+    height: 520px;
+  }
+  .chart-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* ── Caveat band ── */
+  .caveat {
+    margin-top: 16px;
+    padding: 13px 18px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .caveat strong { color: var(--text-primary); }
+  .caveat .hi { color: var(--accent-blue); }
+
+  footer {
+    text-align: center;
+    padding: 20px 24px;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 28px;
+  }
+  footer a {
+    color: var(--accent-blue);
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── Tooltip ── */
+  .tooltip-box {
+    position: fixed;
+    background: #1c2130;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 13px;
+    line-height: 1.6;
+    pointer-events: none;
+    z-index: 9999;
+    min-width: 230px;
+    max-width: 280px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.65);
+    display: none;
+  }
+  .tooltip-box .tt-vendor {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tooltip-box .tt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 2px;
+    font-size: 12.5px;
+  }
+  .tooltip-box .tt-label { color: var(--text-muted); }
+  .tooltip-box .tt-val   { font-weight: 600; color: var(--text-primary); }
+  .tooltip-box .tt-val.red    { color: var(--accent-red); }
+  .tooltip-box .tt-val.blue   { color: var(--accent-blue); }
+  .tooltip-box .tt-val.orange { color: var(--accent-orange); }
+  .tooltip-box .tt-cwe {
+    margin-top: 7px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+  .tooltip-box .tt-cwe span { color: var(--accent-orange); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .container { padding: 16px; }
+    .top-row   { flex-direction: column; }
+    .chart-wrapper { height: 420px; }
+    header { padding: 16px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="eyebrow">Exploited edge CVEs · CISA KEV · 2020–2026</div>
-  <h1>Every major edge vendor is heavily exploited.</h1>
-  <p class="sub">CVEs in CISA's <b>Known Exploited Vulnerabilities</b> catalog affecting each vendor's edge appliance (firewall / SSL‑VPN / remote‑access), counted under <b>one uniform scope rule</b>. Reproducible directly from the CISA feed.</p>
 
-  <div class="chart">
-    <div class="row"><div class="name">Fortinet<span>FortiOS / FortiProxy</span></div><div class="track"><div class="bar" style="width:100%"></div></div><div class="val">18</div></div>
-    <div class="row"><div class="name">Ivanti<span>Connect / Pulse Secure</span></div><div class="track"><div class="bar" style="width:72.2%"></div></div><div class="val">13</div></div>
-    <div class="row"><div class="name">Cisco<span>ASA / FTD only</span></div><div class="track"><div class="bar" style="width:72.2%"></div></div><div class="val">13</div></div>
-    <div class="row"><div class="name">Palo Alto<span>PAN‑OS</span></div><div class="track"><div class="bar" style="width:66.7%"></div></div><div class="val">12</div></div>
-    <div class="row"><div class="name">SonicWall<span>SonicOS + SMA</span></div><div class="track"><div class="bar" style="width:66.7%"></div></div><div class="val">12</div></div>
-    <div class="row"><div class="name">Citrix<span>NetScaler ADC / Gateway</span></div><div class="track"><div class="bar" style="width:61.1%"></div></div><div class="val">11</div></div>
-    <div class="row"><div class="name">Juniper<span>Junos / ScreenOS</span></div><div class="track"><div class="bar" style="width:44.4%"></div></div><div class="val">8</div></div>
-    <div class="row"><div class="name">F5<span>BIG‑IP</span></div><div class="track"><div class="bar" style="width:33.3%"></div></div><div class="val">6</div></div>
-    <div class="row"><div class="name">Zyxel<span>ATP / USG FLEX / VPN</span></div><div class="track"><div class="bar" style="width:33.3%"></div></div><div class="val">6</div></div>
-    <div class="row"><div class="name">Sophos<span>SFOS / XG / SG UTM</span></div><div class="track"><div class="bar" style="width:33.3%"></div></div><div class="val">6</div></div>
-    <div class="row"><div class="name">Check Point<span>Quantum Gateway</span></div><div class="track"><div class="bar" style="width:11.1%"></div></div><div class="val">2</div></div>
+<header>
+  <h1><span>Edge Security Ground Truth</span> — Exploited CVEs by Vendor</h1>
+  <p>CISA KEV catalog: 107 exploited edge-device CVEs across 11 vendors · stacked by ransomware association · zero-day count marked as ◆</p>
+</header>
+
+<div class="container">
+  <div class="top-row">
+    <!-- Context / summary stats -->
+    <div class="context-panel">
+      <div class="panel-title">Dataset Context</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value blue">107</div>
+          <div class="stat-label">Total KEV CVEs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value blue">11</div>
+          <div class="stat-label">Vendors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value red">46</div>
+          <div class="stat-label">Ransomware Known</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value orange">26</div>
+          <div class="stat-label">Zero-Days (TTE≤0)</div>
+        </div>
+        <div class="stat-card" style="grid-column: 1 / -1;">
+          <div class="stat-value green" style="font-size:18px;">2020–2026 · Gini 0.246</div>
+          <div class="stat-label">Date Range · Distribution</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend-panel">
+      <div class="panel-title">Legend</div>
+      <div class="legend-items">
+        <div class="legend-item">
+          <div class="legend-swatch" style="background: rgba(248,81,73,0.85); border: 1px solid #f85149;"></div>
+          Ransomware-associated
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background: rgba(88,166,255,0.75); border: 1px solid #58a6ff;"></div>
+          Ransomware unknown
+        </div>
+        <div class="legend-item">
+          <div class="legend-diamond"></div>
+          Zero-day count (TTE ≤ 0)
+        </div>
+      </div>
+      <div class="legend-note">
+        Hover any bar for vendor details.<br>
+        Zero-day = KEV added before or on NVD publish date.
+      </div>
+    </div>
   </div>
 
-  <div class="band">Apply one consistent scope and eleven major edge vendors land at <b>2–18 exploited edge CVEs over six years</b> — all actively exploited. Fortinet's higher count partly tracks its <b>~50% unit market share</b> (the popularity tax this repo can't normalize), not demonstrably weaker code. Check Point's low count (2) reflects fewer gateway‑specific disclosures and lower researcher attention, not immunity. The count is the start of the question, not the answer — <b>what</b> happened is in the repo, cited per vendor.</div>
+  <!-- Chart -->
+  <div class="chart-wrapper">
+    <canvas id="kevChart"></canvas>
+  </div>
 
-  <div class="foot">
-    <div class="m"><b>Sorted by count — a sort, not a verdict.</b> Counts still partly reflect installed base, which is not reliably normalizable. Cisco = ASA/FTD only (not its ~90 portfolio‑wide KEVs); Palo Alto excludes Expedition.</div>
-    <div class="src"><b>Source:</b> CISA KEV catalog 2026.06.18<br>computed by scripts/build_kev_counts.py<br>github.com/ericrihm/edge-security-ground-truth</div>
+  <!-- Caveat -->
+  <div class="caveat">
+    <strong>Sorted by count — a sort, not a verdict.</strong>
+    Counts partly reflect installed base: <span class="hi">Fortinet holds ~50% unit market share</span>, a popularity tax this repo can't normalize.
+    Cisco = ASA/FTD only (not its ~90 portfolio-wide KEVs). Palo Alto excludes Expedition.
+    Check Point's low count (2) reflects fewer gateway-specific disclosures, not immunity.
+    <strong>The count is the start of the question, not the answer.</strong>
   </div>
 </div>
+
+<footer>
+  Data: CISA KEV catalog 2026-06-18 · computed by scripts/build_kev_counts.py ·
+  <a href="https://github.com/ericrihm/edge-security-ground-truth" target="_blank">github.com/ericrihm/edge-security-ground-truth</a>
+</footer>
+
+<!-- Custom tooltip -->
+<div id="tooltipBox" class="tooltip-box"></div>
+
+<script>
+// ── Per-vendor data from scripts/kev_edge_enriched.json ──────────────────────
+const VENDOR_DATA = [
+  { vendor: 'Fortinet',           total: 18, ransomware: 12, unknown: 6,  zerodays: 7,  product: 'FortiOS / FortiProxy',          dominant_cwe: 'Auth / Access'    },
+  { vendor: 'Ivanti',             total: 13, ransomware: 8,  unknown: 5,  zerodays: 4,  product: 'Connect Secure / Pulse',        dominant_cwe: 'Injection'         },
+  { vendor: 'Cisco',              total: 13, ransomware: 3,  unknown: 10, zerodays: 4,  product: 'ASA / FTD only',                dominant_cwe: 'Memory Safety'     },
+  { vendor: 'SonicWall',          total: 12, ransomware: 7,  unknown: 5,  zerodays: 1,  product: 'SonicOS + SMA',                 dominant_cwe: 'Injection'         },
+  { vendor: 'Palo Alto Networks', total: 12, ransomware: 5,  unknown: 7,  zerodays: 4,  product: 'PAN-OS',                        dominant_cwe: 'Auth / Access'     },
+  { vendor: 'Citrix',             total: 11, ransomware: 4,  unknown: 7,  zerodays: 4,  product: 'NetScaler ADC / Gateway',       dominant_cwe: 'Auth / Access'     },
+  { vendor: 'Juniper',            total: 8,  ransomware: 0,  unknown: 8,  zerodays: 0,  product: 'Junos / ScreenOS',              dominant_cwe: 'Auth / Access'     },
+  { vendor: 'F5',                 total: 6,  ransomware: 3,  unknown: 3,  zerodays: 0,  product: 'BIG-IP',                        dominant_cwe: 'Memory Safety'     },
+  { vendor: 'Zyxel',              total: 6,  ransomware: 1,  unknown: 5,  zerodays: 0,  product: 'ATP / USG FLEX / VPN',          dominant_cwe: 'Injection'         },
+  { vendor: 'Sophos',             total: 6,  ransomware: 1,  unknown: 5,  zerodays: 1,  product: 'SFOS / XG / SG UTM',            dominant_cwe: 'Injection'         },
+  { vendor: 'Check Point',        total: 2,  ransomware: 2,  unknown: 0,  zerodays: 1,  product: 'Quantum Gateway',               dominant_cwe: 'Auth / Access'     },
+];
+
+const labels    = VENDOR_DATA.map(d => d.vendor);
+const ransomArr = VENDOR_DATA.map(d => d.ransomware);
+const unknownArr= VENDOR_DATA.map(d => d.unknown);
+const zdArr     = VENDOR_DATA.map(d => d.zerodays);
+const maxTotal  = Math.max(...VENDOR_DATA.map(d => d.total));
+
+// ── Chart.js: zero-day diamond plugin ────────────────────────────────────────
+const zeroDayPlugin = {
+  id: 'zeroDayMarkers',
+  afterDatasetsDraw(chart) {
+    const { ctx, chartArea, scales } = chart;
+    if (!chartArea) return;
+    const xScale = scales.x;
+    const yScale = scales.y;
+
+    VENDOR_DATA.forEach((d, i) => {
+      if (d.zerodays === 0) return;
+      const barMeta = chart.getDatasetMeta(0); // ransomware dataset
+      const barEl = barMeta.data[i];
+      if (!barEl) return;
+
+      // X position = right edge of stacked bar (total value)
+      const xPx = xScale.getPixelForValue(d.total);
+      const yPx = barEl.y;
+
+      // Diamond marker
+      const size = 7;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(xPx + size, yPx);
+      ctx.lineTo(xPx,         yPx - size);
+      ctx.lineTo(xPx - size, yPx);
+      ctx.lineTo(xPx,         yPx + size);
+      ctx.closePath();
+      ctx.fillStyle   = '#d29922';
+      ctx.strokeStyle = '#0d1117';
+      ctx.lineWidth   = 1.5;
+      ctx.fill();
+      ctx.stroke();
+
+      // Count label to right of diamond
+      ctx.fillStyle  = '#d29922';
+      ctx.font       = 'bold 11px -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.textAlign  = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(d.zerodays + 'zd', xPx + size + 5, yPx);
+      ctx.restore();
+    });
+  }
+};
+
+// ── Build chart ───────────────────────────────────────────────────────────────
+const ctx = document.getElementById('kevChart').getContext('2d');
+
+const chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      {
+        label: 'Ransomware-associated',
+        data: ransomArr,
+        backgroundColor: 'rgba(248, 81, 73, 0.82)',
+        borderColor:     '#f85149',
+        borderWidth:     1,
+        borderSkipped:   false,
+        borderRadius:    { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 0 },
+      },
+      {
+        label: 'Ransomware unknown',
+        data: unknownArr,
+        backgroundColor: 'rgba(88, 166, 255, 0.70)',
+        borderColor:     '#58a6ff',
+        borderWidth:     1,
+        borderSkipped:   false,
+        borderRadius:    { topLeft: 0, topRight: 4, bottomLeft: 0, bottomRight: 4 },
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      axis: 'y',
+      intersect: false,
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: false },  // we use custom tooltip
+    },
+    scales: {
+      x: {
+        stacked: true,
+        grid: {
+          color: 'rgba(48, 54, 61, 0.7)',
+          drawTicks: false,
+        },
+        ticks: {
+          color: '#8b949e',
+          font: { size: 12 },
+          stepSize: 2,
+        },
+        title: {
+          display: true,
+          text: 'CISA KEV CVEs',
+          color: '#8b949e',
+          font: { size: 12 },
+          padding: { top: 8 },
+        },
+        min: 0,
+        max: Math.ceil(maxTotal * 1.22),  // breathing room for zero-day labels
+        border: { color: 'rgba(48,54,61,0.5)' },
+      },
+      y: {
+        stacked: true,
+        grid: { display: false },
+        ticks: {
+          color: '#e6edf3',
+          font: { size: 13, weight: '600' },
+          padding: 8,
+        },
+        border: { color: 'rgba(48,54,61,0.5)' },
+      }
+    },
+    layout: {
+      padding: { right: 60 }  // space for zero-day labels at bar end
+    },
+    animation: {
+      duration: 500,
+      easing: 'easeOutQuart'
+    }
+  },
+  plugins: [zeroDayPlugin]
+});
+
+// ── Custom tooltip via mouse events ──────────────────────────────────────────
+const tooltipBox = document.getElementById('tooltipBox');
+const canvas = document.getElementById('kevChart');
+
+function positionTooltip(e) {
+  const pad = 14;
+  let x = e.clientX + pad;
+  let y = e.clientY + pad;
+  const tw = tooltipBox.offsetWidth  || 240;
+  const th = tooltipBox.offsetHeight || 130;
+  if (x + tw > window.innerWidth  - 8) x = e.clientX - tw - pad;
+  if (y + th > window.innerHeight - 8) y = e.clientY - th - pad;
+  tooltipBox.style.left = x + 'px';
+  tooltipBox.style.top  = y + 'px';
+}
+
+canvas.addEventListener('mousemove', function(e) {
+  const points = chart.getElementsAtEventForMode(e, 'index', { axis: 'y', intersect: false }, true);
+  if (!points.length) {
+    tooltipBox.style.display = 'none';
+    return;
+  }
+
+  const idx = points[0].index;
+  const d   = VENDOR_DATA[idx];
+
+  const ransomPct = d.total > 0 ? Math.round((d.ransomware / d.total) * 100) : 0;
+
+  tooltipBox.innerHTML = `
+    <div class="tt-vendor">${d.vendor}</div>
+    <div class="tt-row" style="margin-bottom:1px; font-size:11px; color:#6e7681;">${d.product}</div>
+    <div style="height:6px;"></div>
+    <div class="tt-row">
+      <span class="tt-label">Total KEV CVEs</span>
+      <span class="tt-val blue">${d.total}</span>
+    </div>
+    <div class="tt-row">
+      <span class="tt-label">Ransomware-associated</span>
+      <span class="tt-val red">${d.ransomware} (${ransomPct}%)</span>
+    </div>
+    <div class="tt-row">
+      <span class="tt-label">Ransomware unknown</span>
+      <span class="tt-val blue">${d.unknown}</span>
+    </div>
+    <div class="tt-row">
+      <span class="tt-label">Zero-days (TTE ≤ 0)</span>
+      <span class="tt-val orange">${d.zerodays}</span>
+    </div>
+    <div class="tt-cwe">Dominant CWE category: <span>${d.dominant_cwe}</span></div>
+  `;
+  tooltipBox.style.display = 'block';
+  positionTooltip(e);
+});
+
+canvas.addEventListener('mouseleave', function() {
+  tooltipBox.style.display = 'none';
+});
+</script>
 </body>
 </html>

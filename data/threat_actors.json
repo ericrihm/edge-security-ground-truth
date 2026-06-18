@@ -2,575 +2,230 @@
   "metadata": {
     "generated": "2026-06-18",
     "description": "Threat actor attribution dataset for edge security vendors. Covers named APT groups, campaigns, and nation-state attributions linked to exploitation of edge/perimeter devices (firewalls, VPN gateways, ADCs) from 11 vendors.",
-    "methodology": "Compiled from vendor docs in this repo, cross-referenced and expanded via Mandiant, CrowdStrike, CISA, Volexity, Recorded Future, Sophos X-Ops, Cisco Talos, Unit 42, and Arctic Wolf publications. Attribution confidence levels noted where sources provide them.",
-    "key_statistic": "Mandiant M-Trends 2025: exploits remain the dominant initial access vector at 33% of all investigated incidents; all four most frequently exploited vulnerabilities in 2024 were in edge devices."
+    "source_documents": ["docs/THREAT-ACTORS.md", "docs/THREAT-ATTRIBUTION.md"],
+    "actor_count": 22,
+    "key_statistic": "Mandiant M-Trends 2025: exploits remain the dominant initial access vector at 33% of all investigated incidents; all four most frequently exploited vulnerabilities in 2024 were in edge devices. Google Threat Intelligence Group: 44% of zero-days exploited in 2024 targeted security and edge appliances."
   },
   "actors": [
     {
       "name": "UNC3886",
       "aliases": [],
-      "nation": "China",
+      "nexus": "China",
       "attribution_confidence": "high",
-      "description": "China-nexus espionage group specializing in edge device and hypervisor exploitation. Active since at least late 2021. Deploys custom TINYSHELL-based backdoors and has demonstrated deep knowledge of FortiOS, Junos OS, and VMware ESXi internals.",
-      "targets": {
-        "sectors": ["defense", "technology", "telecommunications", "critical_infrastructure"],
-        "geographies": ["United States", "Singapore", "Southeast Asia", "global ISPs/telecoms"]
-      },
-      "vendors_exploited": ["Fortinet", "Juniper", "F5"],
-      "cves": [
-        "CVE-2022-41328",
-        "CVE-2022-22948",
-        "CVE-2023-20867",
-        "CVE-2025-21590"
-      ],
-      "campaigns": [
-        "FortiOS zero-day exploitation with BOLDMOVE-adjacent tooling",
-        "Juniper MX Series backdoor campaign (6 custom TINYSHELL variants, disclosed March 2025)",
-        "VMware ESXi hypervisor compromise"
-      ],
-      "malware": ["TINYSHELL variants", "MOPSLED", "RIFLESPINE", "REPTILE", "VIRTUALSHINE", "VIRTUALPIE", "CASTLETAP", "LOOKOVER"],
+      "targets": ["Fortinet", "Juniper", "F5"],
+      "cves": ["CVE-2022-41328", "CVE-2022-22948", "CVE-2023-20867", "CVE-2025-21590"],
+      "description": "China-nexus espionage group specializing in edge device and hypervisor exploitation. Deploys custom TINYSHELL-based backdoors with deep knowledge of FortiOS, Junos OS, and VMware ESXi internals. Deployed 6 custom TINYSHELL variants on Juniper MX Series carrier-grade routers (disclosed March 2025). Targets include ISPs, telecoms, and US defense contractors. Demonstrates vendor-agnostic specialization returning across different vendor products over multiple years.",
       "sources": ["Mandiant", "Google Threat Intelligence", "MITRE ATT&CK G1048", "CISA", "Singapore CSA/IMDA (Feb 2026)"]
     },
     {
       "name": "UNC5221",
-      "aliases": ["Warp Panda (CrowdStrike)"],
-      "nation": "China",
+      "aliases": ["Warp Panda"],
+      "nexus": "China",
       "attribution_confidence": "high",
-      "description": "China-nexus espionage actor with persistent focus on Ivanti products. Responsible for the January 2024 Ivanti crisis and subsequent campaigns through 2025. Also linked to the F5 BIG-IP corporate breach (source code exfiltration) via BRICKSTORM malware.",
-      "targets": {
-        "sectors": ["government", "defense", "critical_infrastructure", "technology"],
-        "geographies": ["United States", "Europe", "global federal/government networks"]
-      },
-      "vendors_exploited": ["Ivanti", "F5"],
-      "cves": [
-        "CVE-2023-46805",
-        "CVE-2024-21887",
-        "CVE-2024-21893",
-        "CVE-2025-0282",
-        "CVE-2025-22457"
-      ],
-      "campaigns": [
-        "Ivanti Connect Secure mass exploitation (Jan 2024, ~1700 appliances compromised)",
-        "CISA Emergency Directive ED 24-01",
-        "CVE-2025-0282 exploitation (Dec 2024 onward, SPAWN/DRYHOOK/PHASEJAM malware)",
-        "CVE-2025-22457 exploitation (Mar 2025, TRAILBLAZE/BRUSHFIRE malware)",
-        "F5 BIG-IP corporate intrusion (Aug 2025, source code + undisclosed vulns exfiltrated, BRICKSTORM malware)"
-      ],
-      "malware": ["SPAWN", "SPAWNANT", "SPAWNSNARE", "SPAWNSLOTH", "DRYHOOK", "PHASEJAM", "TRAILBLAZE", "BRUSHFIRE", "BRICKSTORM"],
+      "targets": ["Ivanti", "F5"],
+      "cves": ["CVE-2023-46805", "CVE-2024-21887", "CVE-2024-21893", "CVE-2025-0282", "CVE-2025-22457"],
+      "description": "China-nexus espionage actor with persistent focus on Ivanti products. Responsible for the January 2024 Ivanti crisis (~1,700 appliances compromised), triggering CISA Emergency Directive ED 24-01. Returned with new exploits throughout 2024-2025. Linked to the F5 BIG-IP corporate breach (Aug 2025) via BRICKSTORM malware, where source code and undisclosed vulnerability information were exfiltrated after 12+ months of persistent access. Malware families include the SPAWN family (SPAWNANT, SPAWNSNARE, SPAWNSLOTH), DRYHOOK, PHASEJAM, TRAILBLAZE, BRUSHFIRE, and BRICKSTORM.",
       "sources": ["Mandiant", "Google Threat Intelligence", "CISA ED 24-01", "CrowdStrike", "Unit 42"]
     },
     {
-      "name": "UNC5174",
-      "aliases": ["Uteus (persona)"],
-      "nation": "China",
-      "attribution_confidence": "moderate",
-      "description": "Former member of Chinese hacktivist collectives, assessed as acting as a contractor for China's Ministry of State Security (MSS). Functions as an initial access broker, selling access to compromised systems.",
-      "targets": {
-        "sectors": ["defense_contractors", "government", "education", "research"],
-        "geographies": ["United States", "United Kingdom", "Southeast Asia", "Hong Kong"]
-      },
-      "vendors_exploited": ["F5"],
-      "cves": [
-        "CVE-2023-46747"
-      ],
-      "campaigns": [
-        "F5 BIG-IP CVE-2023-46747 exploitation (Oct-Nov 2023)",
-        "Attempted sale of access to US defense contractor and UK government appliances"
-      ],
-      "malware": ["SUPERSHELL framework", "custom tooling"],
+      "name": "UNC5337",
+      "aliases": [],
+      "nexus": "China",
+      "attribution_confidence": "high",
+      "targets": ["Ivanti"],
+      "cves": ["CVE-2025-0282"],
+      "description": "China-nexus threat cluster attributed by Mandiant to exploitation of Ivanti Connect Secure CVE-2025-0282. Whether UNC5337 represents a distinct actor from UNC5221 or the same cluster at a different operational phase is not resolved in public reporting. Both groups focus exclusively on Ivanti edge devices.",
       "sources": ["Mandiant", "Google Threat Intelligence"]
-    },
-    {
-      "name": "UAT4356",
-      "aliases": ["STORM-1849 (Microsoft)"],
-      "nation": "China (suspected)",
-      "attribution_confidence": "moderate",
-      "description": "State-sponsored espionage group with deep specialization in Cisco ASA/FTD products. Conducted the ArcaneDoor campaign and returned in 2025 with new zero-days. Censys research found links to Chinese networks and anti-censorship software on actor infrastructure.",
-      "targets": {
-        "sectors": ["government", "telecommunications", "energy"],
-        "geographies": ["global government networks"]
-      },
-      "vendors_exploited": ["Cisco"],
-      "cves": [
-        "CVE-2024-20353",
-        "CVE-2024-20359",
-        "CVE-2025-20333",
-        "CVE-2025-20362"
-      ],
-      "campaigns": [
-        "ArcaneDoor (Nov 2023 - Apr 2024, Line Dancer + Line Runner implants)",
-        "2025 ASA/FTD campaign (Sep 2025, RayInitiator bootkit + LINE VIPER shellcode loader)"
-      ],
-      "malware": ["Line Dancer", "Line Runner", "RayInitiator", "LINE VIPER"],
-      "sources": ["Cisco Talos", "Microsoft Threat Intelligence", "CISA", "MITRE ATT&CK C0046", "Censys", "Australia ASD ACSC", "Canada CCCS", "UK NCSC"]
     },
     {
       "name": "UTA0218",
       "aliases": [],
-      "nation": "China (suspected)",
+      "nexus": "China (suspected)",
       "attribution_confidence": "moderate",
-      "description": "State-nexus threat actor responsible for Operation MidnightEclipse, exploiting Palo Alto PAN-OS GlobalProtect zero-day CVE-2024-3400. Volexity assesses with moderate confidence the actor is China-based.",
-      "targets": {
-        "sectors": ["government", "critical_infrastructure"],
-        "geographies": ["global"]
-      },
-      "vendors_exploited": ["Palo Alto Networks"],
-      "cves": [
-        "CVE-2024-3400"
-      ],
-      "campaigns": [
-        "Operation MidnightEclipse (Mar-Apr 2024, UPSTYLE backdoor)"
-      ],
-      "malware": ["UPSTYLE"],
+      "targets": ["Palo Alto Networks"],
+      "cves": ["CVE-2024-3400"],
+      "description": "State-nexus threat actor responsible for Operation MidnightEclipse. Exploited Palo Alto PAN-OS GlobalProtect zero-day CVE-2024-3400 (CVSS 10.0), the #1 most frequently exploited vulnerability in Mandiant M-Trends 2025. Deployed UPSTYLE backdoor. Volexity discovered active exploitation before any patch existed.",
       "sources": ["Volexity", "Palo Alto Unit 42", "CISA"]
     },
     {
+      "name": "UAT4356",
+      "aliases": ["STORM-1849"],
+      "nexus": "China (suspected)",
+      "attribution_confidence": "moderate",
+      "targets": ["Cisco"],
+      "cves": ["CVE-2024-20353", "CVE-2024-20359", "CVE-2025-20333", "CVE-2025-20362"],
+      "description": "State-sponsored espionage group with deep specialization in Cisco ASA/FTD products. Burned 4 zero-days across two campaigns (2024, 2025). ArcaneDoor campaign (Nov 2023 - Apr 2024) targeted government networks globally using Line Dancer (memory-resident shellcode interpreter) and Line Runner (persistent backdoor surviving reboots). 2025 campaign introduced RayInitiator bootkit and LINE VIPER shellcode loader. Censys research found links to Chinese networks and anti-censorship software on actor infrastructure.",
+      "sources": ["Cisco Talos", "Microsoft Threat Intelligence", "CISA", "MITRE ATT&CK C0046", "Censys", "Australia ASD ACSC", "Canada CCCS", "UK NCSC"]
+    },
+    {
       "name": "Volt Typhoon",
-      "aliases": ["VANGUARD PANDA (CrowdStrike)", "Bronze Silhouette (Secureworks)", "DEV-0391 (Microsoft legacy)", "Insidious Taurus (Unit 42)"],
-      "nation": "China",
+      "aliases": ["VANGUARD PANDA", "Bronze Silhouette", "Insidious Taurus"],
+      "nexus": "China",
       "attribution_confidence": "high",
-      "description": "PRC state-sponsored group focused on pre-positioning in US critical infrastructure for potential disruption during a conflict. Uses living-off-the-land techniques post-compromise. Exploits edge devices from multiple vendors for initial access.",
-      "targets": {
-        "sectors": ["critical_infrastructure", "energy", "water", "telecommunications", "transportation"],
-        "geographies": ["United States", "Guam"]
-      },
-      "vendors_exploited": ["Fortinet", "Ivanti", "Citrix", "Cisco", "Sophos"],
-      "cves": [
-        "CVE-2024-21762",
-        "CVE-2024-23113"
-      ],
-      "campaigns": [
-        "US critical infrastructure pre-positioning (ongoing since at least 2021)",
-        "Exploitation of Fortinet FortiOS SSL VPN and Ivanti Connect Secure VPN",
-        "Sophos Pacific Rim (identified as overlapping TTP cluster)"
-      ],
-      "malware": ["Living-off-the-land (LOTL) techniques; minimal custom malware"],
+      "targets": ["Fortinet", "Ivanti", "Citrix", "Cisco", "Sophos"],
+      "cves": ["CVE-2024-21762", "CVE-2024-23113"],
+      "description": "PRC state-sponsored group focused on pre-positioning in US critical infrastructure for potential disruption during a geopolitical conflict. Uses living-off-the-land techniques post-compromise. Has the broadest vendor coverage of any single China-nexus actor in this dataset — documented exploitation across Fortinet, Ivanti, Citrix, Cisco, and Sophos. Identified in the Sophos Pacific Rim report as an overlapping TTP cluster. Targets exclusively critical infrastructure: energy, water, telecommunications, and transportation.",
       "sources": ["Microsoft Threat Intelligence", "CISA AA24-038A", "NSA", "FBI", "Five Eyes joint advisory", "Sophos Pacific Rim report"]
     },
     {
-      "name": "APT41",
-      "aliases": ["Winnti", "BARIUM (Microsoft)", "Wicked Panda (CrowdStrike)", "Double Dragon"],
-      "nation": "China",
+      "name": "Earth Estries",
+      "aliases": ["Salt Typhoon", "GhostEmperor", "FamousSparrow"],
+      "nexus": "China",
       "attribution_confidence": "high",
-      "description": "Dual-purpose Chinese threat group conducting both state-sponsored espionage and financially motivated operations. Exploited Citrix CVE-2019-19781 in a wide-ranging global intrusion campaign in early 2020. Also linked to Sophos firewall targeting via Pacific Rim.",
-      "targets": {
-        "sectors": ["government", "healthcare", "technology", "telecommunications", "gaming", "finance"],
-        "geographies": ["global"]
-      },
-      "vendors_exploited": ["Citrix", "Sophos", "Cisco"],
-      "cves": [
-        "CVE-2019-19781"
-      ],
-      "campaigns": [
-        "Global intrusion campaign exploiting Citrix, Cisco, and Zoho (Jan-Mar 2020)",
-        "Sophos Pacific Rim (identified as overlapping TTP cluster)"
-      ],
-      "malware": ["Various custom backdoors"],
+      "targets": ["Fortinet", "Ivanti", "Cisco"],
+      "cves": [],
+      "description": "Conducts the largest documented edge device campaign: 600+ organizations breached across 80+ countries since 2019. Heavy focus on telecommunications providers including multiple US carriers (October 2024 disclosure). Specific CVE-level attribution has not been publicly enumerated but exploitation of multiple vendors' edge devices is confirmed.",
+      "sources": ["Trend Micro", "Microsoft Threat Intelligence", "CISA"]
+    },
+    {
+      "name": "APT41",
+      "aliases": ["Winnti", "Wicked Panda", "Double Dragon", "BARIUM"],
+      "nexus": "China",
+      "attribution_confidence": "high",
+      "targets": ["Citrix", "Sophos", "Cisco"],
+      "cves": ["CVE-2019-19781"],
+      "description": "Dual-purpose Chinese threat group conducting both state-sponsored espionage and financially motivated operations. Exploited Citrix CVE-2019-19781 in a wide-ranging global intrusion campaign (Jan-Mar 2020). Identified as an overlapping TTP cluster in the Sophos Pacific Rim report. Also targeted Cisco devices in the same 2020 campaign.",
       "sources": ["Mandiant", "FireEye", "Sophos Pacific Rim report", "FBI indictments"]
     },
     {
       "name": "APT31",
-      "aliases": ["Zirconium (Microsoft)", "Judgment Panda (CrowdStrike)", "Violet Typhoon"],
-      "nation": "China",
+      "aliases": ["Zirconium", "Judgment Panda", "Violet Typhoon"],
+      "nexus": "China",
       "attribution_confidence": "high",
-      "description": "China-linked espionage group that exploited Sophos CyberoamOS vulnerability CVE-2020-29574 and was identified as part of the Pacific Rim threat cluster targeting Sophos edge devices.",
-      "targets": {
-        "sectors": ["government", "defense", "critical_infrastructure"],
-        "geographies": ["Europe", "United States", "South Asia", "Southeast Asia"]
-      },
-      "vendors_exploited": ["Sophos"],
-      "cves": [
-        "CVE-2020-29574"
-      ],
-      "campaigns": [
-        "CyberoamOS exploitation",
-        "Sophos Pacific Rim (identified as overlapping TTP cluster)"
-      ],
-      "malware": [],
+      "targets": ["Sophos"],
+      "cves": ["CVE-2020-29574"],
+      "description": "China-linked espionage group that exploited Sophos CyberoamOS vulnerability CVE-2020-29574 and was identified as part of the Pacific Rim threat cluster targeting Sophos edge devices over a five-year period.",
       "sources": ["Sophos Pacific Rim report", "CVEFeed attribution"]
     },
     {
       "name": "DriftingCloud",
-      "aliases": [],
-      "nation": "China",
+      "aliases": ["TA413 (partially overlapping)"],
+      "nexus": "China",
       "attribution_confidence": "high",
-      "description": "Chinese APT group that exploited Sophos Firewall CVE-2022-1040 zero-day weeks before the patch was available. Used compromised firewalls to perform MitM attacks by modifying DNS responses.",
-      "targets": {
-        "sectors": ["government", "private_sector"],
-        "geographies": ["South Asia (Afghanistan, Bhutan, India, Nepal, Pakistan, Sri Lanka)"]
-      },
-      "vendors_exploited": ["Sophos"],
-      "cves": [
-        "CVE-2022-1040"
-      ],
-      "campaigns": [
-        "Sophos Firewall zero-day exploitation with DNS MitM (Mar 2022)"
-      ],
-      "malware": ["PupyRAT", "Pantegana", "Sliver"],
+      "targets": ["Sophos"],
+      "cves": ["CVE-2022-1040"],
+      "description": "Chinese APT group that exploited Sophos Firewall zero-day CVE-2022-1040 weeks before patch availability. Used compromised firewalls for man-in-the-middle attacks by modifying DNS responses. Targeting concentrated in South Asia (Afghanistan, Bhutan, India, Nepal, Pakistan, Sri Lanka). Malware deployed includes PupyRAT, Pantegana, and Sliver.",
       "sources": ["Volexity", "Sophos"]
     },
     {
       "name": "TA413",
       "aliases": ["LuckyCat"],
-      "nation": "China",
+      "nexus": "China",
       "attribution_confidence": "high",
-      "description": "China-nexus group targeting Tibetan government-in-exile organizations. Exploited Sophos CVE-2022-1040 to deploy the custom LOWZERO backdoor through compromised firewalls.",
-      "targets": {
-        "sectors": ["government_in_exile", "NGOs", "civil_society"],
-        "geographies": ["Tibet/India (Tibetan diaspora)"]
-      },
-      "vendors_exploited": ["Sophos"],
-      "cves": [
-        "CVE-2022-1040"
-      ],
-      "campaigns": [
-        "Tibetan government targeting via Sophos firewall compromise (2022)"
-      ],
-      "malware": ["LOWZERO"],
+      "targets": ["Sophos"],
+      "cves": ["CVE-2022-1040"],
+      "description": "China-nexus group targeting Tibetan government-in-exile organizations. Deployed custom LOWZERO backdoor through compromised Sophos firewalls exploited via CVE-2022-1040.",
       "sources": ["Recorded Future"]
     },
     {
+      "name": "UNC5174",
+      "aliases": ["Uteus"],
+      "nexus": "China",
+      "attribution_confidence": "moderate",
+      "targets": ["F5"],
+      "cves": ["CVE-2023-46747"],
+      "description": "Former hacktivist collective member assessed as an MSS contractor. Functions as an initial access broker selling access to compromised F5 BIG-IP appliances to US defense contractors and UK government. Exploited F5 BIG-IP CVE-2023-46747 (Oct-Nov 2023).",
+      "sources": ["Mandiant", "Google Threat Intelligence"]
+    },
+    {
+      "name": "UNC5027",
+      "aliases": [],
+      "nexus": "Unknown (suspected espionage)",
+      "attribution_confidence": "moderate",
+      "targets": ["Citrix"],
+      "cves": ["CVE-2023-3519"],
+      "description": "Threat cluster tracked by Mandiant responsible for backdooring at least 2,000 Citrix NetScaler devices before a patch existed for CVE-2023-3519. Planted webshells and PHP backdoors for persistent access. CISA advisory AA23-201A documented the pre-patch mass exploitation campaign in July 2023.",
+      "sources": ["Mandiant", "CISA AA23-201A"]
+    },
+    {
+      "name": "BOLDMOVE Actor",
+      "aliases": [],
+      "nexus": "China (suspected)",
+      "attribution_confidence": "low",
+      "targets": ["Fortinet"],
+      "cves": ["CVE-2022-42475"],
+      "description": "Suspected China-nexus actor that developed custom BOLDMOVE malware purpose-built for FortiGate firewall internals, with both Windows and Linux/FortiOS variants. Exploited CVE-2022-42475 as a zero-day targeting a European government and an African managed service provider.",
+      "sources": ["Mandiant", "MITRE ATT&CK S1184"]
+    },
+    {
       "name": "Pioneer Kitten",
-      "aliases": ["Fox Kitten", "UNC757", "Parisite", "RUBIDIUM (Microsoft legacy)", "Lemon Sandstorm (Microsoft)"],
-      "nation": "Iran",
+      "aliases": ["Fox Kitten", "UNC757", "RUBIDIUM", "Lemon Sandstorm"],
+      "nexus": "Iran",
       "attribution_confidence": "high",
-      "description": "Iran-based cyber actor associated with the Government of Iran. Exploited Check Point CVE-2024-24919 and Fortinet VPN vulnerabilities for initial access, then collaborates with ransomware affiliates (AlphV, RansomHouse, NoEscape) for monetization.",
-      "targets": {
-        "sectors": ["education", "finance", "healthcare", "defense", "local_government"],
-        "geographies": ["United States", "Israel", "Azerbaijan", "United Arab Emirates"]
-      },
-      "vendors_exploited": ["Check Point", "Fortinet"],
-      "cves": [
-        "CVE-2024-24919",
-        "CVE-2018-13379",
-        "CVE-2019-5591",
-        "CVE-2020-12812"
-      ],
-      "campaigns": [
-        "Check Point VPN zero-day exploitation (May-Aug 2024)",
-        "Fortinet VPN credential harvesting for ransomware enablement",
-        "Collaboration with AlphV/BlackCat, RansomHouse, and NoEscape ransomware operators"
-      ],
-      "malware": [],
+      "targets": ["Check Point", "Fortinet"],
+      "cves": ["CVE-2024-24919", "CVE-2018-13379", "CVE-2019-5591", "CVE-2020-12812"],
+      "description": "Iran-based cyber actor associated with the Government of Iran. Exploited Check Point VPN zero-day CVE-2024-24919 (May-Aug 2024) and Fortinet VPN credentials. Distinctive operational model: state-sponsored actors who monetize access by collaborating with ransomware affiliates (AlphV/BlackCat, RansomHouse, NoEscape). Within 48 hours of PoC publication for CVE-2024-24919, over 10,000 devices were actively scanned. Blurs the line between nation-state espionage and criminal ransomware.",
       "sources": ["FBI", "CISA AA24-241A", "Department of Defense Cyber Crime Center (DC3)"]
     },
     {
-      "name": "BOLDMOVE Actor (unnamed)",
-      "aliases": [],
-      "nation": "China (suspected)",
-      "attribution_confidence": "low",
-      "description": "Suspected China-nexus actor that developed custom BOLDMOVE malware specifically designed for FortiGate firewalls. Exploited CVE-2022-42475 as a zero-day targeting European government and African managed service provider.",
-      "targets": {
-        "sectors": ["government", "managed_service_providers"],
-        "geographies": ["Europe", "Africa"]
-      },
-      "vendors_exploited": ["Fortinet"],
-      "cves": [
-        "CVE-2022-42475"
-      ],
-      "campaigns": [
-        "FortiOS SSL-VPN zero-day exploitation with BOLDMOVE backdoor (Oct 2022 onward)"
-      ],
-      "malware": ["BOLDMOVE (Windows + Linux/FortiOS variants)"],
-      "sources": ["Mandiant", "MITRE ATT&CK S1184"]
+      "name": "Sandworm-linked actors",
+      "aliases": ["Seashell Blizzard", "GRU Unit 74455", "IRIDIUM"],
+      "nexus": "Russia",
+      "attribution_confidence": "moderate",
+      "targets": ["Zyxel"],
+      "cves": ["CVE-2022-30525"],
+      "description": "Tooling associated with Russia's GRU Unit 74455 linked to exploitation of Zyxel firewall CVE-2022-30525 for persistent access to edge devices, likely in the context of Ukraine-related operations. The exact operational unit may be a subcluster or affiliate rather than the core Sandworm team.",
+      "sources": ["Multiple threat intelligence firms (aggregated)"]
     },
     {
       "name": "LockBit",
       "aliases": ["LockBit 3.0", "LockBit Black"],
-      "nation": "Russia (ransomware-as-a-service, multinational affiliates)",
+      "nexus": "Russia (ransomware-as-a-service, multinational affiliates)",
       "attribution_confidence": "high",
-      "description": "Prolific ransomware-as-a-service operation. Affiliates exploited Citrix CVE-2023-4966 (CitrixBleed) in high-profile attacks on Boeing, ICBC, DP World, and Allen & Overy. Also targeted Fortinet VPN infrastructure.",
-      "targets": {
-        "sectors": ["aviation", "finance", "logistics", "legal", "critical_infrastructure"],
-        "geographies": ["global"]
-      },
-      "vendors_exploited": ["Citrix", "Fortinet"],
-      "cves": [
-        "CVE-2023-4966"
-      ],
-      "campaigns": [
-        "CitrixBleed exploitation (Oct-Nov 2023): Boeing, ICBC (disrupted US Treasury markets), DP World, Allen & Overy",
-        "CISA/FBI/ACSC joint advisory AA23-325A"
-      ],
-      "malware": ["LockBit 3.0 ransomware"],
+      "targets": ["Citrix", "Fortinet"],
+      "cves": ["CVE-2023-4966"],
+      "description": "Prolific ransomware-as-a-service operation. Affiliates exploited CitrixBleed CVE-2023-4966 in high-profile attacks on Boeing, ICBC (disrupting US Treasury markets), DP World, and Allen & Overy. Also targeted Fortinet VPN infrastructure. The ICBC breach produced the highest-impact single edge device incident in this dataset.",
       "sources": ["CISA AA23-325A", "FBI", "Australian ACSC"]
     },
     {
       "name": "Akira",
       "aliases": [],
-      "nation": "unknown (ransomware group)",
+      "nexus": "Unknown (ransomware group)",
       "attribution_confidence": "high",
-      "description": "Ransomware group that systematically exploited SonicWall SSL VPN CVE-2024-40766 for initial access. Responsible for approximately 75% of the documented SonicWall ransomware intrusions.",
-      "targets": {
-        "sectors": ["SMB", "healthcare", "financial_services", "local_government"],
-        "geographies": ["global, concentrated in US"]
-      },
-      "vendors_exploited": ["SonicWall"],
-      "cves": [
-        "CVE-2024-40766"
-      ],
-      "campaigns": [
-        "SonicWall SSL VPN mass exploitation (Sep 2024 - Aug 2025, 30+ documented intrusions per Arctic Wolf)"
-      ],
-      "malware": ["Akira ransomware"],
+      "targets": ["SonicWall"],
+      "cves": ["CVE-2024-40766"],
+      "description": "Ransomware group that systematically exploited SonicWall SSL VPN CVE-2024-40766 for initial access. Responsible for approximately 75% of documented SonicWall ransomware intrusions (30+ per Arctic Wolf). Full network encryption achieved in under 10 hours. Active campaign from September 2024 through at least August 2025, with renewed uptick in July 2025 against the same year-old CVE.",
       "sources": ["Arctic Wolf", "Rapid7", "Huntress"]
     },
     {
       "name": "Fog",
       "aliases": [],
-      "nation": "unknown (ransomware group)",
+      "nexus": "Unknown (ransomware group)",
       "attribution_confidence": "high",
-      "description": "Ransomware group that exploited SonicWall SSL VPN CVE-2024-40766 alongside Akira, responsible for approximately 25% of the documented SonicWall intrusions.",
-      "targets": {
-        "sectors": ["SMB", "education"],
-        "geographies": ["United States"]
-      },
-      "vendors_exploited": ["SonicWall"],
-      "cves": [
-        "CVE-2024-40766"
-      ],
-      "campaigns": [
-        "SonicWall SSL VPN exploitation (Sep 2024 onward)"
-      ],
-      "malware": ["Fog ransomware"],
-      "sources": ["Arctic Wolf"]
+      "targets": ["SonicWall"],
+      "cves": ["CVE-2024-40766"],
+      "description": "Ransomware group that exploited SonicWall SSL VPN CVE-2024-40766 alongside Akira, responsible for approximately 25% of documented SonicWall intrusions. Primarily targets education and SMB sectors in the United States.",
+      "sources": ["Arctic Wolf", "Sophos MTDR"]
     },
     {
       "name": "Helldown",
       "aliases": [],
-      "nation": "unknown (ransomware group)",
+      "nexus": "Unknown (ransomware group)",
       "attribution_confidence": "high",
-      "description": "Ransomware group employing double extortion that weaponized Zyxel CVE-2024-11667 path traversal to steal VPN credentials and establish backdoor connections.",
-      "targets": {
-        "sectors": ["SMB"],
-        "geographies": ["United States", "Europe"]
-      },
-      "vendors_exploited": ["Zyxel"],
-      "cves": [
-        "CVE-2024-11667"
-      ],
-      "campaigns": [
-        "Zyxel firewall exploitation (Aug 2024 onward, 31 victims listed on extortion portal)"
-      ],
-      "malware": ["Helldown ransomware"],
+      "targets": ["Zyxel"],
+      "cves": ["CVE-2024-11667"],
+      "description": "Double-extortion ransomware group that weaponized Zyxel path traversal CVE-2024-11667 to steal VPN credentials and establish backdoor connections before lateral movement and encryption. 31 victims listed on extortion portal.",
       "sources": ["Qualys", "Sekoia", "TheCyberExpress"]
     },
     {
       "name": "Cring",
       "aliases": ["Crypt3r", "Ghost", "Phantom"],
-      "nation": "unknown (ransomware group)",
+      "nexus": "Unknown (ransomware group)",
       "attribution_confidence": "moderate",
-      "description": "Ransomware group that specifically targeted unpatched Fortinet FortiGate VPN servers via CVE-2018-13379 to gain initial access to industrial and enterprise networks.",
-      "targets": {
-        "sectors": ["manufacturing", "industrial", "enterprise"],
-        "geographies": ["Europe"]
-      },
-      "vendors_exploited": ["Fortinet"],
-      "cves": [
-        "CVE-2018-13379"
-      ],
-      "campaigns": [
-        "FortiGate VPN exploitation for ransomware deployment (2021)"
-      ],
-      "malware": ["Cring ransomware"],
+      "targets": ["Fortinet"],
+      "cves": ["CVE-2018-13379"],
+      "description": "Ransomware group that specifically targeted unpatched Fortinet FortiGate VPN servers via CVE-2018-13379 to gain initial access to industrial and manufacturing networks in Europe in 2021.",
       "sources": ["Kaspersky ICS-CERT"]
     },
     {
-      "name": "UNC5027",
-      "aliases": [],
-      "nation": "unknown (suspected espionage)",
-      "attribution_confidence": "moderate",
-      "description": "Threat cluster tracked by Mandiant responsible for backdooring at least 2,000 NetScaler devices before a patch existed for CVE-2023-3519. Planted webshells and PHP backdoors for persistent access.",
-      "targets": {
-        "sectors": ["critical_infrastructure", "government", "enterprise"],
-        "geographies": ["global"]
-      },
-      "vendors_exploited": ["Citrix"],
-      "cves": [
-        "CVE-2023-3519"
-      ],
-      "campaigns": [
-        "NetScaler ADC zero-day mass compromise (Jul 2023, 2000+ devices backdoored pre-patch)"
-      ],
-      "malware": ["Webshells", "PHP backdoors"],
-      "sources": ["Mandiant", "CISA AA23-201A"]
-    },
-    {
-      "name": "Earth Estries",
-      "aliases": ["Salt Typhoon", "GhostEmperor", "FamousSparrow"],
-      "nation": "China",
-      "attribution_confidence": "high",
-      "description": "Conducts the largest documented edge device campaign, breaching over 600 organizations across 80 countries since 2019. Heavy focus on telecommunications providers including multiple US carriers (October 2024).",
-      "targets": {
-        "sectors": ["telecommunications", "government", "critical_infrastructure"],
-        "geographies": ["global (80+ countries), concentrated US telecom targeting"]
-      },
-      "vendors_exploited": ["Fortinet", "Ivanti", "Cisco"],
-      "cves": [],
-      "campaigns": [
-        "US telecom provider breaches (Oct 2024)",
-        "Broad edge device exploitation campaign (2019-present, 600+ organizations)"
-      ],
-      "malware": ["GhostSparrow", "SparrowDoor", "various custom backdoors"],
-      "sources": ["Trend Micro", "Microsoft Threat Intelligence", "CISA"]
-    },
-    {
-      "name": "Sandworm-linked actors",
-      "aliases": ["Sandworm (GRU Unit 74455)", "IRIDIUM (Microsoft legacy)", "Seashell Blizzard (Microsoft)"],
-      "nation": "Russia",
-      "attribution_confidence": "moderate",
-      "description": "Tooling associated with Russia's GRU Unit 74455 was linked to exploitation of Zyxel CVE-2022-30525 for establishing persistent access to edge devices. The exact operational unit may be a subcluster or affiliate.",
-      "targets": {
-        "sectors": ["critical_infrastructure", "energy", "government"],
-        "geographies": ["Ukraine", "Europe"]
-      },
-      "vendors_exploited": ["Zyxel"],
-      "cves": [
-        "CVE-2022-30525"
-      ],
-      "campaigns": [
-        "Zyxel firewall exploitation with Sandworm-associated tooling (2022)"
-      ],
-      "malware": [],
-      "sources": ["Multiple threat intelligence firms (aggregated)"]
-    },
-    {
-      "name": "MySonicWall State Actor (unnamed)",
-      "aliases": [],
-      "nation": "unknown (state-sponsored, per Mandiant)",
-      "attribution_confidence": "moderate",
-      "description": "Unnamed state-sponsored threat actor that breached SonicWall's MySonicWall cloud backup service, exfiltrating firewall configuration data for all cloud backup customers. SonicWall did not disclose the nation-state attribution.",
-      "targets": {
-        "sectors": ["all SonicWall cloud backup customers", "financial_services (downstream via Marquis)"],
-        "geographies": ["global (all MySonicWall backup users)", "United States (74 banks via Marquis)"]
-      },
-      "vendors_exploited": ["SonicWall (corporate infrastructure)"],
-      "cves": [],
-      "campaigns": [
-        "MySonicWall cloud backup breach (Sep 2025, initially claimed <5% affected, revised to 100%)",
-        "Downstream: Marquis Software ransomware attack affecting 74 US banks (Aug 2025)"
-      ],
-      "malware": [],
-      "sources": ["Mandiant", "SonicWall disclosure", "Marquis lawsuit (Feb 2026)"]
-    },
-    {
       "name": "Mirai botnet operators",
-      "aliases": [],
-      "nation": "various (commodity botnet)",
+      "aliases": ["Dark.IoT", "Moobot"],
+      "nexus": "Various (commodity botnet)",
       "attribution_confidence": "high",
-      "description": "Multiple Mirai-variant botnet operators mass-exploited Zyxel firewall vulnerabilities in 2023 for DDoS recruitment. Represents the commodity/botnet threat tier distinct from nation-state and ransomware actors.",
-      "targets": {
-        "sectors": ["SMB", "SOHO"],
-        "geographies": ["global"]
-      },
-      "vendors_exploited": ["Zyxel"],
-      "cves": [
-        "CVE-2023-28771",
-        "CVE-2023-33009",
-        "CVE-2023-33010",
-        "CVE-2022-30525"
-      ],
-      "campaigns": [
-        "Zyxel firewall DDoS botnet recruitment (Spring 2023, ~24,500 exposed devices per Censys)"
-      ],
-      "malware": ["Mirai variants"],
-      "sources": ["Fortinet FortiGuard Labs", "Unit 42", "Shadowserver"]
+      "targets": ["Zyxel"],
+      "cves": ["CVE-2023-28771", "CVE-2023-33009", "CVE-2023-33010", "CVE-2022-30525"],
+      "description": "Multiple Mirai-variant botnet operators mass-exploited Zyxel firewall vulnerabilities in 2023 for DDoS botnet recruitment. Approximately 24,500 exposed devices per Censys at time of exploitation. Represents the commodity/botnet threat tier: mass scanning for newly-patched CVEs, exploiting before the long tail of unpatched devices closes.",
+      "sources": ["Fortinet FortiGuard Labs", "Unit 42", "Shadowserver", "CISA"]
     }
-  ],
-  "vendor_targeting": {
-    "Fortinet": {
-      "threat_actors": ["UNC3886", "Volt Typhoon", "Earth Estries (Salt Typhoon)", "BOLDMOVE Actor (unnamed)", "Pioneer Kitten", "Cring", "LockBit"],
-      "nation_states": ["China", "Iran"],
-      "ransomware_groups": ["Cring", "LockBit", "Conti (via credential dumps)"],
-      "key_cves_exploited": ["CVE-2022-41328", "CVE-2022-42475", "CVE-2023-27997", "CVE-2024-21762", "CVE-2018-13379", "CVE-2020-12812"],
-      "notes": "Most targeted edge vendor by volume. China-nexus actors (UNC3886, Volt Typhoon) and Iran-nexus (Pioneer Kitten) both actively exploit. 87,000 VPN credentials leaked from unpatched CVE-2018-13379 devices. BOLDMOVE malware purpose-built for FortiOS internals."
-    },
-    "Ivanti": {
-      "threat_actors": ["UNC5221", "Volt Typhoon", "Earth Estries (Salt Typhoon)"],
-      "nation_states": ["China"],
-      "ransomware_groups": [],
-      "key_cves_exploited": ["CVE-2023-46805", "CVE-2024-21887", "CVE-2024-21893", "CVE-2025-0282", "CVE-2025-22457"],
-      "notes": "Triggered CISA Emergency Directive ED 24-01 (Jan 2024). UNC5221 is the primary persistent threat, returning with new exploits across 2024-2025. ~1,700 appliances compromised in initial Jan 2024 wave. Ivanti ICT integrity checker defeated by sophisticated actors; CISA found factory resets insufficient."
-    },
-    "Cisco": {
-      "threat_actors": ["UAT4356 (STORM-1849)", "APT41", "Earth Estries (Salt Typhoon)"],
-      "nation_states": ["China (suspected for ArcaneDoor)"],
-      "ransomware_groups": [],
-      "key_cves_exploited": ["CVE-2024-20353", "CVE-2024-20359", "CVE-2025-20333", "CVE-2025-20362"],
-      "notes": "UAT4356 has burned 4 ASA/FTD zero-days across two campaigns (2024, 2025) with iterating implant toolset (Line Dancer/Runner, RayInitiator/LINE VIPER). Censys found links to Chinese networks. ArcaneDoor is a MITRE ATT&CK-cataloged campaign (C0046)."
-    },
-    "Palo Alto Networks": {
-      "threat_actors": ["UTA0218"],
-      "nation_states": ["China (suspected)"],
-      "ransomware_groups": [],
-      "key_cves_exploited": ["CVE-2024-3400", "CVE-2024-0012", "CVE-2024-9474"],
-      "notes": "CVE-2024-3400 (CVSS 10.0) was the #1 most frequently exploited vulnerability in Mandiant M-Trends 2025. Operation MidnightEclipse deployed UPSTYLE backdoor. Discovered by Volexity in active exploitation before any patch existed."
-    },
-    "SonicWall": {
-      "threat_actors": ["Akira", "Fog", "MySonicWall State Actor (unnamed)"],
-      "nation_states": ["unknown (state-sponsored per Mandiant for MySonicWall breach)"],
-      "ransomware_groups": ["Akira", "Fog"],
-      "key_cves_exploited": ["CVE-2024-40766"],
-      "notes": "Dual failure mode: (1) CVE-2024-40766 enabled sustained Akira/Fog ransomware campaign (30+ intrusions, full encryption in <10 hours). (2) MySonicWall cloud backup breach by state actor exposed all backup customers, leading to downstream Marquis attack on 74 US banks. Marquis filed suit Feb 2026."
-    },
-    "Sophos": {
-      "threat_actors": ["Volt Typhoon", "APT31", "APT41", "DriftingCloud", "TA413"],
-      "nation_states": ["China"],
-      "ransomware_groups": [],
-      "key_cves_exploited": ["CVE-2020-12271", "CVE-2020-25223", "CVE-2022-1040", "CVE-2022-3236", "CVE-2020-15069", "CVE-2020-29574"],
-      "notes": "Highest documented rate of state-sponsored exploitation among all vendors. Pacific Rim report (Oct 2024) documented 5-year campaign by multiple interlinked China-nexus groups. Exploit development traced to Sichuan region. Targets included nuclear energy suppliers, airports, military hospitals, government ministries. At least 4 of 6 KEV entries linked to China-nexus actors."
-    },
-    "Zyxel": {
-      "threat_actors": ["Sandworm-linked actors", "Helldown", "Mirai botnet operators"],
-      "nation_states": ["Russia (Sandworm-linked)"],
-      "ransomware_groups": ["Helldown"],
-      "key_cves_exploited": ["CVE-2022-30525", "CVE-2023-28771", "CVE-2023-33009", "CVE-2023-33010", "CVE-2024-11667"],
-      "notes": "Full-spectrum threat actor coverage: nation-state (Sandworm-linked), ransomware (Helldown), and commodity botnets (Mirai). CVE-2022-30525 was silently patched without CVE/advisory. Hardcoded 'zyfwp' credential (CVE-2020-29583) is an egregious design failure."
-    },
-    "Citrix": {
-      "threat_actors": ["LockBit", "APT41", "UNC5027", "Volt Typhoon"],
-      "nation_states": ["China", "Iran", "Russia (various actors per CISA/NSA joint advisory)"],
-      "ransomware_groups": ["LockBit", "AlphV/BlackCat"],
-      "key_cves_exploited": ["CVE-2019-19781", "CVE-2023-3519", "CVE-2023-4966"],
-      "notes": "CVE-2019-19781 had a 33-day unpatched window; one of the most impactful edge CVEs ever. Over 80,000 companies vulnerable at peak. CitrixBleed (CVE-2023-4966) was weaponized by LockBit against Boeing and ICBC (disrupted US Treasury markets). APT41 exploited CVE-2019-19781 in Jan 2020 global campaign. UNC5027 backdoored 2,000+ devices pre-patch via CVE-2023-3519."
-    },
-    "Juniper": {
-      "threat_actors": ["UNC3886"],
-      "nation_states": ["China"],
-      "ransomware_groups": [],
-      "key_cves_exploited": ["CVE-2023-36844", "CVE-2023-36845", "CVE-2023-36846", "CVE-2023-36847", "CVE-2025-21590"],
-      "notes": "UNC3886 deployed 6 custom TINYSHELL-based backdoors on carrier-grade MX Series routers (disclosed Mar 2025). Targets included ISPs, telecoms, and US defense contractors. 2023 J-Web chain went from advisory to mass exploitation in 8 days. End-of-life hardware compounds risk."
-    },
-    "F5": {
-      "threat_actors": ["UNC5221", "UNC5174", "UNC3886-adjacent (Fire Ant)"],
-      "nation_states": ["China"],
-      "ransomware_groups": [],
-      "key_cves_exploited": ["CVE-2020-5902", "CVE-2021-22991", "CVE-2022-1388", "CVE-2023-46747", "CVE-2023-46748"],
-      "notes": "F5 corporate breach (Aug 2025): nation-state actor (linked to China/UNC5221 via BRICKSTORM malware) exfiltrated BIG-IP source code and undisclosed vulnerability information after 12+ months of persistent access. CISA issued Emergency Directive ED 26-01 requiring federal inventory and patching. CVE-2022-1388 went from PoC to mass compromise in 48 hours. UNC5174 sold access to compromised F5 appliances."
-    },
-    "Check Point": {
-      "threat_actors": ["Pioneer Kitten (Fox Kitten / Lemon Sandstorm)"],
-      "nation_states": ["Iran"],
-      "ransomware_groups": ["Qilin (via CVE-2024-24919 exploitation)"],
-      "key_cves_exploited": ["CVE-2024-24919", "CVE-2026-50751"],
-      "notes": "Lowest edge KEV count (2) but CVE-2024-24919 enabled Iran-nexus lateral movement across thousands of enterprises. Pioneer Kitten collaborates with ransomware affiliates (AlphV, RansomHouse, NoEscape). 10,000+ devices actively scanned within 48 hours of PoC. FBI/CISA/DC3 joint advisory AA24-241A."
-    }
-  },
-  "nation_state_summary": {
-    "China": {
-      "actors": ["UNC3886", "UNC5221", "UNC5174", "UAT4356 (STORM-1849)", "UTA0218", "Volt Typhoon", "APT41", "APT31", "DriftingCloud", "TA413", "Earth Estries (Salt Typhoon)", "BOLDMOVE Actor"],
-      "vendors_targeted": ["Fortinet", "Ivanti", "Cisco", "Palo Alto Networks", "Sophos", "Juniper", "F5", "Citrix"],
-      "assessment": "Dominant nation-state threat to edge devices. At least 12 distinct actor clusters targeting 8 of 11 vendors. Exploit development traced to Sichuan region (Sophos Pacific Rim). Ranges from espionage pre-positioning (Volt Typhoon) to active data exfiltration (UNC5221 F5 breach) to initial access brokering (UNC5174)."
-    },
-    "Iran": {
-      "actors": ["Pioneer Kitten (Fox Kitten / Lemon Sandstorm / UNC757)"],
-      "vendors_targeted": ["Check Point", "Fortinet"],
-      "assessment": "Primary focus on credential harvesting from VPN gateways. Distinctive model: state-sponsored actors monetize access by collaborating with ransomware affiliates (AlphV, RansomHouse, NoEscape)."
-    },
-    "Russia": {
-      "actors": ["Sandworm-linked actors", "LockBit (multinational affiliates)"],
-      "vendors_targeted": ["Zyxel", "Citrix"],
-      "assessment": "Less dominant in edge device exploitation than China. Sandworm-linked tooling used against Zyxel. LockBit (Russian-origin RaaS) affiliates heavily exploited Citrix. Multiple Russian actors cited in CISA/NSA joint advisory on Citrix CVE-2019-19781 exploitation."
-    }
-  }
+  ]
 }
