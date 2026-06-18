@@ -111,8 +111,18 @@ def write_json(results, output_path, catalog_version, window):
         "scope_rules": {v: SCOPE[v] for v in results},
         "counts": {v: len(rows) for v, rows in results.items()},
     }
-    with open(output_path, "w") as f:
-        json.dump(counts, f, indent=2)
+    # Write atomically: build the full dict in memory, write to a temp file in
+    # the same dir, then os.replace() so an interrupted run can never leave a
+    # partial / single-vendor counts file on disk (REPRO-002).
+    fd, tmp = tempfile.mkstemp(dir=os.path.dirname(output_path) or ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(counts, f, indent=2)
+        os.replace(tmp, output_path)
+    except BaseException:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+        raise
     print(f"# wrote {output_path}  |  counts: {counts['_metadata']['counts']}")
 
 def write_csv(results, output):

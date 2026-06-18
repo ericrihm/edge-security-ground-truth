@@ -46,6 +46,10 @@ BUCKETS = [
 # before the vendor released a patch (confirmed by incident reports, not just
 # TTE arithmetic).
 KNOWN_ZERO_DAYS = {
+    "CVE-2022-40684": {"vendor": "Fortinet", "days_before_patch": "8",
+                       "source": "Private customer notification Oct 3, KEV Oct 11 2022 (pre-PoC)"},
+    "CVE-2021-44168": {"vendor": "Fortinet", "days_before_patch": "unknown",
+                       "source": "KEV dateAdded precedes NVD publication (negative TTE)"},
     "CVE-2022-42475": {"vendor": "Fortinet", "days_before_patch": "unknown",
                        "source": "Mandiant/UNC3886"},
     "CVE-2023-27997": {"vendor": "Fortinet", "days_before_patch": "3-4",
@@ -138,10 +142,12 @@ def load_data(enriched_path, counts_path, kev_lookup):
             kev_entry = kev_lookup.get(cve_id, {})
 
             pub_date_str = cve_data.get("published")
-            kev_date_str = kev_entry.get("dateAdded")
+            # Fall back to the enriched JSON so the documented offline path
+            # (--no-fetch) reproduces the full dataset instead of emitting zeros.
+            kev_date_str = kev_entry.get("dateAdded") or cve_data.get("kev_date_added")
             pub_date = parse_date(pub_date_str)
             kev_date = parse_date(kev_date_str)
-            due_date = parse_date(kev_entry.get("dueDate"))
+            due_date = parse_date(kev_entry.get("dueDate") or cve_data.get("kev_due_date"))
 
             tte_days = None
             if kev_date and pub_date:

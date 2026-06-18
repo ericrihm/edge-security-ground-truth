@@ -11,10 +11,10 @@
 | Vendor | KEV Count | Zero-Days | Ransomware CVEs | Median TTE | Top CWE Category | Attributed APTs | Silent Patch | Vendor Breach |
 |--------|----------:|----------:|----------------:|-----------:|-------------------|-----------------|:------------:|:-------------:|
 | Fortinet | 18 | 7 | 12 | 21d | Auth/Access Control (8) | UNC3886, China-nexus (unspecified) | Y | N |
-| Ivanti | 13 | 6 | 5 | 160d | Injection (6) | UNC5221, UNC5337 | N | N |
+| Ivanti | 13 | 6 | 8 | 160d | Injection (6) | UNC5221, UNC5337 | N | N |
 | Cisco | 13 | 4 | 3 | 378d | Memory Safety (4) | UAT4356/STORM-1849 (ArcaneDoor) | N | N |
-| Palo Alto Networks | 12 | 4 | 4 | 7d | Auth/Access Control (4) | UTA0218 | N | N |
-| SonicWall | 12 | 2 | 6 | 254d | Injection (5) | Akira, Fog (ransomware) | N | Y |
+| Palo Alto Networks | 12 | 4 | 5 | 7d | Auth/Access Control (4) | UTA0218 | N | N |
+| SonicWall | 12 | 2 | 7 | 254d | Injection (5) | Akira, Fog (ransomware) | N | Y |
 | Citrix | 11 | 6 | 4 | 8d | Memory Safety (4) | LockBit affiliates, China-nexus | N | N |
 | Juniper | 8 | 1 | 0 | 88d | Auth/Access Control (7) | UNC3886 | N | N |
 | F5 | 6 | 1 | 3 | 84d | Auth/Access + Memory (2 each) | None confirmed publicly | N | N |
@@ -41,7 +41,7 @@
 
 Fortinet has the highest absolute count across every volume metric: KEV entries, zero-days, and ransomware-associated CVEs. Eight of 18 CVEs (44%) are authentication/access-control failures spanning 2018-2026 -- a recurring pattern in FortiOS that suggests the auth subsystem lacks design-level guarantees. Fortinet is also the only vendor with a documented silent-patching episode (CVE-2023-27997), where firmware updates containing a CVSS 9.8 fix were pushed 3-4 days before any advisory was published. Fortinet's 2026 data-leak incident (leaked credentials from prior breach dumps) did not constitute a corporate infrastructure breach but demonstrated downstream impact from customer-side exploitation.
 
-### Ivanti (13 KEV, 6 zero-days, 5 ransomware)
+### Ivanti (13 KEV, 6 zero-days, 8 ransomware)
 
 Ivanti is the injection leader in this dataset: 6 of 13 CVEs (46%) are code or command injection in Pulse Connect Secure and Connect Secure. China-nexus actors (UNC5221, UNC5337) have been publicly attributed to exploiting Ivanti products in multiple campaigns (2023-2025), triggering CISA Emergency Directive 24-01. Ivanti's zero-day rate (46%) is among the highest, though the median TTE of 160 days is elevated by legacy Pulse Secure CVEs that predated KEV. Recent CVEs (2024-2025) show TTE of 0-1 days.
 
@@ -49,13 +49,13 @@ Ivanti is the injection leader in this dataset: 6 of 13 CVEs (46%) are code or c
 
 Cisco's profile is shaped by ASA/FTD -- a long-lived C/C++ codebase where memory-safety bugs (4 CVEs) and legacy vulnerabilities drive the numbers. The median TTE of 378 days is the second-highest, heavily skewed by CVE-2014-2120 (TTE=3,891 days) and other pre-2020 CVEs retroactively added to KEV. The ArcaneDoor campaign (CVE-2024-20353/20359) demonstrated state-level zero-day capability against Cisco's firewall platform. Cisco has 13 KEV entries, tying Ivanti for second place.
 
-### Palo Alto Networks (12 KEV, 4 zero-days, 4 ransomware)
+### Palo Alto Networks (12 KEV, 4 zero-days, 5 ransomware)
 
 Palo Alto has a fast median TTE (7 days) and 4 zero-days including CVE-2024-3400 (Operation MidnightEclipse, attributed to UTA0218). The CWE profile shows 4 auth/access-control failures in PAN-OS management interfaces. No documented silent-patching episodes, though initial severity framing has occasionally lagged behind external researcher findings. The 2024-2025 clustering of CVEs (CVE-2024-3400, CVE-2024-0012, CVE-2024-9474, CVE-2025-0108) represents an accelerating exploitation tempo.
 
-### SonicWall (12 KEV, 2 zero-days, 6 ransomware)
+### SonicWall (12 KEV, 2 zero-days, 7 ransomware)
 
-SonicWall's CWE profile combines SQL injection (3 CVEs in SMA appliances) with auth bypass (3 CVEs). The ransomware count (6) is disproportionately high relative to zero-days (2), reflecting SonicWall's position in the SMB firewall market where Akira and Fog ransomware operators specifically target volume over precision. SonicWall is the only vendor with a documented breach of its own infrastructure: the 2025 MySonicWall cloud backup incident exposed encrypted credentials, VPN configurations, and network topology for up to 240,000 devices, leading directly to the Marquis Software ransomware attack affecting 74 U.S. banks.
+SonicWall's CWE profile combines SQL injection (3 CVEs in SMA appliances) with auth bypass (3 CVEs). The ransomware count (7) is disproportionately high relative to zero-days (2), reflecting SonicWall's position in the SMB firewall market where Akira and Fog ransomware operators specifically target volume over precision. SonicWall is the only vendor with a documented breach of its own infrastructure: the 2025 MySonicWall cloud backup incident exposed encrypted credentials, VPN configurations, and network topology for up to 240,000 devices, leading directly to the Marquis Software ransomware attack affecting 74 U.S. banks.
 
 ### Citrix (11 KEV, 6 zero-days, 4 ransomware)
 
@@ -133,12 +133,12 @@ Two CVEs is insufficient to establish a pattern. Check Point's numbers (100% zer
 
 | Vendor | Ransomware % | Ransomware / Total |
 |--------|------------:|-------------------:|
-| Fortinet | 67% | 12/18 |
 | Check Point | 100% | 2/2 |
+| Fortinet | 67% | 12/18 |
+| Ivanti | 62% | 8/13 |
+| SonicWall | 58% | 7/12 |
 | F5 | 50% | 3/6 |
-| SonicWall | 50% | 6/12 |
-| Ivanti | 38% | 5/13 |
-| Palo Alto Networks | 33% | 4/12 |
+| Palo Alto Networks | 42% | 5/12 |
 | Citrix | 36% | 4/11 |
 | Cisco | 23% | 3/13 |
 | Sophos | 17% | 1/6 |

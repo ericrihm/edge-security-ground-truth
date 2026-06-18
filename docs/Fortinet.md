@@ -13,14 +13,14 @@ All 18 CISA KEV-listed CVEs for FortiOS/FortiProxy edge appliances, ordered by K
 | [CVE-2018-13379](https://nvd.nist.gov/vuln/detail/CVE-2018-13379) | 9.1 | CWE-22 Path Traversal | 2021-11-03 | N | Y |
 | [CVE-2019-5591](https://nvd.nist.gov/vuln/detail/CVE-2019-5591) | 6.5 | CWE-306 Missing Authentication | 2021-11-03 | N | N |
 | [CVE-2020-12812](https://nvd.nist.gov/vuln/detail/CVE-2020-12812) | 9.8 | CWE-287 Improper Authentication | 2021-11-03 | N | Y |
-| [CVE-2021-44168](https://nvd.nist.gov/vuln/detail/CVE-2021-44168) | 3.3 | CWE-494 Download Without Integrity Check | 2021-12-10 | N | N |
+| [CVE-2021-44168](https://nvd.nist.gov/vuln/detail/CVE-2021-44168) | 3.3 | CWE-494 Download Without Integrity Check | 2021-12-10 | Y | N |
 | [CVE-2018-13382](https://nvd.nist.gov/vuln/detail/CVE-2018-13382) | 9.1 | CWE-863 Incorrect Authorization | 2022-01-10 | N | Y |
 | [CVE-2018-13383](https://nvd.nist.gov/vuln/detail/CVE-2018-13383) | 4.3 | CWE-787 Out-of-bounds Write | 2022-01-10 | N | Y |
 | [CVE-2018-13374](https://nvd.nist.gov/vuln/detail/CVE-2018-13374) | 4.3 | CWE-732 Incorrect Permission Assignment | 2022-09-08 | N | Y |
 | [CVE-2022-40684](https://nvd.nist.gov/vuln/detail/CVE-2022-40684) | 9.8 | CWE-287 Improper Authentication | 2022-10-11 | Y | Y |
 | [CVE-2022-42475](https://nvd.nist.gov/vuln/detail/CVE-2022-42475) | 9.3 | CWE-197 Numeric Truncation Error | 2022-12-13 | Y | Y |
 | [CVE-2022-41328](https://nvd.nist.gov/vuln/detail/CVE-2022-41328) | 6.5 | CWE-22 Path Traversal | 2023-03-14 | N | N |
-| [CVE-2023-27997](https://nvd.nist.gov/vuln/detail/CVE-2023-27997) | 9.2 | CWE-122 Heap-based Buffer Overflow | 2023-06-13 | N | Y |
+| [CVE-2023-27997](https://nvd.nist.gov/vuln/detail/CVE-2023-27997) | 9.2 | CWE-122 Heap-based Buffer Overflow | 2023-06-13 | Y | Y |
 | [CVE-2024-21762](https://nvd.nist.gov/vuln/detail/CVE-2024-21762) | 9.6 | CWE-787 Out-of-bounds Write | 2024-02-09 | Y | Y |
 | [CVE-2024-23113](https://nvd.nist.gov/vuln/detail/CVE-2024-23113) | 9.8 | CWE-134 Externally-Controlled Format String | 2024-10-09 | N | N |
 | [CVE-2024-55591](https://nvd.nist.gov/vuln/detail/CVE-2024-55591) | 9.6 | CWE-288 Auth Bypass via Alternate Path | 2025-01-14 | Y | Y |
@@ -29,7 +29,7 @@ All 18 CISA KEV-listed CVEs for FortiOS/FortiProxy edge appliances, ordered by K
 | [CVE-2025-59718](https://nvd.nist.gov/vuln/detail/CVE-2025-59718) | 9.1 | CWE-347 Improper Crypto Signature Verification | 2025-12-16 | N | N |
 | [CVE-2026-24858](https://nvd.nist.gov/vuln/detail/CVE-2026-24858) | 9.4 | CWE-288 Auth Bypass via Alternate Path | 2026-01-27 | Y | N |
 
-**Summary statistics:** 18 KEV entries. 12 of 18 rated CRITICAL or HIGH (CVSS >= 7.0). 5 confirmed zero-days (exploitation observed before patch availability). 12 flagged by CISA as used in known ransomware campaigns. CWE-288 (Authentication Bypass Using an Alternate Path) appears three times -- the most repeated root cause.
+**Summary statistics:** 18 KEV entries. 12 of 18 rated CRITICAL or HIGH (CVSS >= 7.0). 7 confirmed zero-days (exploitation observed before patch availability). 12 flagged by CISA as used in known ransomware campaigns. CWE-288 (Authentication Bypass Using an Alternate Path) appears three times -- the most repeated root cause.
 
 ---
 
@@ -79,7 +79,7 @@ Four CVEs disclosed in 2018-2019 established the pattern that would define Forti
 
 **CVE-2025-59718** (CVSS 9.1, improper verification of cryptographic signature) affected FortiOS, FortiSwitchMaster, FortiProxy, and FortiWeb. An unauthenticated attacker could bypass FortiCloud SSO login authentication via a crafted SAML message. [CISA added it to KEV on December 16, 2025](https://www.cisa.gov/known-exploited-vulnerabilities-catalog). This vulnerability and CVE-2026-24858 together indicate systemic weaknesses in Fortinet's FortiCloud SSO implementation.
 
-**CVE-2026-24858** (CVSS 9.4, authentication bypass via alternate path) is the most recent entry. An attacker with any valid FortiCloud account could authenticate to devices registered to *other* accounts via cross-tenant SSO token reuse -- the SSO implementation did not verify that the authenticating identity matched the device's owning account. [Arctic Wolf](https://arcticwolf.com/resources/blog/) confirmed exploitation from at least January 15, 2026. Patches were not released until January 28 -- a **13-day zero-day window**. CISA added it to the KEV catalog on [January 27](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) with a **3-day remediation deadline** (January 30), one of the shortest ever assigned ([CyberScoop](https://cyberscoop.com/ortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/), [BleepingComputer](https://www.bleepingcomputer.com/news/security/fortinet-warns-of-new-zero-day-exploited-to-hijack-firewalls/)). Products affected (Fortinet advisory FG-IR-26-060): FortiOS, FortiManager, FortiAnalyzer, FortiProxy, FortiWeb, FortiSwitchManager, FortiNAC-F. Post-exploitation TTPs documented by Arctic Wolf included config download, local admin account creation (usernames including `audit`, `backup`, `itadmin`, `secadmin`), VPN enablement, and firewall rule modification. Fortinet's emergency response included globally disabling FortiCloud SSO on January 26-27, re-enabling only for devices running patched firmware.
+**CVE-2026-24858** (CVSS 9.4, authentication bypass via alternate path) is the most recent entry. An attacker with any valid FortiCloud account could authenticate to devices registered to *other* accounts via cross-tenant SSO token reuse -- the SSO implementation did not verify that the authenticating identity matched the device's owning account. [Arctic Wolf](https://arcticwolf.com/resources/blog/) confirmed exploitation from at least January 15, 2026. Patches were not released until January 28 -- a **13-day zero-day window**. CISA added it to the KEV catalog on [January 27](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) with a **3-day remediation deadline** (January 30), one of the shortest ever assigned ([CyberScoop](https://cyberscoop.com/fortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/), [BleepingComputer](https://www.bleepingcomputer.com/news/security/fortinet-warns-of-new-zero-day-exploited-to-hijack-firewalls/)). Products affected (Fortinet advisory FG-IR-26-060): FortiOS, FortiManager, FortiAnalyzer, FortiProxy, FortiWeb, FortiSwitchManager, FortiNAC-F. Post-exploitation TTPs documented by Arctic Wolf included config download, local admin account creation (usernames including `audit`, `backup`, `itadmin`, `secadmin`), VPN enablement, and firewall rule modification. Fortinet's emergency response included globally disabling FortiCloud SSO on January 26-27, re-enabling only for devices running patched firmware.
 
 ---
 
@@ -152,7 +152,7 @@ Cring ransomware targeted unpatched FortiGate VPN servers, with a focus on Europ
 
 ### Unattributed
 
-CVE-2026-24858 has no confirmed threat actor attribution as of June 2026. Coalition documented **14 zero-day advisories for critical Fortinet flaws in under four years** -- Fortinet accounts for over 7% of all zero-day advisories Coalition has issued ([CyberScoop](https://cyberscoop.com/ortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)).
+CVE-2026-24858 has no confirmed threat actor attribution as of June 2026. Coalition documented **14 zero-day advisories for critical Fortinet flaws in under four years** -- Fortinet accounts for over 7% of all zero-day advisories Coalition has issued ([CyberScoop](https://cyberscoop.com/fortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)).
 
 ---
 
@@ -177,7 +177,7 @@ These three incidents collectively exposed credentials for over 150,000 devices.
 ### What the Metrics Show
 
 - **KEV density:** 18 edge KEV entries -- the highest of any vendor in the dataset. While market share is a confounding variable, four pre-auth RCE entries in the SSL-VPN daemon alone is not explained by unit count.
-- **Zero-day frequency:** 5 of 18 KEV entries were confirmed zero-days (exploitation before patch). Coalition documented 14 zero-day advisories for Fortinet in under four years ([CyberScoop](https://cyberscoop.com/ortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)).
+- **Zero-day frequency:** 7 of 18 KEV entries were confirmed zero-days (exploitation before patch). Coalition documented 14 zero-day advisories for Fortinet in under four years ([CyberScoop](https://cyberscoop.com/fortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)).
 - **Ransomware association:** 12 of 18 KEV entries (67%) are flagged by CISA for known ransomware campaign use.
 - **Transparency:** Silent patching plus firmware-only distribution is a disclosure anti-pattern. The XORtigate episode is the documented instance; the pattern may be more widespread.
 - **Persistent access surviving patches:** Documented by CISA in April 2025 via symlink manipulation across three separate CVEs.
@@ -204,7 +204,7 @@ These three incidents collectively exposed credentials for over 150,000 devices.
 - **Lexfo Security:** [CVE-2023-27997 independent discovery](https://blog.lexfo.fr/xortigate-cve-2023-27997.html)
 - **Horizon3.ai:** [CVE-2022-40684 proof-of-concept](https://www.horizon3.ai/attack-research/cve-2022-40684-fortinet-authentication-bypass/)
 - **BleepingComputer:** Credential dump reporting (2020, 2021, 2025, 2026)
-- **CyberScoop:** [Coalition zero-day advisory statistics](https://cyberscoop.com/ortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)
+- **CyberScoop:** [Coalition zero-day advisory statistics](https://cyberscoop.com/fortinet-zero-day-cve-2026-24858-forticloud-sso-auth-bypass/)
 - **Kaspersky ICS-CERT:** Cring ransomware / FortiGate VPN exploitation
 - **NVD:** CVSS scoring and CWE classification for all 18 CVEs
 - **FIRST.org EPSS:** Exploit Prediction Scoring System data via [api.first.org](https://api.first.org/data/v1/epss)
