@@ -146,7 +146,7 @@
       "2020-01-01",
       "2026-12-31"
     ],
-    "generated_at": "2026-06-18T22:59:46Z",
+    "generated_at": "2026-06-18T23:31:51Z",
     "scope_rules": {
       "SonicWall": {
         "include": "SonicOS|SMA|SSLVPN|SSL[- ]?VPN|Secure Remote Access|SRA",

@@ -8,7 +8,13 @@ scripts/edge_kev_dataset.csv with one row per CVE.
 
 Columns (in order):
   vendor, cve, kev_date_added, kev_due_date, published,
-  tte_days, cvss, cvss_severity, cwe, cwe_name, epss, percentile, ransomware
+  tte_days, cvss, cvss_severity, cwe, cwe_name, epss, percentile, ransomware,
+  attack_techniques, pre_auth, eol_at_kev_date
+
+attack_techniques is the ';'-joined list of heuristic MITRE ATT&CK technique
+IDs from enrich_attack.py (e.g. "T1190;T1133"). pre_auth and eol_at_kev_date
+are booleans serialized as "true"/"false" (empty string only if absent, which
+should not happen after enrich_attack.py runs). See docs/MITRE-ATTACK.md.
 
 tte_days = kev_date_added - published (integer days).
            Left blank when either date is missing.
@@ -44,7 +50,17 @@ FIELDNAMES = [
     "epss",
     "percentile",
     "ransomware",
+    "attack_techniques",
+    "pre_auth",
+    "eol_at_kev_date",
 ]
+
+
+def bool_str(val):
+    """Serialize a boolean field to 'true'/'false'; '' when absent (None)."""
+    if val is None:
+        return ""
+    return "true" if val else "false"
 
 
 def parse_date(s):
@@ -126,6 +142,13 @@ def build_rows(enriched, counts):
 
             ransomware = fields.get("ransomware") or ""
 
+            # Operational fields from enrich_attack.py (heuristic). attack_techniques
+            # is a list joined by ';'; pre_auth / eol_at_kev_date are booleans.
+            techniques = fields.get("attack_techniques") or []
+            attack_str = ";".join(techniques)
+            pre_auth_str = bool_str(fields.get("pre_auth"))
+            eol_str = bool_str(fields.get("eol_at_kev_date"))
+
             yield {
                 "vendor":        vendor,
                 "cve":           cve_id,
@@ -140,6 +163,9 @@ def build_rows(enriched, counts):
                 "epss":          epss_str,
                 "percentile":    pct_str,
                 "ransomware":    ransomware,
+                "attack_techniques": attack_str,
+                "pre_auth":      pre_auth_str,
+                "eol_at_kev_date": eol_str,
             }
 
 

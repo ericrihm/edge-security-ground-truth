@@ -29,6 +29,9 @@ All dates are ISO 8601 (`YYYY-MM-DD`). Empty string means the value is unavailab
 | `epss` | float | No | FIRST EPSS API (`enrich_epss.py`) | Exploit Prediction Scoring System probability score (0.0 – 1.0). Higher values indicate greater predicted likelihood of exploitation in the wild within 30 days. All 115 CVEs have an EPSS score. Range: 0.00865 – 0.99999. |
 | `percentile` | float | No | FIRST EPSS API (`enrich_epss.py`) | EPSS percentile rank (0.0 – 1.0) indicating the fraction of all scored CVEs with a lower EPSS score. All 115 CVEs have this value. Range: 0.539 – 1.000. |
 | `ransomware` | string | No | CISA KEV catalog | Whether this CVE has known use in ransomware campaigns. Values: `Known` (47 CVEs) or `Unknown` (68 CVEs). Sourced from CISA KEV `knownRansomwareCampaignUse` field; `Known` = "Known", all other values mapped to `Unknown`. |
+| `attack_techniques` | string | No | **Heuristic** (`enrich_attack.py`) | `;`-joined list of MITRE ATT&CK technique IDs (e.g. `T1190;T1133`). Derived by a deterministic, documented rule from the NVD primary CWE plus exploitation context — **NOT an authoritative MITRE assignment.** Every row contains at least `T1190` (Exploit Public-Facing Application). See [MITRE-ATTACK.md](MITRE-ATTACK.md) for the full mapping table, per-technique CVE rollup, and limitations. |
+| `pre_auth` | boolean | No | **Inferred** (`enrich_attack.py`) | `true`/`false`. `true` only where the NVD CWE (CWE-287/288/290/306/1390) or the CISA KEV `shortDescription` clearly indicates pre-authentication exploitability (e.g. "unauthenticated", "auth bypass"). Conservative: `false` does not prove auth is required, only that the pre-auth signals did not fire. 57/115 are `true`. Inferred, not vendor-asserted. |
+| `eol_at_kev_date` | boolean | No | **Curated** (`enrich_attack.py`) | `true`/`false`. `true` only for the 3 hand-verified cases where the affected product was already end-of-life when CISA added the CVE to KEV: `CVE-2015-7755` (Juniper ScreenOS), `CVE-2020-29574` (Sophos CyberoamOS), `CVE-2020-15069` (Sophos XG v17.x). Default `false`; not a systematic EOL audit. |
 
 ### Notes
 
@@ -71,6 +74,9 @@ Structured JSON with vendor-namespaced CVE entries plus dataset metadata. Genera
 | `kev_due_date` | string | No | CISA KEV catalog | CISA-mandated federal agency remediation deadline (`YYYY-MM-DD`). |
 | `ransomware` | string | No | CISA KEV catalog | `"Known"` or `"Unknown"` ransomware campaign association. |
 | `_source` | string \| null | Yes | Pipeline internal | Indicates the provenance of the `published` date. `null` when NVD was the source (normal case); `"kev"` when the KEV `dateAdded` was used as a fallback because NVD data was unavailable. |
+| `attack_techniques` | array | No | **Heuristic** (`enrich_attack.py`) | List of MITRE ATT&CK technique IDs (e.g. `["T1190", "T1133"]`). Deterministic CWE+context heuristic, **not** an authoritative MITRE assignment. Exported to CSV as a `;`-joined string. See [MITRE-ATTACK.md](MITRE-ATTACK.md). |
+| `pre_auth` | boolean | No | **Inferred** (`enrich_attack.py`) | `true` only where CWE or KEV `shortDescription` clearly indicates pre-authentication. Conservative; inferred. |
+| `eol_at_kev_date` | boolean | No | **Curated** (`enrich_attack.py`) | `true` only for the 3 documented end-of-life cases; default `false`. |
 
 ### `_metadata` object
 
@@ -101,7 +107,13 @@ python3 scripts/build_kev_counts.py       # build kev_edge_counts.json
 python3 scripts/enrich_epss.py > scripts/kev_edge_enriched.json
 python3 scripts/enrich_nvd.py > scripts/kev_edge_enriched.json
 python3 scripts/enrich_kev.py > scripts/kev_edge_enriched.json
+python3 scripts/enrich_attack.py          # add attack_techniques/pre_auth/eol_at_kev_date (in place)
 python3 scripts/export_dataset.py         # produce edge_kev_dataset.csv
 ```
+
+`enrich_attack.py` modifies `kev_edge_enriched.json` in place and reads CISA KEV
+`shortDescription` text (auto-fetches the live feed, or `--kev-file <path>` for
+a fixed snapshot). It is a heuristic/operational enrichment — see
+[MITRE-ATTACK.md](MITRE-ATTACK.md) for methodology and limitations.
 
 The CSV export is fully deterministic given fixed input JSON files.

@@ -407,6 +407,130 @@ the fit worse.
 
 ---
 
+## 5b. Per-install-normalized rate ratios
+
+Section 5 worked at the *aggregate* level (one chi-squared per scenario). This
+section drills down to the **per-vendor** level: it divides each vendor's KEV
+count by its estimated market share to get a per-share exploitation **rate**,
+then expresses that as a **rate ratio** against the corpus mean. This is the
+direct numeric form of the North-Star question -- "does normalization change
+the picture?"
+
+Computed by `scripts/analyze_normalization.py` (stdlib only). For each vendor
+and each of the three share vectors from Section 3:
+
+```
+rate_i        = count_i / share_i              # per-share exploitation rate
+rate_ratio_i  = rate_i / r_bar                 # r_bar = N / sum(shares) = N
+              = count_i / (N * share_i)        # == observed / share-expected
+```
+
+A `rate_ratio > 1.0` means the vendor has **more** KEVs than its market share
+predicts (above the popularity baseline); `< 1.0` means **fewer**. Each result
+is reported as a **bracket** (min..max across the three share vectors), never a
+point estimate. We also attach a Poisson exact (Garwood) 95% CI on the count
+and flag whether the share-expected count `E_i = N * share_i` falls below,
+inside, or above it.
+
+### Rate ratios under the moderate vector (Fortinet 34%)
+
+| Vendor | Count | Share | Rate (cnt/share) | Rate ratio | Above/below 1.0 |
+|--------|:-:|:-:|:-:|:-:|:-:|
+| Fortinet | 18 | 0.34 | 52.9 | **0.46** | below |
+| Cisco | 13 | 0.12 | 108.3 | **0.94** | below |
+| Citrix | 13 | 0.06 | 216.7 | **1.88** | above |
+| Ivanti | 13 | 0.05 | 260.0 | **2.26** | above |
+| Palo Alto Networks | 12 | 0.18 | 66.7 | **0.58** | below |
+| SonicWall | 12 | 0.06 | 200.0 | **1.74** | above |
+| Juniper | 8 | 0.04 | 200.0 | **1.74** | above |
+| F5 | 6 | 0.03 | 200.0 | **1.74** | above |
+| Sophos | 6 | 0.02 | 300.0 | **2.61** | above |
+| Zyxel | 6 | 0.02 | 300.0 | **2.61** | above |
+| WatchGuard | 4 | 0.01 | 400.0 | **3.48** | above |
+| Array Networks | 2 | 0.01 | 200.0 | **1.74** | above |
+| Check Point | 2 | 0.06 | 33.3 | **0.29** | below |
+
+### Cross-scenario brackets (min..max over all three vectors)
+
+| Vendor | Count | Rate-ratio bracket | Category |
+|--------|:-:|:-:|:-:|
+| Fortinet | 18 | 0.33..0.65 | **below in all** |
+| Cisco | 13 | 0.75..1.41 | straddles 1.0 |
+| Citrix | 13 | 1.41..2.26 | **above in all** |
+| Ivanti | 13 | 2.26..2.83 | **above in all** |
+| Palo Alto Networks | 12 | 0.58..0.70 | **below in all** |
+| SonicWall | 12 | 1.49..2.09 | **above in all** |
+| Juniper | 8 | 1.74..2.32 | **above in all** |
+| F5 | 6 | 1.74..2.61 | **above in all** |
+| Sophos | 6 | 1.74..2.61 | **above in all** |
+| Zyxel | 6 | 2.61..2.61 | **above in all** |
+| WatchGuard | 4 | 1.74..3.48 | **above in all** |
+| Array Networks | 2 | 1.74..1.74 | **above in all** |
+| Check Point | 2 | 0.22..0.43 | **below in all** |
+
+- **Above baseline in all three vectors (9):** Citrix, Ivanti, SonicWall,
+  Juniper, F5, Sophos, Zyxel, WatchGuard, Array Networks.
+- **Below baseline in all three vectors (3):** Fortinet, Palo Alto Networks,
+  Check Point.
+- **Straddles 1.0 (vector-dependent) (1):** Cisco.
+
+### What the rate ratios show
+
+The normalization **inverts the raw-count ranking**, exactly as the
+popularity-tax hypothesis predicts:
+
+- **Fortinet -- the raw leader (18) -- normalizes DOWN to a rate ratio of
+  0.46 (moderate), bracket 0.33..0.65.** Per-install, Fortinet is the second
+  *lowest*-rate vendor in the corpus. Its high raw count is consistent with
+  being the popularity sink, not the buggiest codebase.
+- **Low-share vendors invert UP.** WatchGuard (4 raw KEVs) carries the highest
+  per-share rate ratio (up to 3.48); Zyxel, Sophos, F5, and Array Networks all
+  sit well above 1.0 across every vector. Their small raw counts look large
+  once divided by a 1--2% share.
+- **Ivanti and SonicWall are above baseline on BOTH metrics** -- high raw counts
+  *and* high per-share rates (Ivanti 2.26--2.83, SonicWall 1.49--2.09). These
+  two are the only vendors that look bad no matter how you slice it, though the
+  2024 Ivanti Connect Secure campaign (7+ KEVs from one exploitation wave) is a
+  large confound.
+- **Check Point stays below baseline on both metrics** (raw 2; rate ratio
+  0.22--0.43). Low even after normalization -- but this is equally consistent
+  with disclosure opacity as with fewer real bugs.
+
+### Caveats (these are load-bearing -- read them)
+
+- **Unit-share != revenue-share != deployed-device count.** The denominator we
+  actually want (internet-facing devices per vendor) does not exist publicly
+  (Section 7). The shares here are analyst proxies; dividing by the wrong
+  denominator produces the wrong rate.
+- **Shares are point estimates with no error bars.** The three vectors bracket
+  cross-source *disagreement*, not formal uncertainty. The brackets above
+  therefore understate the true uncertainty.
+- **Small-count fragility.** Most low-share vendors have a share-expected count
+  below 5, so their Poisson CIs are wide and their rate ratios swing hard with
+  tiny share changes (WatchGuard's bracket spans 1.74..3.48 purely from a 1-vs-2
+  point share assumption). Treat single-vendor rate ratios as indicative, not
+  precise.
+- **A high per-share rate does NOT establish a code-quality difference.** It
+  conflates installed base, researcher attention, attacker targeting, and
+  disclosure transparency in unknown proportions.
+
+**Bottom line:** normalization does **not** crown a winner. It dissolves the
+raw ranking -- the loudest signal in the raw counts (Fortinet's 18) is largely
+a popularity-tax artifact, and the per-share rates are flat-to-inverted relative
+to market share. This reinforces the repository thesis: the raw spread is mostly
+about how many boxes are deployed and watched, not demonstrably about code
+quality.
+
+Reproduce with:
+
+```
+python3 scripts/analyze_normalization.py                    # text tables
+python3 scripts/analyze_normalization.py --format markdown  # the tables above
+python3 scripts/analyze_normalization.py --format json      # machine-readable
+```
+
+---
+
 ## 6. Reverse-Engineering the "Fair" Distribution
 
 We can ask the inverse question: **what market-share vector would make the

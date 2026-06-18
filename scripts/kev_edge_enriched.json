@@ -11,7 +11,13 @@
       "published": "2019-12-17",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2021-20016": {
       "epss": 0.40038,
@@ -24,7 +30,13 @@
       "published": "2021-02-03",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2021-11-17",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2021-20038": {
       "epss": 0.99912,
@@ -37,7 +49,13 @@
       "published": "2021-12-08",
       "kev_date_added": "2022-01-28",
       "kev_due_date": "2022-02-11",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2020-5135": {
       "epss": 0.26869,
@@ -50,7 +68,12 @@
       "published": "2020-10-12",
       "kev_date_added": "2022-03-15",
       "kev_due_date": "2022-04-05",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2021-20028": {
       "epss": 0.30084,
@@ -63,7 +86,13 @@
       "published": "2021-08-04",
       "kev_date_added": "2022-03-28",
       "kev_due_date": "2022-04-18",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2019-7483": {
       "epss": 0.03977,
@@ -76,7 +105,14 @@
       "published": "2019-12-19",
       "kev_date_added": "2022-03-28",
       "kev_due_date": "2022-04-18",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1552",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-40766": {
       "epss": 0.15694,
@@ -89,7 +125,13 @@
       "published": "2024-08-23",
       "kev_date_added": "2024-09-09",
       "kev_due_date": "2024-09-30",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-23006": {
       "epss": 0.22252,
@@ -102,7 +144,13 @@
       "published": "2025-01-23",
       "kev_date_added": "2025-01-24",
       "kev_due_date": "2025-02-14",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-53704": {
       "epss": 0.95132,
@@ -115,7 +163,14 @@
       "published": "2025-01-09",
       "kev_date_added": "2025-02-18",
       "kev_due_date": "2025-03-11",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2021-20035": {
       "epss": 0.0389,
@@ -128,7 +183,13 @@
       "published": "2021-09-27",
       "kev_date_added": "2025-04-16",
       "kev_due_date": "2025-05-07",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2023-44221": {
       "epss": 0.75103,
@@ -141,7 +202,13 @@
       "published": "2023-12-05",
       "kev_date_added": "2025-05-01",
       "kev_due_date": "2025-05-22",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-40602": {
       "epss": 0.0191,
@@ -157,7 +224,14 @@
       "published": "2025-12-18",
       "kev_date_added": "2025-12-17",
       "kev_due_date": "2025-12-24",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     }
   },
   "Ivanti": {
@@ -172,7 +246,14 @@
       "published": "2021-04-23",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2020-8243": {
       "epss": 0.90759,
@@ -185,7 +266,13 @@
       "published": "2020-09-29",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2021-22900": {
       "epss": 0.14146,
@@ -198,7 +285,13 @@
       "published": "2021-05-27",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2021-22894": {
       "epss": 0.41284,
@@ -211,7 +304,13 @@
       "published": "2021-05-27",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2020-8260": {
       "epss": 0.9648,
@@ -224,7 +323,14 @@
       "published": "2020-10-28",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1505.003",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2021-22899": {
       "epss": 0.22343,
@@ -237,7 +343,13 @@
       "published": "2021-05-27",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2019-11510": {
       "epss": 0.99999,
@@ -250,7 +362,14 @@
       "published": "2019-05-08",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1552",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2019-11539": {
       "epss": 0.98617,
@@ -263,7 +382,13 @@
       "published": "2019-04-26",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2023-46805": {
       "epss": 0.99986,
@@ -276,7 +401,13 @@
       "published": "2024-01-12",
       "kev_date_added": "2024-01-10",
       "kev_due_date": "2024-01-22",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-21887": {
       "epss": 0.99999,
@@ -289,7 +420,13 @@
       "published": "2024-01-12",
       "kev_date_added": "2024-01-10",
       "kev_due_date": "2024-01-22",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2024-21893": {
       "epss": 0.99999,
@@ -302,7 +439,13 @@
       "published": "2024-01-31",
       "kev_date_added": "2024-01-31",
       "kev_due_date": "2024-02-02",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-0282": {
       "epss": 0.99971,
@@ -315,7 +458,13 @@
       "published": "2025-01-08",
       "kev_date_added": "2025-01-08",
       "kev_due_date": "2025-01-15",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-22457": {
       "epss": 0.99961,
@@ -328,7 +477,13 @@
       "published": "2025-04-03",
       "kev_date_added": "2025-04-04",
       "kev_due_date": "2025-04-11",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     }
   },
   "Juniper": {
@@ -346,7 +501,13 @@
       "published": "2020-05-04",
       "kev_date_added": "2022-03-25",
       "kev_due_date": "2022-04-15",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1552"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-36844": {
       "epss": 0.89628,
@@ -359,7 +520,12 @@
       "published": "2023-08-17",
       "kev_date_added": "2023-11-13",
       "kev_due_date": "2023-11-17",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-36845": {
       "epss": 0.93546,
@@ -372,7 +538,12 @@
       "published": "2023-08-17",
       "kev_date_added": "2023-11-13",
       "kev_due_date": "2023-11-17",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-36846": {
       "epss": 0.94205,
@@ -385,7 +556,13 @@
       "published": "2023-08-17",
       "kev_date_added": "2023-11-13",
       "kev_due_date": "2023-11-17",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-36847": {
       "epss": 0.84692,
@@ -398,7 +575,13 @@
       "published": "2023-08-17",
       "kev_date_added": "2023-11-13",
       "kev_due_date": "2023-11-17",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-36851": {
       "epss": 0.011,
@@ -411,7 +594,13 @@
       "published": "2023-09-26",
       "kev_date_added": "2023-11-13",
       "kev_due_date": "2023-11-17",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-21590": {
       "epss": 0.01657,
@@ -424,7 +613,12 @@
       "published": "2025-03-12",
       "kev_date_added": "2025-03-13",
       "kev_due_date": "2025-04-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2015-7755": {
       "epss": 0.614,
@@ -437,7 +631,13 @@
       "published": "2015-12-19",
       "kev_date_added": "2025-10-02",
       "kev_due_date": "2025-10-23",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": true
     }
   },
   "Cisco": {
@@ -452,7 +652,12 @@
       "published": "2020-07-22",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2020-3580": {
       "epss": 0.85439,
@@ -465,7 +670,12 @@
       "published": "2020-10-21",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2018-0296": {
       "epss": 0.99903,
@@ -478,7 +688,12 @@
       "published": "2018-06-07",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2016-6366": {
       "epss": 0.87503,
@@ -491,7 +706,12 @@
       "published": "2016-08-18",
       "kev_date_added": "2022-05-24",
       "kev_due_date": "2022-06-14",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2016-6367": {
       "epss": 0.22583,
@@ -504,7 +724,12 @@
       "published": "2016-08-18",
       "kev_date_added": "2022-05-24",
       "kev_due_date": "2022-06-14",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2023-20269": {
       "epss": 0.21583,
@@ -517,7 +742,14 @@
       "published": "2023-09-06",
       "kev_date_added": "2023-09-13",
       "kev_due_date": "2023-10-04",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2020-3259": {
       "epss": 0.71789,
@@ -530,7 +762,15 @@
       "published": "2020-05-06",
       "kev_date_added": "2024-02-15",
       "kev_due_date": "2024-03-07",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1212",
+        "T1552",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2024-20359": {
       "epss": 0.16863,
@@ -543,7 +783,12 @@
       "published": "2024-04-24",
       "kev_date_added": "2024-04-24",
       "kev_due_date": "2024-05-01",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2024-20353": {
       "epss": 0.63272,
@@ -556,7 +801,12 @@
       "published": "2024-04-24",
       "kev_date_added": "2024-04-24",
       "kev_due_date": "2024-05-01",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2024-20481": {
       "epss": 0.15953,
@@ -569,7 +819,12 @@
       "published": "2024-10-23",
       "kev_date_added": "2024-10-24",
       "kev_due_date": "2024-11-14",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2014-2120": {
       "epss": 0.14029,
@@ -582,7 +837,12 @@
       "published": "2014-03-19",
       "kev_date_added": "2024-11-12",
       "kev_due_date": "2024-12-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-20362": {
       "epss": 0.83681,
@@ -595,7 +855,13 @@
       "published": "2025-09-25",
       "kev_date_added": "2025-09-25",
       "kev_due_date": "2025-09-26",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-20333": {
       "epss": 0.29197,
@@ -608,7 +874,12 @@
       "published": "2025-09-25",
       "kev_date_added": "2025-09-25",
       "kev_due_date": "2025-09-26",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     }
   },
   "Palo Alto Networks": {
@@ -623,7 +894,13 @@
       "published": "2019-07-19",
       "kev_date_added": "2022-01-10",
       "kev_due_date": "2022-07-10",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2020-2021": {
       "epss": 0.03994,
@@ -636,7 +913,12 @@
       "published": "2020-06-29",
       "kev_date_added": "2022-03-25",
       "kev_due_date": "2022-04-15",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2017-15944": {
       "epss": 0.9834,
@@ -652,7 +934,12 @@
       "published": "2017-12-11",
       "kev_date_added": "2022-08-18",
       "kev_due_date": "2022-09-08",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2022-0028": {
       "epss": 0.02025,
@@ -665,7 +952,12 @@
       "published": "2022-08-10",
       "kev_date_added": "2022-08-22",
       "kev_due_date": "2022-09-12",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2024-3400": {
       "epss": 0.99999,
@@ -681,7 +973,13 @@
       "published": "2024-04-12",
       "kev_date_added": "2024-04-12",
       "kev_due_date": "2024-04-19",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-9474": {
       "epss": 0.94766,
@@ -694,7 +992,12 @@
       "published": "2024-11-18",
       "kev_date_added": "2024-11-18",
       "kev_due_date": "2024-12-09",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2024-0012": {
       "epss": 0.99698,
@@ -707,7 +1010,13 @@
       "published": "2024-11-18",
       "kev_date_added": "2024-11-18",
       "kev_due_date": "2024-12-09",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-3393": {
       "epss": 0.26636,
@@ -720,7 +1029,12 @@
       "published": "2024-12-27",
       "kev_date_added": "2024-12-30",
       "kev_due_date": "2025-01-20",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-0108": {
       "epss": 0.98338,
@@ -733,7 +1047,13 @@
       "published": "2025-02-12",
       "kev_date_added": "2025-02-18",
       "kev_due_date": "2025-03-11",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-0111": {
       "epss": 0.01862,
@@ -746,7 +1066,13 @@
       "published": "2025-02-12",
       "kev_date_added": "2025-02-20",
       "kev_due_date": "2025-03-13",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1552"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2026-0300": {
       "epss": 0.3176,
@@ -759,7 +1085,12 @@
       "published": "2026-05-06",
       "kev_date_added": "2026-05-06",
       "kev_due_date": "2026-05-09",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2026-0257": {
       "epss": 0.18583,
@@ -772,7 +1103,12 @@
       "published": "2026-05-13",
       "kev_date_added": "2026-05-29",
       "kev_due_date": "2026-06-01",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     }
   },
   "Fortinet": {
@@ -787,7 +1123,13 @@
       "published": "2020-08-14",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2020-12812": {
       "epss": 0.49344,
@@ -800,7 +1142,14 @@
       "published": "2020-07-24",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2018-13379": {
       "epss": 0.99999,
@@ -813,7 +1162,14 @@
       "published": "2019-06-04",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1552",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2021-44168": {
       "epss": 0.00865,
@@ -826,7 +1182,12 @@
       "published": "2022-01-04",
       "kev_date_added": "2021-12-10",
       "kev_due_date": "2021-12-24",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2018-13382": {
       "epss": 0.81691,
@@ -839,7 +1200,14 @@
       "published": "2019-06-04",
       "kev_date_added": "2022-01-10",
       "kev_due_date": "2022-07-10",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2018-13383": {
       "epss": 0.33647,
@@ -852,7 +1220,13 @@
       "published": "2019-05-29",
       "kev_date_added": "2022-01-10",
       "kev_due_date": "2022-07-10",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2018-13374": {
       "epss": 0.38088,
@@ -865,7 +1239,13 @@
       "published": "2019-01-22",
       "kev_date_added": "2022-09-08",
       "kev_due_date": "2022-09-29",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1068"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2022-40684": {
       "epss": 0.99984,
@@ -878,7 +1258,13 @@
       "published": "2022-10-18",
       "kev_date_added": "2022-10-11",
       "kev_due_date": "2022-11-01",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2022-42475": {
       "epss": 0.99474,
@@ -891,7 +1277,13 @@
       "published": "2023-01-02",
       "kev_date_added": "2022-12-13",
       "kev_due_date": "2023-01-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2022-41328": {
       "epss": 0.12316,
@@ -904,7 +1296,13 @@
       "published": "2023-03-07",
       "kev_date_added": "2023-03-14",
       "kev_due_date": "2023-04-04",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1552"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2023-27997": {
       "epss": 0.85689,
@@ -917,7 +1315,13 @@
       "published": "2023-06-13",
       "kev_date_added": "2023-06-13",
       "kev_due_date": "2023-07-04",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-21762": {
       "epss": 0.80835,
@@ -930,7 +1334,12 @@
       "published": "2024-02-09",
       "kev_date_added": "2024-02-09",
       "kev_due_date": "2024-02-16",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-23113": {
       "epss": 0.61725,
@@ -943,7 +1352,12 @@
       "published": "2024-02-15",
       "kev_date_added": "2024-10-09",
       "kev_due_date": "2024-10-30",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-55591": {
       "epss": 0.98239,
@@ -956,7 +1370,13 @@
       "published": "2025-01-14",
       "kev_date_added": "2025-01-14",
       "kev_due_date": "2025-01-21",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-24472": {
       "epss": 0.02988,
@@ -969,7 +1389,13 @@
       "published": "2025-02-11",
       "kev_date_added": "2025-03-18",
       "kev_due_date": "2025-04-08",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2019-6693": {
       "epss": 0.05352,
@@ -982,7 +1408,13 @@
       "published": "2019-11-21",
       "kev_date_added": "2025-06-25",
       "kev_due_date": "2025-07-16",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1552"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-59718": {
       "epss": 0.63476,
@@ -995,7 +1427,12 @@
       "published": "2025-12-09",
       "kev_date_added": "2025-12-16",
       "kev_due_date": "2025-12-23",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2026-24858": {
       "epss": 0.55125,
@@ -1008,7 +1445,13 @@
       "published": "2026-01-27",
       "kev_date_added": "2026-01-27",
       "kev_due_date": "2026-01-30",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     }
   },
   "Check Point": {
@@ -1023,7 +1466,15 @@
       "published": "2024-05-28",
       "kev_date_added": "2024-05-30",
       "kev_due_date": "2024-06-20",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1212",
+        "T1552",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2026-50751": {
       "epss": 0.41152,
@@ -1036,7 +1487,14 @@
       "published": "2026-06-08",
       "kev_date_added": "2026-06-08",
       "kev_due_date": "2026-06-11",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     }
   },
   "Citrix": {
@@ -1051,7 +1509,14 @@
       "published": "2020-07-10",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2020-8195": {
       "epss": 0.33263,
@@ -1064,7 +1529,13 @@
       "published": "2020-07-10",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2020-8196": {
       "epss": 0.26333,
@@ -1077,7 +1548,14 @@
       "published": "2020-07-10",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2019-19781": {
       "epss": 0.99999,
@@ -1090,7 +1568,14 @@
       "published": "2019-12-27",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1552",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2022-27518": {
       "epss": 0.06931,
@@ -1103,7 +1588,13 @@
       "published": "2022-12-13",
       "kev_date_added": "2022-12-13",
       "kev_due_date": "2023-01-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-3519": {
       "epss": 0.99343,
@@ -1116,7 +1607,13 @@
       "published": "2023-07-19",
       "kev_date_added": "2023-07-19",
       "kev_due_date": "2023-08-09",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-4966": {
       "epss": 0.99999,
@@ -1129,7 +1626,13 @@
       "published": "2023-10-10",
       "kev_date_added": "2023-10-18",
       "kev_due_date": "2023-11-08",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2023-6549": {
       "epss": 0.57633,
@@ -1142,7 +1645,13 @@
       "published": "2024-01-17",
       "kev_date_added": "2024-01-17",
       "kev_due_date": "2024-02-07",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2023-6548": {
       "epss": 0.03191,
@@ -1155,7 +1664,13 @@
       "published": "2024-01-17",
       "kev_date_added": "2024-01-17",
       "kev_due_date": "2024-01-24",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-6543": {
       "epss": 0.09756,
@@ -1168,7 +1683,13 @@
       "published": "2025-06-25",
       "kev_date_added": "2025-06-30",
       "kev_due_date": "2025-07-21",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-5777": {
       "epss": 0.99897,
@@ -1184,7 +1705,13 @@
       "published": "2025-06-17",
       "kev_date_added": "2025-07-10",
       "kev_due_date": "2025-07-11",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-7775": {
       "published": "2025-08-26",
@@ -1198,7 +1725,13 @@
       "percentile": 0.96941,
       "kev_date_added": "2025-08-26",
       "kev_due_date": "2025-08-28",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2026-3055": {
       "published": "2026-03-23",
@@ -1212,7 +1745,13 @@
       "percentile": 0.9966,
       "kev_date_added": "2026-03-30",
       "kev_due_date": "2026-04-02",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     }
   },
   "F5": {
@@ -1227,7 +1766,13 @@
       "published": "2020-07-01",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1552"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2021-22991": {
       "epss": 0.61064,
@@ -1240,7 +1785,12 @@
       "published": "2021-03-31",
       "kev_date_added": "2022-01-18",
       "kev_due_date": "2022-02-01",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2022-1388": {
       "epss": 0.99956,
@@ -1253,7 +1803,13 @@
       "published": "2022-05-05",
       "kev_date_added": "2022-05-10",
       "kev_due_date": "2022-05-31",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-46748": {
       "epss": 0.04468,
@@ -1266,7 +1822,12 @@
       "published": "2023-10-26",
       "kev_date_added": "2023-10-31",
       "kev_due_date": "2023-11-21",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2023-46747": {
       "epss": 0.96515,
@@ -1279,7 +1840,13 @@
       "published": "2023-10-26",
       "kev_date_added": "2023-10-31",
       "kev_due_date": "2023-11-21",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-53521": {
       "epss": 0.02246,
@@ -1292,7 +1859,12 @@
       "published": "2025-10-15",
       "kev_date_added": "2026-03-27",
       "kev_due_date": "2026-03-30",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     }
   },
   "Zyxel": {
@@ -1307,7 +1879,13 @@
       "published": "2020-12-22",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1552"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2022-30525": {
       "epss": 0.9994,
@@ -1320,7 +1898,12 @@
       "published": "2022-05-12",
       "kev_date_added": "2022-05-16",
       "kev_due_date": "2022-06-06",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2023-28771": {
       "epss": 0.99284,
@@ -1333,7 +1916,12 @@
       "published": "2023-04-25",
       "kev_date_added": "2023-05-31",
       "kev_due_date": "2023-06-21",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-33009": {
       "epss": 0.28144,
@@ -1346,7 +1934,12 @@
       "published": "2023-05-24",
       "kev_date_added": "2023-06-05",
       "kev_due_date": "2023-06-26",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2023-33010": {
       "epss": 0.28813,
@@ -1359,7 +1952,12 @@
       "published": "2023-05-24",
       "kev_date_added": "2023-06-05",
       "kev_due_date": "2023-06-26",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2024-11667": {
       "epss": 0.02958,
@@ -1372,7 +1970,13 @@
       "published": "2024-11-27",
       "kev_date_added": "2024-12-03",
       "kev_due_date": "2024-12-24",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1552"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     }
   },
   "Sophos": {
@@ -1387,7 +1991,13 @@
       "published": "2020-04-27",
       "kev_date_added": "2021-11-03",
       "kev_due_date": "2022-05-03",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2020-25223": {
       "epss": 0.96693,
@@ -1400,7 +2010,12 @@
       "published": "2020-09-25",
       "kev_date_added": "2022-03-25",
       "kev_due_date": "2022-04-15",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2022-1040": {
       "epss": 0.99796,
@@ -1413,7 +2028,12 @@
       "published": "2022-03-25",
       "kev_date_added": "2022-03-31",
       "kev_due_date": "2022-04-21",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2022-3236": {
       "epss": 0.98905,
@@ -1426,7 +2046,12 @@
       "published": "2022-09-23",
       "kev_date_added": "2022-09-23",
       "kev_due_date": "2022-10-14",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2020-15069": {
       "epss": 0.10674,
@@ -1439,7 +2064,12 @@
       "published": "2020-06-29",
       "kev_date_added": "2025-02-06",
       "kev_due_date": "2025-02-27",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": true
     },
     "CVE-2020-29574": {
       "epss": 0.04729,
@@ -1452,7 +2082,12 @@
       "published": "2020-12-11",
       "kev_date_added": "2025-02-06",
       "kev_due_date": "2025-02-27",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": true
     }
   },
   "WatchGuard": {
@@ -1468,7 +2103,12 @@
       "percentile": 0.99524,
       "kev_date_added": "2022-03-25",
       "kev_due_date": "2022-04-15",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2022-23176": {
       "published": "2022-02-24",
@@ -1482,7 +2122,13 @@
       "percentile": 0.95656,
       "kev_date_added": "2022-04-11",
       "kev_due_date": "2022-05-02",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1068"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     },
     "CVE-2025-9242": {
       "published": "2025-09-17",
@@ -1496,7 +2142,12 @@
       "percentile": 0.99709,
       "kev_date_added": "2025-11-12",
       "kev_due_date": "2025-12-03",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-14733": {
       "published": "2025-12-19",
@@ -1510,7 +2161,12 @@
       "percentile": 0.96747,
       "kev_date_added": "2025-12-19",
       "kev_due_date": "2025-12-26",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     }
   },
   "Array Networks": {
@@ -1526,7 +2182,14 @@
       "percentile": 0.99221,
       "kev_date_added": "2024-11-25",
       "kev_due_date": "2024-12-16",
-      "ransomware": "Known"
+      "ransomware": "Known",
+      "attack_techniques": [
+        "T1190",
+        "T1078",
+        "T1133"
+      ],
+      "pre_auth": true,
+      "eol_at_kev_date": false
     },
     "CVE-2025-66644": {
       "published": "2025-12-05",
@@ -1540,7 +2203,13 @@
       "percentile": 0.85835,
       "kev_date_added": "2025-12-08",
       "kev_due_date": "2025-12-29",
-      "ransomware": "Unknown"
+      "ransomware": "Unknown",
+      "attack_techniques": [
+        "T1190",
+        "T1133"
+      ],
+      "pre_auth": false,
+      "eol_at_kev_date": false
     }
   },
   "_metadata": {
@@ -1559,6 +2228,11 @@
     "kev_source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
     "kev_total_cves": 115,
     "kev_found": 115,
-    "kev_missing": 0
+    "kev_missing": 0,
+    "attack_enriched_at": "2026-06-18T23:29:51Z",
+    "attack_kev_catalog_version": "2026.06.18",
+    "attack_mapping": "heuristic CWE+exploitation->ATT&CK technique mapping; see docs/MITRE-ATTACK.md \u2014 NOT an authoritative MITRE assignment",
+    "attack_pre_auth_count": 57,
+    "attack_eol_count": 3
   }
 }
