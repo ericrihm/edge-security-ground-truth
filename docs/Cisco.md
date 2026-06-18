@@ -1,6 +1,6 @@
 # Cisco
 
-**Rank slot #4 — All-product KEV count leader; sustained state-actor targeting of ASA/FTD**
+**Scope: Cisco ASA / FTD firewalls.** Cisco's portfolio-wide KEV total spans IOS, switches, routers, and SD-WAN — it is *not* attributed to ASA/FTD here. *(13 ASA/FTD edge KEV entries, 2020–2026.)*
 
 ---
 

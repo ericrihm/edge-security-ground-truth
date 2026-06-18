@@ -1,6 +1,6 @@
 # Fortinet (FortiGate)
 
-**Rank slot #6 · Largest unit-count firewall vendor · Worst-in-class disclosure transparency**
+**Scope: FortiOS / FortiProxy SSL-VPN.** The largest firewall vendor by unit count; the SSL-VPN disclosure record is documented below. *(14 edge KEV entries, 2020–2026.)*
 
 ## Market Position
 
@@ -35,6 +35,6 @@ In April 2025, CISA [issued an alert](https://www.bleepingcomputer.com/news/secu
 
 - **KEV density:** Four SSL-VPN KEV entries from a single daemon over five years is not explained by market share alone — it indicates a recurring architectural or SDL failure in a specific product area.
 - **Exploitation speed:** CVE-2024-21762's advisory (February 8, 2024) was followed by a CISA KEV listing the [next day, February 9](https://nvd.nist.gov/vuln/detail/CVE-2024-21762) — a near-simultaneous signal that exploitation was already active.
-- **Transparency:** Silent patching plus firmware-only distribution is a disclosure anti-pattern. Fortinet ranks among the **worst** major vendors on this dimension, not the best.
+- **Transparency:** Silent patching plus firmware-only distribution is a disclosure anti-pattern — the documented opposite of the "most transparent" claim.
 
 Fortinet's unit-count leadership is real. Its security disclosure posture and SSL-VPN vulnerability recurrence are not defensible on the same grounds.

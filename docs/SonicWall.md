@@ -1,6 +1,6 @@
 # SonicWall
 
-**Risk rank: #1** — Highest demonstrated risk per incident impact among perimeter vendors reviewed.
+**Perimeter products in scope:** SonicOS firewall / SSL-VPN and SMA remote-access appliances. *(12 edge KEV entries, 2020–2026 — see [the comparison](../README.md).)*
 
 ## Market Position
 
@@ -38,4 +38,4 @@ Two incidents, two instances of minimized initial disclosure. The MySonicWall br
 
 ## Bottom Line
 
-SonicWall's 2024–2025 record demonstrates a failure mode that goes beyond unpatched vulnerabilities: the vendor's own cloud infrastructure became an attack platform against its entire backup customer base. The 5%-to-100% revision, the Mandiant attribution to state-sponsored actors, and the Marquis lawsuit collectively define what "vendor-side security failure" means in practice. Per-unit KEV density and time-to-mass-exploitation both favor placing SonicWall at the top of this risk ranking.
+SonicWall's 2024–2025 record demonstrates a failure mode that goes beyond unpatched vulnerabilities: the vendor's own cloud infrastructure became an attack platform against its entire backup customer base. The 5%-to-100% revision, the Mandiant attribution to state-sponsored actors, and the Marquis lawsuit collectively define what "vendor-side security failure" means in practice.
