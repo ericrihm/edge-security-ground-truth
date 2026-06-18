@@ -115,6 +115,8 @@ Beyond counts and per-vendor narratives, this repository includes structured ana
 | [Cross-Vendor Patterns](docs/ANALYSIS.md) | EPSS distributions, severity clustering, vendor comparison |
 | [Survival Analysis (TTE)](docs/SURVIVAL-ANALYSIS.md) | Kaplan-Meier time-to-exploitation curves — overall + per-vendor + per-CVSS-band; KM median 36 days |
 | [EPSS Edge-Domain Evaluation](docs/EPSS-EDGE-EVAL.md) | First EPSS calibration check scoped to edge appliances; surfaces exploited-but-low-EPSS "misses" |
+| [Market-Share Elasticity](docs/STATISTICS.md#market-share-elasticity-poisson-regression) | Poisson regression: count scales **sub-linearly** with install base (elasticity β₁≈0.42) — the popularity tax, quantified |
+| [MITRE ATT&CK Mapping](docs/MITRE-ATTACK.md) | Heuristic CWE/product → ATT&CK technique mapping (T1190 on all; +T1133/T1078/T1552/T1212/T1068) — fills the edge-device ATT&CK gap |
 
 ### Psychology, education & decision-making
 
@@ -143,6 +145,8 @@ python3 scripts/analyze_statistics.py --format markdown   # statistical framewor
 python3 scripts/analyze_patterns.py --format markdown     # cross-vendor EPSS/severity
 python3 scripts/analyze_survival.py --format markdown     # Kaplan-Meier time-to-exploitation
 python3 scripts/analyze_epss_eval.py --format markdown    # EPSS edge-domain calibration
+python3 scripts/analyze_normalization.py --format markdown # per-install-normalized rate ratios
+python3 scripts/analyze_regression.py --format markdown   # market-share elasticity (Poisson GLM)
 python3 scripts/build_kev_counts.py                       # rebuild counts from live CISA feed
 python3 scripts/export_dataset.py                         # flat CSV (one row per CVE)
 python3 scripts/make_chart.py                             # regenerate the SVG bar chart

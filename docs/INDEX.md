@@ -35,6 +35,7 @@ A navigational guide to all research, analysis, and reference material in this r
 | [Vendor Matrix](VENDOR-MATRIX.md) | Side-by-side comparison of all 13 vendors across KEV count, CVSS, CWE class, and patch lag |
 | [Survival Analysis (TTE)](SURVIVAL-ANALYSIS.md) | Kaplan-Meier time-to-exploitation curves, overall and stratified by vendor / CVSS band |
 | [EPSS Edge-Domain Evaluation](EPSS-EDGE-EVAL.md) | How well EPSS recognizes these edge exploited CVEs; the exploited-but-low-EPSS misses |
+| [MITRE ATT&CK Mapping](MITRE-ATTACK.md) | Heuristic CWE/product → ATT&CK technique mapping per CVE (T1190 + secondaries) |
 
 ---
 

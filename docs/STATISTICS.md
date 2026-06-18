@@ -395,6 +395,12 @@ will accumulate more KEV entries independent of code quality. This is a form of
 **detection bias** or **surveillance bias** analogous to the well-known problem in
 epidemiology where diseases screened more frequently appear more prevalent.
 
+### Market-Share Elasticity (Poisson Regression)
+
+`scripts/analyze_regression.py` fits `log(E[count]) = b0 + b1·log(share)` by IRLS under all three published share vectors. The elasticity is **b1 = 0.42 (95% CI [0.23, 0.61])** under the moderate vector (bracket **0.38–0.48** across vectors); the CI excludes both 0 and 1 (p < 0.001 for each). Exploited-CVE count therefore scales **significantly sub-linearly** with market share — a vendor with 10× the installed base accumulates only ≈10^0.42 ≈ 2.6× the exploited edge CVEs, not 10×.
+
+This is the inferential form of the popularity tax: raw counts grow with install base but *slower than proportionally*, so a raw-count comparison **overstates** the gap between large- and small-share vendors. It agrees with the per-install rate ratios in [MARKET-SHARE-SENSITIVITY.md](MARKET-SHARE-SENSITIVITY.md), where Fortinet's raw-leading count normalizes *below* the baseline and small-share vendors normalize *above* it. Overdispersion (φ ≈ 1.2) is handled with quasi-Poisson standard errors; a negative-binomial fit gives materially the same b1. Caveats: n = 13, market shares are analyst estimates without error bars, and this is an ecological regression (association, not code-quality causation).
+
 ---
 
 ## 10. Limitations
