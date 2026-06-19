@@ -1,116 +1,116 @@
-vendor,cve,kev_date_added,kev_due_date,published,tte_days,cvss,cvss_severity,cwe,cwe_name,epss,percentile,ransomware,attack_techniques,pre_auth,eol_at_kev_date
-SonicWall,CVE-2019-7481,2021-11-03,2022-05-03,2019-12-17,687,7.5,HIGH,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.99906,0.99964,Known,T1190;T1133,true,false
-SonicWall,CVE-2021-20016,2021-11-03,2021-11-17,2021-02-03,273,9.8,CRITICAL,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.40038,0.9845,Known,T1190;T1133,true,false
-SonicWall,CVE-2021-20038,2022-01-28,2022-02-11,2021-12-08,51,9.8,CRITICAL,CWE-121,Stack-based Buffer Overflow,0.99912,0.99965,Known,T1190;T1133,true,false
-SonicWall,CVE-2020-5135,2022-03-15,2022-04-05,2020-10-12,519,9.8,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.26869,0.97781,Unknown,T1190,false,false
-SonicWall,CVE-2021-20028,2022-03-28,2022-04-18,2021-08-04,236,9.8,CRITICAL,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.30084,0.97976,Known,T1190;T1133,false,false
-SonicWall,CVE-2019-7483,2022-03-28,2022-04-18,2019-12-19,830,7.5,HIGH,CWE-22,Path Traversal,0.03977,0.89148,Unknown,T1190;T1552;T1133,true,false
-SonicWall,CVE-2024-40766,2024-09-09,2024-09-30,2024-08-23,17,9.3,CRITICAL,CWE-284,Improper Access Control,0.15694,0.96436,Known,T1190;T1078,false,false
-SonicWall,CVE-2025-23006,2025-01-24,2025-02-14,2025-01-23,1,9.8,CRITICAL,CWE-502,Deserialization of Untrusted Data,0.22252,0.97379,Known,T1190;T1133,true,false
-SonicWall,CVE-2024-53704,2025-02-18,2025-03-11,2025-01-09,40,8.2,HIGH,CWE-287,Improper Authentication,0.95132,0.99854,Known,T1190;T1078;T1133,true,false
-SonicWall,CVE-2021-20035,2025-04-16,2025-05-07,2021-09-27,1297,6.5,MEDIUM,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.0389,0.88885,Unknown,T1190;T1133,false,false
-SonicWall,CVE-2023-44221,2025-05-01,2025-05-22,2023-12-05,513,7.2,HIGH,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.75103,0.99448,Unknown,T1190;T1133,false,false
-SonicWall,CVE-2025-40602,2025-12-17,2025-12-24,2025-12-18,-1,6.6,MEDIUM,CWE-862,Missing Authorization,0.0191,0.77115,Unknown,T1190;T1078;T1133,false,false
-Ivanti,CVE-2021-22893,2021-11-03,2022-05-03,2021-04-23,194,10,CRITICAL,CWE-287,Improper Authentication,0.47172,0.98688,Known,T1190;T1078;T1133,true,false
-Ivanti,CVE-2020-8243,2021-11-03,2022-05-03,2020-09-29,400,7.2,HIGH,CWE-94,Improper Control of Generation of Code,0.90759,0.99792,Unknown,T1190;T1133,false,false
-Ivanti,CVE-2021-22900,2021-11-03,2022-05-03,2021-05-27,160,7.2,HIGH,CWE-94,Improper Control of Generation of Code,0.14146,0.96109,Unknown,T1190;T1133,false,false
-Ivanti,CVE-2021-22894,2021-11-03,2022-05-03,2021-05-27,160,8.8,HIGH,CWE-94,Improper Control of Generation of Code,0.41284,0.98492,Unknown,T1190;T1133,false,false
-Ivanti,CVE-2020-8260,2021-11-03,2022-05-03,2020-10-28,371,7.2,HIGH,CWE-434,Unrestricted Upload of File with Dangerous Type,0.9648,0.99874,Unknown,T1190;T1505.003;T1133,false,false
-Ivanti,CVE-2021-22899,2021-11-03,2022-05-03,2021-05-27,160,8.8,HIGH,CWE-77,Improper Neutralization of Special Elements used in a Command,0.22343,0.97388,Unknown,T1190;T1133,false,false
-Ivanti,CVE-2019-11510,2021-11-03,2022-05-03,2019-05-08,910,9.9,CRITICAL,CWE-22,Path Traversal,0.99999,0.99995,Known,T1190;T1552;T1133,true,false
-Ivanti,CVE-2019-11539,2021-11-03,2022-05-03,2019-04-26,922,8,HIGH,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.98617,0.99917,Known,T1190;T1133,false,false
-Ivanti,CVE-2023-46805,2024-01-10,2024-01-22,2024-01-12,-2,8.2,HIGH,,,0.99986,0.99983,Known,T1190;T1133,true,false
-Ivanti,CVE-2024-21887,2024-01-10,2024-01-22,2024-01-12,-2,9.1,CRITICAL,CWE-77,Improper Neutralization of Special Elements used in a Command,0.99999,1.0,Known,T1190;T1133,false,false
-Ivanti,CVE-2024-21893,2024-01-31,2024-02-02,2024-01-31,0,8.2,HIGH,CWE-918,Server-Side Request Forgery (SSRF),0.99999,0.99999,Known,T1190;T1133,true,false
-Ivanti,CVE-2025-0282,2025-01-08,2025-01-15,2025-01-08,0,9,CRITICAL,CWE-121,Stack-based Buffer Overflow,0.99971,0.99978,Known,T1190;T1133,true,false
-Ivanti,CVE-2025-22457,2025-04-04,2025-04-11,2025-04-03,1,9,CRITICAL,CWE-121,Stack-based Buffer Overflow,0.99961,0.99975,Known,T1190;T1133,true,false
-Juniper,CVE-2020-1631,2022-03-25,2022-04-15,2020-05-04,690,8.8,HIGH,CWE-22,Path Traversal,0.04725,0.90676,Unknown,T1190;T1552,true,false
-Juniper,CVE-2023-36844,2023-11-13,2023-11-17,2023-08-17,88,5.3,MEDIUM,CWE-473,PHP External Variable Modification,0.89628,0.99772,Unknown,T1190,true,false
-Juniper,CVE-2023-36845,2023-11-13,2023-11-17,2023-08-17,88,9.8,CRITICAL,CWE-473,PHP External Variable Modification,0.93546,0.99827,Unknown,T1190,true,false
-Juniper,CVE-2023-36846,2023-11-13,2023-11-17,2023-08-17,88,5.3,MEDIUM,CWE-306,Missing Authentication for Critical Function,0.94205,0.99838,Unknown,T1190;T1078,true,false
-Juniper,CVE-2023-36847,2023-11-13,2023-11-17,2023-08-17,88,5.3,MEDIUM,CWE-306,Missing Authentication for Critical Function,0.84692,0.99675,Unknown,T1190;T1078,true,false
-Juniper,CVE-2023-36851,2023-11-13,2023-11-17,2023-09-26,48,5.3,MEDIUM,CWE-306,Missing Authentication for Critical Function,0.011,0.61375,Unknown,T1190;T1078,true,false
-Juniper,CVE-2025-21590,2025-03-13,2025-04-03,2025-03-12,1,4.4,MEDIUM,CWE-653,Insufficient Compartmentalization,0.01657,0.73571,Unknown,T1190,false,false
-Juniper,CVE-2015-7755,2025-10-02,2025-10-23,2015-12-19,3575,9.8,CRITICAL,CWE-287,Improper Authentication,0.614,0.99052,Unknown,T1190;T1078,true,true
-Cisco,CVE-2020-3452,2021-11-03,2022-05-03,2020-07-22,469,7.5,HIGH,CWE-20,Improper Input Validation,0.99992,0.99986,Unknown,T1190,false,false
-Cisco,CVE-2020-3580,2021-11-03,2022-05-03,2020-10-21,378,6.1,MEDIUM,CWE-79,Improper Neutralization of Input During Web Page Generation,0.85439,0.99691,Known,T1190,false,false
-Cisco,CVE-2018-0296,2021-11-03,2022-05-03,2018-06-07,1245,7.5,HIGH,CWE-20,Improper Input Validation,0.99903,0.99964,Unknown,T1190,false,false
-Cisco,CVE-2016-6366,2022-05-24,2022-06-14,2016-08-18,2105,8.8,HIGH,CWE-120,Buffer Copy without Checking Size of Input,0.87503,0.99733,Unknown,T1190,false,false
-Cisco,CVE-2016-6367,2022-05-24,2022-06-14,2016-08-18,2105,7.8,HIGH,CWE-77,Improper Neutralization of Special Elements used in a Command,0.22583,0.97421,Unknown,T1190,false,false
-Cisco,CVE-2023-20269,2023-09-13,2023-10-04,2023-09-06,7,5,MEDIUM,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.21583,0.97314,Known,T1190;T1078;T1133,true,false
-Cisco,CVE-2020-3259,2024-02-15,2024-03-07,2020-05-06,1380,7.5,HIGH,CWE-200,Exposure of Sensitive Information to an Unauthorized Actor,0.71789,0.99347,Known,T1190;T1212;T1552;T1133,false,false
-Cisco,CVE-2024-20359,2024-04-24,2024-05-01,2024-04-24,0,6,MEDIUM,CWE-94,Improper Control of Generation of Code,0.16863,0.96656,Unknown,T1190,false,false
-Cisco,CVE-2024-20353,2024-04-24,2024-05-01,2024-04-24,0,8.6,HIGH,CWE-835,Loop with Unreachable Exit Condition (Infinite Loop),0.63272,0.99101,Unknown,T1190,false,false
-Cisco,CVE-2024-20481,2024-10-24,2024-11-14,2024-10-23,1,5.8,MEDIUM,CWE-772,Missing Release of Resource after Effective Lifetime,0.15953,0.96482,Unknown,T1190,true,false
-Cisco,CVE-2014-2120,2024-11-12,2024-12-03,2014-03-19,3891,5.4,MEDIUM,CWE-79,Improper Neutralization of Input During Web Page Generation,0.14029,0.96088,Unknown,T1190,false,false
-Cisco,CVE-2025-20362,2025-09-25,2025-09-26,2025-09-25,0,6.5,MEDIUM,CWE-862,Missing Authorization,0.83681,0.99654,Unknown,T1190;T1078,false,false
-Cisco,CVE-2025-20333,2025-09-25,2025-09-26,2025-09-25,0,9.9,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.29197,0.97926,Unknown,T1190,false,false
-Palo Alto Networks,CVE-2019-1579,2022-01-10,2022-07-10,2019-07-19,906,8.1,HIGH,CWE-134,Use of Externally-Controlled Format String,0.39317,0.98421,Known,T1190;T1133,false,false
-Palo Alto Networks,CVE-2020-2021,2022-03-25,2022-04-15,2020-06-29,634,10,CRITICAL,CWE-347,Improper Verification of Cryptographic Signature,0.03994,0.89188,Known,T1190,true,false
-Palo Alto Networks,CVE-2017-15944,2022-08-18,2022-09-08,2017-12-11,1711,9.8,CRITICAL,CWE-20,Improper Input Validation,0.9834,0.9991,Unknown,T1190,false,false
-Palo Alto Networks,CVE-2022-0028,2022-08-22,2022-09-12,2022-08-10,12,8.6,HIGH,CWE-406,Insufficient Control of Network Message Volume,0.02025,0.78472,Unknown,T1190,false,false
-Palo Alto Networks,CVE-2024-3400,2024-04-12,2024-04-19,2024-04-12,0,10,CRITICAL,CWE-77,Improper Neutralization of Special Elements used in a Command,0.99999,1.0,Known,T1190;T1133,true,false
-Palo Alto Networks,CVE-2024-9474,2024-11-18,2024-12-09,2024-11-18,0,7.2,HIGH,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.94766,0.99848,Known,T1190,false,false
-Palo Alto Networks,CVE-2024-0012,2024-11-18,2024-12-09,2024-11-18,0,9.3,CRITICAL,CWE-306,Missing Authentication for Critical Function,0.99698,0.99949,Known,T1190;T1078,true,false
-Palo Alto Networks,CVE-2024-3393,2024-12-30,2025-01-20,2024-12-27,3,8.7,HIGH,CWE-754,Improper Check for Unusual or Exceptional Conditions,0.26636,0.97766,Unknown,T1190,true,false
-Palo Alto Networks,CVE-2025-0108,2025-02-18,2025-03-11,2025-02-12,6,8.8,HIGH,CWE-306,Missing Authentication for Critical Function,0.98338,0.9991,Unknown,T1190;T1078,true,false
-Palo Alto Networks,CVE-2025-0111,2025-02-20,2025-03-13,2025-02-12,8,7.1,HIGH,CWE-73,External Control of File Name or Path,0.01862,0.76521,Unknown,T1190;T1552,false,false
-Palo Alto Networks,CVE-2026-0300,2026-05-06,2026-05-09,2026-05-06,0,,,CWE-787,Out-of-bounds Write,0.3176,0.98072,Unknown,T1190,true,false
-Palo Alto Networks,CVE-2026-0257,2026-05-29,2026-06-01,2026-05-13,16,,,CWE-565,Reliance on Cookies without Validation and Integrity Checking,0.18583,0.96891,Unknown,T1190,true,false
-Fortinet,CVE-2019-5591,2021-11-03,2022-05-03,2020-08-14,446,6.5,MEDIUM,CWE-306,Missing Authentication for Critical Function,0.18566,0.96889,Unknown,T1190;T1078,true,false
-Fortinet,CVE-2020-12812,2021-11-03,2022-05-03,2020-07-24,467,9.8,CRITICAL,CWE-287,Improper Authentication,0.49344,0.98743,Known,T1190;T1078;T1133,true,false
-Fortinet,CVE-2018-13379,2021-11-03,2022-05-03,2019-06-04,883,9.1,CRITICAL,CWE-22,Path Traversal,0.99999,0.99994,Known,T1190;T1552;T1133,true,false
-Fortinet,CVE-2021-44168,2021-12-10,2021-12-24,2022-01-04,-25,3.3,LOW,CWE-494,Download of Code Without Integrity Check,0.00865,0.539,Unknown,T1190,false,false
-Fortinet,CVE-2018-13382,2022-01-10,2022-07-10,2019-06-04,951,9.1,CRITICAL,CWE-863,Incorrect Authorization,0.81691,0.996,Known,T1190;T1078;T1133,true,false
-Fortinet,CVE-2018-13383,2022-01-10,2022-07-10,2019-05-29,957,4.3,MEDIUM,CWE-787,Out-of-bounds Write,0.33647,0.9817,Known,T1190;T1133,false,false
-Fortinet,CVE-2018-13374,2022-09-08,2022-09-29,2019-01-22,1325,4.3,MEDIUM,CWE-732,Incorrect Permission Assignment for Critical Resource,0.38088,0.98369,Known,T1190;T1068,false,false
-Fortinet,CVE-2022-40684,2022-10-11,2022-11-01,2022-10-18,-7,9.8,CRITICAL,CWE-287,Improper Authentication,0.99984,0.99982,Known,T1190;T1078,true,false
-Fortinet,CVE-2022-42475,2022-12-13,2023-01-03,2023-01-02,-20,9.3,CRITICAL,CWE-197,Numeric Truncation Error,0.99474,0.99938,Known,T1190;T1133,true,false
-Fortinet,CVE-2022-41328,2023-03-14,2023-04-04,2023-03-07,7,6.5,MEDIUM,CWE-22,Path Traversal,0.12316,0.95677,Unknown,T1190;T1552,false,false
-Fortinet,CVE-2023-27997,2023-06-13,2023-07-04,2023-06-13,0,9.2,CRITICAL,CWE-122,Heap-based Buffer Overflow,0.85689,0.99695,Known,T1190;T1133,true,false
-Fortinet,CVE-2024-21762,2024-02-09,2024-02-16,2024-02-09,0,9.6,CRITICAL,CWE-787,Out-of-bounds Write,0.80835,0.99578,Known,T1190,true,false
-Fortinet,CVE-2024-23113,2024-10-09,2024-10-30,2024-02-15,237,9.8,CRITICAL,CWE-134,Use of Externally-Controlled Format String,0.61725,0.99061,Unknown,T1190,true,false
-Fortinet,CVE-2024-55591,2025-01-14,2025-01-21,2025-01-14,0,9.6,CRITICAL,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.98239,0.99907,Known,T1190;T1078,true,false
-Fortinet,CVE-2025-24472,2025-03-18,2025-04-08,2025-02-11,35,8.1,HIGH,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.02988,0.85566,Known,T1190;T1078,true,false
-Fortinet,CVE-2019-6693,2025-06-25,2025-07-16,2019-11-21,2043,6.5,MEDIUM,CWE-798,Use of Hard-coded Credentials,0.05352,0.91594,Known,T1190;T1552,false,false
-Fortinet,CVE-2025-59718,2025-12-16,2025-12-23,2025-12-09,7,9.1,CRITICAL,CWE-347,Improper Verification of Cryptographic Signature,0.63476,0.99107,Unknown,T1190,true,false
-Fortinet,CVE-2026-24858,2026-01-27,2026-01-30,2026-01-27,0,9.4,CRITICAL,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.55125,0.98901,Unknown,T1190;T1078,true,false
-Check Point,CVE-2024-24919,2024-05-30,2024-06-20,2024-05-28,2,8.6,HIGH,CWE-200,Exposure of Sensitive Information to an Unauthorized Actor,0.99978,0.9998,Known,T1190;T1212;T1552;T1133,false,false
-Check Point,CVE-2026-50751,2026-06-08,2026-06-11,2026-06-08,0,9.3,CRITICAL,CWE-287,Improper Authentication,0.41152,0.98488,Known,T1190;T1078;T1133,true,false
-Citrix,CVE-2020-8193,2021-11-03,2022-05-03,2020-07-10,481,6.5,MEDIUM,CWE-284,Improper Access Control,0.88411,0.9975,Unknown,T1190;T1078;T1133,true,false
-Citrix,CVE-2020-8195,2021-11-03,2022-05-03,2020-07-10,481,6.5,MEDIUM,CWE-20,Improper Input Validation,0.33263,0.98152,Unknown,T1190;T1133,false,false
-Citrix,CVE-2020-8196,2021-11-03,2022-05-03,2020-07-10,481,4.3,MEDIUM,CWE-284,Improper Access Control,0.26333,0.97745,Unknown,T1190;T1078;T1133,false,false
-Citrix,CVE-2019-19781,2021-11-03,2022-05-03,2019-12-27,677,9.8,CRITICAL,CWE-22,Path Traversal,0.99999,0.99998,Known,T1190;T1552;T1133,true,false
-Citrix,CVE-2022-27518,2022-12-13,2023-01-03,2022-12-13,0,9.8,CRITICAL,CWE-664,Improper Control of a Resource Through its Lifetime,0.06931,0.93281,Unknown,T1190;T1133,true,false
-Citrix,CVE-2023-3519,2023-07-19,2023-08-09,2023-07-19,0,9.8,CRITICAL,CWE-94,Improper Control of Generation of Code,0.99343,0.99933,Known,T1190;T1133,true,false
-Citrix,CVE-2023-4966,2023-10-18,2023-11-08,2023-10-10,8,9.4,CRITICAL,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.99999,0.99993,Known,T1190;T1133,false,false
-Citrix,CVE-2023-6549,2024-01-17,2024-02-07,2024-01-17,0,8.2,HIGH,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.57633,0.98961,Unknown,T1190;T1133,false,false
-Citrix,CVE-2023-6548,2024-01-17,2024-01-24,2024-01-17,0,5.5,MEDIUM,CWE-94,Improper Control of Generation of Code,0.03191,0.86446,Unknown,T1190;T1133,false,false
-Citrix,CVE-2025-6543,2025-06-30,2025-07-21,2025-06-25,5,,,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.09756,0.9492,Unknown,T1190;T1133,false,false
-Citrix,CVE-2025-5777,2025-07-10,2025-07-11,2025-06-17,23,,,CWE-125,Out-of-bounds Read,0.99897,0.99963,Known,T1190;T1133,false,false
-Citrix,CVE-2025-7775,2025-08-26,2025-08-28,2025-08-26,0,9.8,CRITICAL,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.18973,0.96941,Unknown,T1190;T1133,false,false
-Citrix,CVE-2026-3055,2026-03-30,2026-04-02,2026-03-23,7,9.8,CRITICAL,CWE-125,Out-of-bounds Read,0.83996,0.9966,Unknown,T1190;T1133,false,false
-F5,CVE-2020-5902,2021-11-03,2022-05-03,2020-07-01,490,9.8,CRITICAL,CWE-22,Path Traversal,0.99999,1.0,Known,T1190;T1552,false,false
-F5,CVE-2021-22991,2022-01-18,2022-02-01,2021-03-31,293,9.8,CRITICAL,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.61064,0.99044,Unknown,T1190,false,false
-F5,CVE-2022-1388,2022-05-10,2022-05-31,2022-05-05,5,9.8,CRITICAL,CWE-306,Missing Authentication for Critical Function,0.99956,0.99974,Known,T1190;T1078,true,false
-F5,CVE-2023-46748,2023-10-31,2023-11-21,2023-10-26,5,8.8,HIGH,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.04468,0.90218,Unknown,T1190,false,false
-F5,CVE-2023-46747,2023-10-31,2023-11-21,2023-10-26,5,9.8,CRITICAL,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.96515,0.99875,Known,T1190;T1078,true,false
-F5,CVE-2025-53521,2026-03-27,2026-03-30,2025-10-15,163,9.8,CRITICAL,CWE-121,Stack-based Buffer Overflow,0.02246,0.80595,Unknown,T1190,false,false
-Zyxel,CVE-2020-29583,2021-11-03,2022-05-03,2020-12-22,316,9.8,CRITICAL,CWE-522,Insufficiently Protected Credentials,0.90049,0.9978,Unknown,T1190;T1552,false,false
-Zyxel,CVE-2022-30525,2022-05-16,2022-06-06,2022-05-12,4,9.8,CRITICAL,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.9994,0.99969,Unknown,T1190,false,false
-Zyxel,CVE-2023-28771,2023-05-31,2023-06-21,2023-04-25,36,9.8,CRITICAL,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.99284,0.99931,Unknown,T1190,true,false
-Zyxel,CVE-2023-33009,2023-06-05,2023-06-26,2023-05-24,12,9.8,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.28144,0.9786,Unknown,T1190,true,false
-Zyxel,CVE-2023-33010,2023-06-05,2023-06-26,2023-05-24,12,9.8,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.28813,0.97901,Unknown,T1190,true,false
-Zyxel,CVE-2024-11667,2024-12-03,2024-12-24,2024-11-27,6,7.5,HIGH,CWE-22,Path Traversal,0.02958,0.85421,Known,T1190;T1552,false,false
-Sophos,CVE-2020-12271,2021-11-03,2022-05-03,2020-04-27,555,10,CRITICAL,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.43062,0.98558,Known,T1190;T1133,false,false
-Sophos,CVE-2020-25223,2022-03-25,2022-04-15,2020-09-25,546,9.8,CRITICAL,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.96693,0.99877,Unknown,T1190,false,false
-Sophos,CVE-2022-1040,2022-03-31,2022-04-21,2022-03-25,6,9.8,CRITICAL,,,0.99796,0.99956,Unknown,T1190,true,false
-Sophos,CVE-2022-3236,2022-09-23,2022-10-14,2022-09-23,0,9.8,CRITICAL,CWE-94,Improper Control of Generation of Code,0.98905,0.99921,Unknown,T1190,false,false
-Sophos,CVE-2020-15069,2025-02-06,2025-02-27,2020-06-29,1683,9.8,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.10674,0.95239,Unknown,T1190,false,true
-Sophos,CVE-2020-29574,2025-02-06,2025-02-27,2020-12-11,1518,9.8,CRITICAL,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.04729,0.90686,Unknown,T1190,true,true
-WatchGuard,CVE-2022-26318,2022-03-25,2022-04-15,2022-03-04,21,9.8,CRITICAL,CWE-787,,0.78303,0.99524,Unknown,T1190,true,false
-WatchGuard,CVE-2022-23176,2022-04-11,2022-05-02,2022-02-24,46,8.8,HIGH,CWE-269,Improper Privilege Management,0.12249,0.95656,Unknown,T1190;T1068,false,false
-WatchGuard,CVE-2025-9242,2025-11-12,2025-12-03,2025-09-17,56,9.3,CRITICAL,CWE-787,Out-of-bounds Write,0.8637,0.99709,Unknown,T1190,true,false
-WatchGuard,CVE-2025-14733,2025-12-19,2025-12-26,2025-12-19,0,9.8,CRITICAL,CWE-787,Out-of-bounds Write,0.17469,0.96747,Unknown,T1190,true,false
-Array Networks,CVE-2023-28461,2024-11-25,2024-12-16,2023-03-15,621,9.8,CRITICAL,CWE-306,Missing Authentication for Critical Function,0.67645,0.99221,Known,T1190;T1078;T1133,true,false
-Array Networks,CVE-2025-66644,2025-12-08,2025-12-29,2025-12-05,3,7.2,HIGH,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.03046,0.85835,Unknown,T1190;T1133,false,false
+vendor,cve,kev_date_added,kev_due_date,published,tte_days,cvss,cvss_severity,cwe,cwe_name,epss,percentile,ransomware,attack_techniques,pre_auth,eol_at_kev_date,in_exploitdb,has_nuclei_template,public_exploit,remediation_window_days,cisa_emergency
+SonicWall,CVE-2019-7481,2021-11-03,2022-05-03,2019-12-17,687,7.5,HIGH,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.99906,0.99964,Known,T1190;T1133,true,false,false,true,true,181,false
+SonicWall,CVE-2021-20016,2021-11-03,2021-11-17,2021-02-03,273,9.8,CRITICAL,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.40038,0.9845,Known,T1190;T1133,true,false,false,false,false,14,false
+SonicWall,CVE-2021-20038,2022-01-28,2022-02-11,2021-12-08,51,9.8,CRITICAL,CWE-121,Stack-based Buffer Overflow,0.99912,0.99965,Known,T1190;T1133,true,false,false,true,true,14,false
+SonicWall,CVE-2020-5135,2022-03-15,2022-04-05,2020-10-12,519,9.8,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.26869,0.97781,Unknown,T1190,false,false,false,false,false,21,false
+SonicWall,CVE-2021-20028,2022-03-28,2022-04-18,2021-08-04,236,9.8,CRITICAL,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.30084,0.97976,Known,T1190;T1133,false,false,false,false,false,21,false
+SonicWall,CVE-2019-7483,2022-03-28,2022-04-18,2019-12-19,830,7.5,HIGH,CWE-22,Path Traversal,0.03977,0.89148,Unknown,T1190;T1552;T1133,true,false,false,false,false,21,false
+SonicWall,CVE-2024-40766,2024-09-09,2024-09-30,2024-08-23,17,9.3,CRITICAL,CWE-284,Improper Access Control,0.15694,0.96436,Known,T1190;T1078,false,false,false,false,false,21,false
+SonicWall,CVE-2025-23006,2025-01-24,2025-02-14,2025-01-23,1,9.8,CRITICAL,CWE-502,Deserialization of Untrusted Data,0.22252,0.97379,Known,T1190;T1133,true,false,false,false,false,21,false
+SonicWall,CVE-2024-53704,2025-02-18,2025-03-11,2025-01-09,40,8.2,HIGH,CWE-287,Improper Authentication,0.95132,0.99854,Known,T1190;T1078;T1133,true,false,false,true,true,21,false
+SonicWall,CVE-2021-20035,2025-04-16,2025-05-07,2021-09-27,1297,6.5,MEDIUM,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.0389,0.88885,Unknown,T1190;T1133,false,false,false,false,false,21,false
+SonicWall,CVE-2023-44221,2025-05-01,2025-05-22,2023-12-05,513,7.2,HIGH,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.75103,0.99448,Unknown,T1190;T1133,false,false,false,false,false,21,false
+SonicWall,CVE-2025-40602,2025-12-17,2025-12-24,2025-12-18,-1,6.6,MEDIUM,CWE-862,Missing Authorization,0.0191,0.77115,Unknown,T1190;T1078;T1133,false,false,false,false,false,7,true
+Ivanti,CVE-2021-22893,2021-11-03,2022-05-03,2021-04-23,194,10,CRITICAL,CWE-287,Improper Authentication,0.47172,0.98688,Known,T1190;T1078;T1133,true,false,false,false,false,181,false
+Ivanti,CVE-2020-8243,2021-11-03,2022-05-03,2020-09-29,400,7.2,HIGH,CWE-94,Improper Control of Generation of Code,0.90759,0.99792,Unknown,T1190;T1133,false,false,false,false,false,181,false
+Ivanti,CVE-2021-22900,2021-11-03,2022-05-03,2021-05-27,160,7.2,HIGH,CWE-94,Improper Control of Generation of Code,0.14146,0.96109,Unknown,T1190;T1133,false,false,false,false,false,181,false
+Ivanti,CVE-2021-22894,2021-11-03,2022-05-03,2021-05-27,160,8.8,HIGH,CWE-94,Improper Control of Generation of Code,0.41284,0.98492,Unknown,T1190;T1133,false,false,false,false,false,181,false
+Ivanti,CVE-2020-8260,2021-11-03,2022-05-03,2020-10-28,371,7.2,HIGH,CWE-434,Unrestricted Upload of File with Dangerous Type,0.9648,0.99874,Unknown,T1190;T1505.003;T1133,false,false,false,false,false,181,false
+Ivanti,CVE-2021-22899,2021-11-03,2022-05-03,2021-05-27,160,8.8,HIGH,CWE-77,Improper Neutralization of Special Elements used in a Command,0.22343,0.97388,Unknown,T1190;T1133,false,false,false,false,false,181,false
+Ivanti,CVE-2019-11510,2021-11-03,2022-05-03,2019-05-08,910,9.9,CRITICAL,CWE-22,Path Traversal,0.99999,0.99995,Known,T1190;T1552;T1133,true,false,true,true,true,181,false
+Ivanti,CVE-2019-11539,2021-11-03,2022-05-03,2019-04-26,922,8,HIGH,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.98617,0.99917,Known,T1190;T1133,false,false,true,false,true,181,false
+Ivanti,CVE-2023-46805,2024-01-10,2024-01-22,2024-01-12,-2,8.2,HIGH,,,0.99986,0.99983,Known,T1190;T1133,true,false,false,true,true,12,false
+Ivanti,CVE-2024-21887,2024-01-10,2024-01-22,2024-01-12,-2,9.1,CRITICAL,CWE-77,Improper Neutralization of Special Elements used in a Command,0.99999,1.0,Known,T1190;T1133,false,false,false,true,true,12,false
+Ivanti,CVE-2024-21893,2024-01-31,2024-02-02,2024-01-31,0,8.2,HIGH,CWE-918,Server-Side Request Forgery (SSRF),0.99999,0.99999,Known,T1190;T1133,true,false,false,true,true,2,true
+Ivanti,CVE-2025-0282,2025-01-08,2025-01-15,2025-01-08,0,9,CRITICAL,CWE-121,Stack-based Buffer Overflow,0.99971,0.99978,Known,T1190;T1133,true,false,true,true,true,7,true
+Ivanti,CVE-2025-22457,2025-04-04,2025-04-11,2025-04-03,1,9,CRITICAL,CWE-121,Stack-based Buffer Overflow,0.99961,0.99975,Known,T1190;T1133,true,false,false,false,false,7,true
+Juniper,CVE-2020-1631,2022-03-25,2022-04-15,2020-05-04,690,8.8,HIGH,CWE-22,Path Traversal,0.04725,0.90676,Unknown,T1190;T1552,true,false,false,false,false,21,false
+Juniper,CVE-2023-36844,2023-11-13,2023-11-17,2023-08-17,88,5.3,MEDIUM,CWE-473,PHP External Variable Modification,0.89628,0.99772,Unknown,T1190,true,false,false,true,true,4,true
+Juniper,CVE-2023-36845,2023-11-13,2023-11-17,2023-08-17,88,9.8,CRITICAL,CWE-473,PHP External Variable Modification,0.93546,0.99827,Unknown,T1190,true,false,false,true,true,4,true
+Juniper,CVE-2023-36846,2023-11-13,2023-11-17,2023-08-17,88,5.3,MEDIUM,CWE-306,Missing Authentication for Critical Function,0.94205,0.99838,Unknown,T1190;T1078,true,false,false,true,true,4,true
+Juniper,CVE-2023-36847,2023-11-13,2023-11-17,2023-08-17,88,5.3,MEDIUM,CWE-306,Missing Authentication for Critical Function,0.84692,0.99675,Unknown,T1190;T1078,true,false,false,true,true,4,true
+Juniper,CVE-2023-36851,2023-11-13,2023-11-17,2023-09-26,48,5.3,MEDIUM,CWE-306,Missing Authentication for Critical Function,0.011,0.61375,Unknown,T1190;T1078,true,false,false,false,false,4,true
+Juniper,CVE-2025-21590,2025-03-13,2025-04-03,2025-03-12,1,4.4,MEDIUM,CWE-653,Insufficient Compartmentalization,0.01657,0.73571,Unknown,T1190,false,false,false,false,false,21,false
+Juniper,CVE-2015-7755,2025-10-02,2025-10-23,2015-12-19,3575,9.8,CRITICAL,CWE-287,Improper Authentication,0.614,0.99052,Unknown,T1190;T1078,true,true,false,false,false,21,false
+Cisco,CVE-2020-3452,2021-11-03,2022-05-03,2020-07-22,469,7.5,HIGH,CWE-20,Improper Input Validation,0.99992,0.99986,Unknown,T1190,false,false,true,true,true,181,false
+Cisco,CVE-2020-3580,2021-11-03,2022-05-03,2020-10-21,378,6.1,MEDIUM,CWE-79,Improper Neutralization of Input During Web Page Generation,0.85439,0.99691,Known,T1190,false,false,false,true,true,181,false
+Cisco,CVE-2018-0296,2021-11-03,2022-05-03,2018-06-07,1245,7.5,HIGH,CWE-20,Improper Input Validation,0.99903,0.99964,Unknown,T1190,false,false,true,true,true,181,false
+Cisco,CVE-2016-6366,2022-05-24,2022-06-14,2016-08-18,2105,8.8,HIGH,CWE-120,Buffer Copy without Checking Size of Input,0.87503,0.99733,Unknown,T1190,false,false,true,false,true,21,false
+Cisco,CVE-2016-6367,2022-05-24,2022-06-14,2016-08-18,2105,7.8,HIGH,CWE-77,Improper Neutralization of Special Elements used in a Command,0.22583,0.97421,Unknown,T1190,false,false,true,false,true,21,false
+Cisco,CVE-2023-20269,2023-09-13,2023-10-04,2023-09-06,7,5,MEDIUM,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.21583,0.97314,Known,T1190;T1078;T1133,true,false,false,false,false,21,false
+Cisco,CVE-2020-3259,2024-02-15,2024-03-07,2020-05-06,1380,7.5,HIGH,CWE-200,Exposure of Sensitive Information to an Unauthorized Actor,0.71789,0.99347,Known,T1190;T1212;T1552;T1133,false,false,false,false,false,21,false
+Cisco,CVE-2024-20359,2024-04-24,2024-05-01,2024-04-24,0,6,MEDIUM,CWE-94,Improper Control of Generation of Code,0.16863,0.96656,Unknown,T1190,false,false,false,false,false,7,true
+Cisco,CVE-2024-20353,2024-04-24,2024-05-01,2024-04-24,0,8.6,HIGH,CWE-835,Loop with Unreachable Exit Condition (Infinite Loop),0.63272,0.99101,Unknown,T1190,false,false,false,false,false,7,true
+Cisco,CVE-2024-20481,2024-10-24,2024-11-14,2024-10-23,1,5.8,MEDIUM,CWE-772,Missing Release of Resource after Effective Lifetime,0.15953,0.96482,Unknown,T1190,true,false,false,false,false,21,false
+Cisco,CVE-2014-2120,2024-11-12,2024-12-03,2014-03-19,3891,5.4,MEDIUM,CWE-79,Improper Neutralization of Input During Web Page Generation,0.14029,0.96088,Unknown,T1190,false,false,false,false,false,21,false
+Cisco,CVE-2025-20362,2025-09-25,2025-09-26,2025-09-25,0,6.5,MEDIUM,CWE-862,Missing Authorization,0.83681,0.99654,Unknown,T1190;T1078,false,false,false,true,true,1,true
+Cisco,CVE-2025-20333,2025-09-25,2025-09-26,2025-09-25,0,9.9,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.29197,0.97926,Unknown,T1190,false,false,false,false,false,1,true
+Palo Alto Networks,CVE-2019-1579,2022-01-10,2022-07-10,2019-07-19,906,8.1,HIGH,CWE-134,Use of Externally-Controlled Format String,0.39317,0.98421,Known,T1190;T1133,false,false,false,false,false,181,false
+Palo Alto Networks,CVE-2020-2021,2022-03-25,2022-04-15,2020-06-29,634,10,CRITICAL,CWE-347,Improper Verification of Cryptographic Signature,0.03994,0.89188,Known,T1190,true,false,false,false,false,21,false
+Palo Alto Networks,CVE-2017-15944,2022-08-18,2022-09-08,2017-12-11,1711,9.8,CRITICAL,CWE-20,Improper Input Validation,0.9834,0.9991,Unknown,T1190,false,false,true,true,true,21,false
+Palo Alto Networks,CVE-2022-0028,2022-08-22,2022-09-12,2022-08-10,12,8.6,HIGH,CWE-406,Insufficient Control of Network Message Volume,0.02025,0.78472,Unknown,T1190,false,false,false,false,false,21,false
+Palo Alto Networks,CVE-2024-3400,2024-04-12,2024-04-19,2024-04-12,0,10,CRITICAL,CWE-77,Improper Neutralization of Special Elements used in a Command,0.99999,1.0,Known,T1190;T1133,true,false,true,true,true,7,true
+Palo Alto Networks,CVE-2024-9474,2024-11-18,2024-12-09,2024-11-18,0,7.2,HIGH,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.94766,0.99848,Known,T1190,false,false,false,true,true,21,false
+Palo Alto Networks,CVE-2024-0012,2024-11-18,2024-12-09,2024-11-18,0,9.3,CRITICAL,CWE-306,Missing Authentication for Critical Function,0.99698,0.99949,Known,T1190;T1078,true,false,false,true,true,21,false
+Palo Alto Networks,CVE-2024-3393,2024-12-30,2025-01-20,2024-12-27,3,8.7,HIGH,CWE-754,Improper Check for Unusual or Exceptional Conditions,0.26636,0.97766,Unknown,T1190,true,false,false,false,false,21,false
+Palo Alto Networks,CVE-2025-0108,2025-02-18,2025-03-11,2025-02-12,6,8.8,HIGH,CWE-306,Missing Authentication for Critical Function,0.98338,0.9991,Unknown,T1190;T1078,true,false,false,true,true,21,false
+Palo Alto Networks,CVE-2025-0111,2025-02-20,2025-03-13,2025-02-12,8,7.1,HIGH,CWE-73,External Control of File Name or Path,0.01862,0.76521,Unknown,T1190;T1552,false,false,false,false,false,21,false
+Palo Alto Networks,CVE-2026-0300,2026-05-06,2026-05-09,2026-05-06,0,,,CWE-787,Out-of-bounds Write,0.3176,0.98072,Unknown,T1190,true,false,false,false,false,3,true
+Palo Alto Networks,CVE-2026-0257,2026-05-29,2026-06-01,2026-05-13,16,,,CWE-565,Reliance on Cookies without Validation and Integrity Checking,0.18583,0.96891,Unknown,T1190,true,false,false,true,true,3,true
+Fortinet,CVE-2019-5591,2021-11-03,2022-05-03,2020-08-14,446,6.5,MEDIUM,CWE-306,Missing Authentication for Critical Function,0.18566,0.96889,Unknown,T1190;T1078,true,false,false,true,true,181,false
+Fortinet,CVE-2020-12812,2021-11-03,2022-05-03,2020-07-24,467,9.8,CRITICAL,CWE-287,Improper Authentication,0.49344,0.98743,Known,T1190;T1078;T1133,true,false,false,false,false,181,false
+Fortinet,CVE-2018-13379,2021-11-03,2022-05-03,2019-06-04,883,9.1,CRITICAL,CWE-22,Path Traversal,0.99999,0.99994,Known,T1190;T1552;T1133,true,false,true,true,true,181,false
+Fortinet,CVE-2021-44168,2021-12-10,2021-12-24,2022-01-04,-25,3.3,LOW,CWE-494,Download of Code Without Integrity Check,0.00865,0.539,Unknown,T1190,false,false,false,false,false,14,false
+Fortinet,CVE-2018-13382,2022-01-10,2022-07-10,2019-06-04,951,9.1,CRITICAL,CWE-863,Incorrect Authorization,0.81691,0.996,Known,T1190;T1078;T1133,true,false,true,false,true,181,false
+Fortinet,CVE-2018-13383,2022-01-10,2022-07-10,2019-05-29,957,4.3,MEDIUM,CWE-787,Out-of-bounds Write,0.33647,0.9817,Known,T1190;T1133,false,false,false,false,false,181,false
+Fortinet,CVE-2018-13374,2022-09-08,2022-09-29,2019-01-22,1325,4.3,MEDIUM,CWE-732,Incorrect Permission Assignment for Critical Resource,0.38088,0.98369,Known,T1190;T1068,false,false,true,false,true,21,false
+Fortinet,CVE-2022-40684,2022-10-11,2022-11-01,2022-10-18,-7,9.8,CRITICAL,CWE-287,Improper Authentication,0.99984,0.99982,Known,T1190;T1078,true,false,true,true,true,21,false
+Fortinet,CVE-2022-42475,2022-12-13,2023-01-03,2023-01-02,-20,9.3,CRITICAL,CWE-197,Numeric Truncation Error,0.99474,0.99938,Known,T1190;T1133,true,false,false,false,false,21,false
+Fortinet,CVE-2022-41328,2023-03-14,2023-04-04,2023-03-07,7,6.5,MEDIUM,CWE-22,Path Traversal,0.12316,0.95677,Unknown,T1190;T1552,false,false,false,false,false,21,false
+Fortinet,CVE-2023-27997,2023-06-13,2023-07-04,2023-06-13,0,9.2,CRITICAL,CWE-122,Heap-based Buffer Overflow,0.85689,0.99695,Known,T1190;T1133,true,false,false,false,false,21,false
+Fortinet,CVE-2024-21762,2024-02-09,2024-02-16,2024-02-09,0,9.6,CRITICAL,CWE-787,Out-of-bounds Write,0.80835,0.99578,Known,T1190,true,false,false,false,false,7,true
+Fortinet,CVE-2024-23113,2024-10-09,2024-10-30,2024-02-15,237,9.8,CRITICAL,CWE-134,Use of Externally-Controlled Format String,0.61725,0.99061,Unknown,T1190,true,false,false,false,false,21,false
+Fortinet,CVE-2024-55591,2025-01-14,2025-01-21,2025-01-14,0,9.6,CRITICAL,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.98239,0.99907,Known,T1190;T1078,true,false,false,true,true,7,true
+Fortinet,CVE-2025-24472,2025-03-18,2025-04-08,2025-02-11,35,8.1,HIGH,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.02988,0.85566,Known,T1190;T1078,true,false,false,false,false,21,false
+Fortinet,CVE-2019-6693,2025-06-25,2025-07-16,2019-11-21,2043,6.5,MEDIUM,CWE-798,Use of Hard-coded Credentials,0.05352,0.91594,Known,T1190;T1552,false,false,false,false,false,21,false
+Fortinet,CVE-2025-59718,2025-12-16,2025-12-23,2025-12-09,7,9.1,CRITICAL,CWE-347,Improper Verification of Cryptographic Signature,0.63476,0.99107,Unknown,T1190,true,false,false,false,false,7,true
+Fortinet,CVE-2026-24858,2026-01-27,2026-01-30,2026-01-27,0,9.4,CRITICAL,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.55125,0.98901,Unknown,T1190;T1078,true,false,false,false,false,3,true
+Check Point,CVE-2024-24919,2024-05-30,2024-06-20,2024-05-28,2,8.6,HIGH,CWE-200,Exposure of Sensitive Information to an Unauthorized Actor,0.99978,0.9998,Known,T1190;T1212;T1552;T1133,false,false,false,true,true,21,false
+Check Point,CVE-2026-50751,2026-06-08,2026-06-11,2026-06-08,0,9.3,CRITICAL,CWE-287,Improper Authentication,0.41152,0.98488,Known,T1190;T1078;T1133,true,false,false,true,true,3,true
+Citrix,CVE-2020-8193,2021-11-03,2022-05-03,2020-07-10,481,6.5,MEDIUM,CWE-284,Improper Access Control,0.88411,0.9975,Unknown,T1190;T1078;T1133,true,false,false,true,true,181,false
+Citrix,CVE-2020-8195,2021-11-03,2022-05-03,2020-07-10,481,6.5,MEDIUM,CWE-20,Improper Input Validation,0.33263,0.98152,Unknown,T1190;T1133,false,false,false,false,false,181,false
+Citrix,CVE-2020-8196,2021-11-03,2022-05-03,2020-07-10,481,4.3,MEDIUM,CWE-284,Improper Access Control,0.26333,0.97745,Unknown,T1190;T1078;T1133,false,false,false,false,false,181,false
+Citrix,CVE-2019-19781,2021-11-03,2022-05-03,2019-12-27,677,9.8,CRITICAL,CWE-22,Path Traversal,0.99999,0.99998,Known,T1190;T1552;T1133,true,false,true,true,true,181,false
+Citrix,CVE-2022-27518,2022-12-13,2023-01-03,2022-12-13,0,9.8,CRITICAL,CWE-664,Improper Control of a Resource Through its Lifetime,0.06931,0.93281,Unknown,T1190;T1133,true,false,false,false,false,21,false
+Citrix,CVE-2023-3519,2023-07-19,2023-08-09,2023-07-19,0,9.8,CRITICAL,CWE-94,Improper Control of Generation of Code,0.99343,0.99933,Known,T1190;T1133,true,false,false,true,true,21,false
+Citrix,CVE-2023-4966,2023-10-18,2023-11-08,2023-10-10,8,9.4,CRITICAL,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.99999,0.99993,Known,T1190;T1133,false,false,false,true,true,21,false
+Citrix,CVE-2023-6549,2024-01-17,2024-02-07,2024-01-17,0,8.2,HIGH,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.57633,0.98961,Unknown,T1190;T1133,false,false,false,true,true,21,false
+Citrix,CVE-2023-6548,2024-01-17,2024-01-24,2024-01-17,0,5.5,MEDIUM,CWE-94,Improper Control of Generation of Code,0.03191,0.86446,Unknown,T1190;T1133,false,false,false,false,false,7,true
+Citrix,CVE-2025-6543,2025-06-30,2025-07-21,2025-06-25,5,,,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.09756,0.9492,Unknown,T1190;T1133,false,false,false,false,false,21,false
+Citrix,CVE-2025-5777,2025-07-10,2025-07-11,2025-06-17,23,,,CWE-125,Out-of-bounds Read,0.99897,0.99963,Known,T1190;T1133,false,false,true,true,true,1,true
+Citrix,CVE-2025-7775,2025-08-26,2025-08-28,2025-08-26,0,9.8,CRITICAL,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.18973,0.96941,Unknown,T1190;T1133,false,false,false,false,false,2,true
+Citrix,CVE-2026-3055,2026-03-30,2026-04-02,2026-03-23,7,9.8,CRITICAL,CWE-125,Out-of-bounds Read,0.83996,0.9966,Unknown,T1190;T1133,false,false,false,true,true,3,true
+F5,CVE-2020-5902,2021-11-03,2022-05-03,2020-07-01,490,9.8,CRITICAL,CWE-22,Path Traversal,0.99999,1.0,Known,T1190;T1552,false,false,true,true,true,181,false
+F5,CVE-2021-22991,2022-01-18,2022-02-01,2021-03-31,293,9.8,CRITICAL,CWE-119,Improper Restriction of Operations within the Bounds of a Memory Buffer,0.61064,0.99044,Unknown,T1190,false,false,false,false,false,14,false
+F5,CVE-2022-1388,2022-05-10,2022-05-31,2022-05-05,5,9.8,CRITICAL,CWE-306,Missing Authentication for Critical Function,0.99956,0.99974,Known,T1190;T1078,true,false,true,true,true,21,false
+F5,CVE-2023-46748,2023-10-31,2023-11-21,2023-10-26,5,8.8,HIGH,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.04468,0.90218,Unknown,T1190,false,false,false,false,false,21,false
+F5,CVE-2023-46747,2023-10-31,2023-11-21,2023-10-26,5,9.8,CRITICAL,CWE-288,Authentication Bypass Using an Alternate Path or Channel,0.96515,0.99875,Known,T1190;T1078,true,false,false,true,true,21,false
+F5,CVE-2025-53521,2026-03-27,2026-03-30,2025-10-15,163,9.8,CRITICAL,CWE-121,Stack-based Buffer Overflow,0.02246,0.80595,Unknown,T1190,false,false,false,false,false,3,true
+Zyxel,CVE-2020-29583,2021-11-03,2022-05-03,2020-12-22,316,9.8,CRITICAL,CWE-522,Insufficiently Protected Credentials,0.90049,0.9978,Unknown,T1190;T1552,false,false,false,true,true,181,false
+Zyxel,CVE-2022-30525,2022-05-16,2022-06-06,2022-05-12,4,9.8,CRITICAL,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.9994,0.99969,Unknown,T1190,false,false,true,true,true,21,false
+Zyxel,CVE-2023-28771,2023-05-31,2023-06-21,2023-04-25,36,9.8,CRITICAL,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.99284,0.99931,Unknown,T1190,true,false,false,false,false,21,false
+Zyxel,CVE-2023-33009,2023-06-05,2023-06-26,2023-05-24,12,9.8,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.28144,0.9786,Unknown,T1190,true,false,false,false,false,21,false
+Zyxel,CVE-2023-33010,2023-06-05,2023-06-26,2023-05-24,12,9.8,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.28813,0.97901,Unknown,T1190,true,false,false,false,false,21,false
+Zyxel,CVE-2024-11667,2024-12-03,2024-12-24,2024-11-27,6,7.5,HIGH,CWE-22,Path Traversal,0.02958,0.85421,Known,T1190;T1552,false,false,false,false,false,21,false
+Sophos,CVE-2020-12271,2021-11-03,2022-05-03,2020-04-27,555,10,CRITICAL,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.43062,0.98558,Known,T1190;T1133,false,false,false,false,false,181,false
+Sophos,CVE-2020-25223,2022-03-25,2022-04-15,2020-09-25,546,9.8,CRITICAL,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.96693,0.99877,Unknown,T1190,false,false,false,true,true,21,false
+Sophos,CVE-2022-1040,2022-03-31,2022-04-21,2022-03-25,6,9.8,CRITICAL,,,0.99796,0.99956,Unknown,T1190,true,false,true,true,true,21,false
+Sophos,CVE-2022-3236,2022-09-23,2022-10-14,2022-09-23,0,9.8,CRITICAL,CWE-94,Improper Control of Generation of Code,0.98905,0.99921,Unknown,T1190,false,false,false,true,true,21,false
+Sophos,CVE-2020-15069,2025-02-06,2025-02-27,2020-06-29,1683,9.8,CRITICAL,CWE-120,Buffer Copy without Checking Size of Input,0.10674,0.95239,Unknown,T1190,false,true,false,false,false,21,false
+Sophos,CVE-2020-29574,2025-02-06,2025-02-27,2020-12-11,1518,9.8,CRITICAL,CWE-89,Improper Neutralization of Special Elements used in an SQL Command,0.04729,0.90686,Unknown,T1190,true,true,false,false,false,21,false
+WatchGuard,CVE-2022-26318,2022-03-25,2022-04-15,2022-03-04,21,9.8,CRITICAL,CWE-787,,0.78303,0.99524,Unknown,T1190,true,false,false,false,false,21,false
+WatchGuard,CVE-2022-23176,2022-04-11,2022-05-02,2022-02-24,46,8.8,HIGH,CWE-269,Improper Privilege Management,0.12249,0.95656,Unknown,T1190;T1068,false,false,false,false,false,21,false
+WatchGuard,CVE-2025-9242,2025-11-12,2025-12-03,2025-09-17,56,9.3,CRITICAL,CWE-787,Out-of-bounds Write,0.8637,0.99709,Unknown,T1190,true,false,false,false,false,21,false
+WatchGuard,CVE-2025-14733,2025-12-19,2025-12-26,2025-12-19,0,9.8,CRITICAL,CWE-787,Out-of-bounds Write,0.17469,0.96747,Unknown,T1190,true,false,false,false,false,7,true
+Array Networks,CVE-2023-28461,2024-11-25,2024-12-16,2023-03-15,621,9.8,CRITICAL,CWE-306,Missing Authentication for Critical Function,0.67645,0.99221,Known,T1190;T1078;T1133,true,false,false,false,false,21,false
+Array Networks,CVE-2025-66644,2025-12-08,2025-12-29,2025-12-05,3,7.2,HIGH,CWE-78,Improper Neutralization of Special Elements used in an OS Command,0.03046,0.85835,Unknown,T1190;T1133,false,false,false,false,false,21,false

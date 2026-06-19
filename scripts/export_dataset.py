@@ -53,6 +53,11 @@ FIELDNAMES = [
     "attack_techniques",
     "pre_auth",
     "eol_at_kev_date",
+    "in_exploitdb",
+    "has_nuclei_template",
+    "public_exploit",
+    "remediation_window_days",
+    "cisa_emergency",
 ]
 
 
@@ -149,6 +154,10 @@ def build_rows(enriched, counts):
             pre_auth_str = bool_str(fields.get("pre_auth"))
             eol_str = bool_str(fields.get("eol_at_kev_date"))
 
+            # Operational signals from enrich_signals.py (weaponization + urgency).
+            rwd = fields.get("remediation_window_days")
+            rwd_str = "" if rwd is None else str(rwd)
+
             yield {
                 "vendor":        vendor,
                 "cve":           cve_id,
@@ -166,6 +175,11 @@ def build_rows(enriched, counts):
                 "attack_techniques": attack_str,
                 "pre_auth":      pre_auth_str,
                 "eol_at_kev_date": eol_str,
+                "in_exploitdb":    bool_str(fields.get("in_exploitdb")),
+                "has_nuclei_template": bool_str(fields.get("has_nuclei_template")),
+                "public_exploit":  bool_str(fields.get("public_exploit")),
+                "remediation_window_days": rwd_str,
+                "cisa_emergency":  bool_str(fields.get("cisa_emergency")),
             }
 
 
