@@ -141,12 +141,12 @@
     "CVE-2025-66644"
   ],
   "_metadata": {
-    "catalog_version": "2026.06.18",
+    "catalog_version": "2026.07.01",
     "window": [
       "2020-01-01",
-      "2026-06-18"
+      "2026-12-31"
     ],
-    "generated_at": "2026-06-18T23:44:36Z",
+    "generated_at": "2026-07-02T08:44:39Z",
     "scope_rules": {
       "SonicWall": {
         "include": "SonicOS|SMA|SSLVPN|SSL[- ]?VPN|Secure Remote Access|SRA",
